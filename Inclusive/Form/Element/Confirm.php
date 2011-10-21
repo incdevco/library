@@ -1,6 +1,6 @@
 <?php
 
-class Inclusive_Form_Element_ConfirmCheckbox extends Zend_Form_Element_Checkbox {
+class Inclusive_Form_Element_Confirm extends Zend_Form_Element_Checkbox {
 	
 	public function __construct($spec='confirm',$options=null) {
 		
@@ -13,7 +13,8 @@ class Inclusive_Form_Element_ConfirmCheckbox extends Zend_Form_Element_Checkbox 
 		$this
 			->setCheckedValue(true)
 			->setUncheckedValue(false)
-			->setRequired(true);
+			->setRequired(true)
+			->setLabel('Confirm:');
 		
 	}
 	
