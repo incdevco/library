@@ -374,6 +374,10 @@ abstract class Zend_View_Helper_Navigation_HelperAbstract
         if (null === $role || is_string($role) ||
             $role instanceof Zend_Acl_Role_Interface) {
             $this->_role = $role;
+        } elseif (is_array($role)) {
+        	
+        	$this->_role = $role;
+        	
         } else {
             require_once 'Zend/View/Exception.php';
             $e = new Zend_View_Exception(sprintf(
@@ -752,8 +756,26 @@ abstract class Zend_View_Helper_Navigation_HelperAbstract
         $privilege = $page->getPrivilege();
 
         if ($resource || $privilege) {
-            // determine using helper role and page resource/privilege
-            return $acl->isAllowed($role, $resource, $privilege);
+            
+            if (is_array($role)) {
+                
+                foreach ($role as $r) {
+                    
+                    if ($acl->isAllowed($r,$resource,$privilege)) {
+                        
+                        return true;
+                        
+                    }
+                    
+                }
+                
+                return false;
+                
+            } else {
+                // determine using helper role and page resource/privilege
+                return $acl->isAllowed($role, $resource, $privilege);
+            
+            }
         }
 
         return true;

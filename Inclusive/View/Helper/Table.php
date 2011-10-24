@@ -4,6 +4,12 @@ class Inclusive_View_Helper_Table extends Zend_View_Helper_Abstract {
 	
 	public function table(array $rows,array $options=null) {
 		
+		if (!count($rows)) {
+			
+			return 'No Rows';
+			
+		}
+		
 		$string = '<table '.((isset($options['class'])) ? $options['class'] : '').'>';
 		
 		if (isset($options['caption'])) {

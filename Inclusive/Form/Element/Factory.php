@@ -34,6 +34,10 @@ class Inclusive_Form_Element_Factory {
                     
 			$element = new Zend_Form_Element_Select($spec,$options);
 			
+		} elseif ($type == 'text') {
+			
+			$element = new Zend_Form_Element_Text($spec,$options);
+			
 		} else {
 			
 			$element = new Zend_Form_Element_Hidden($spec,$options);
