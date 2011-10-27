@@ -18,29 +18,41 @@ class Inclusive_Form_Element_Factory {
 			
 		}
 		
-		if ($type == 'select') {
-	  
-            if (isset($options['notRequired'])) {
-                        
-                unset($options['notRequired']);
-                        
-            }
-                        
-            if (isset($options['where'])) {
-                        
-                unset($options['where']);
-                        
-            }
-                    
-			$element = new Zend_Form_Element_Select($spec,$options);
+		if (isset($options['elementClass'])) {
 			
-		} elseif ($type == 'text') {
+			$class = $options['elementClass'];
 			
-			$element = new Zend_Form_Element_Text($spec,$options);
+			unset($options['elementClass']);
+			
+			$element = new $class($spec,$options);
 			
 		} else {
 			
-			$element = new Zend_Form_Element_Hidden($spec,$options);
+			if ($type == 'select') {
+		  
+	            if (isset($options['notRequired'])) {
+	                        
+	                unset($options['notRequired']);
+	                        
+	            }
+	                        
+	            if (isset($options['where'])) {
+	                        
+	                unset($options['where']);
+	                        
+	            }
+	                    
+				$element = new Zend_Form_Element_Select($spec,$options);
+				
+			} elseif ($type == 'text') {
+				
+				$element = new Zend_Form_Element_Text($spec,$options);
+				
+			} else {
+				
+				$element = new Zend_Form_Element_Hidden($spec,$options);
+				
+			}
 			
 		}
 		
