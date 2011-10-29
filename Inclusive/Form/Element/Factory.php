@@ -2,22 +2,30 @@
 
 class Inclusive_Form_Element_Factory {
 	
+	static function determineType($options=null) {
+		
+        $type = 'hidden';
+        
+        if (isset($options['type'])) {
+            
+            $type = strtolower($options['type']);
+            
+        }
+        
+        return $type;
+        
+	}
+	
 	static function factory($spec,$options=null) {
 		
-		$type = 'hidden';
-		
+		$type = self::determineType($options);
+			
 		if (isset($options['type'])) {
+
+			unset($options['type']);
 			
-			$type = strtolower($options['type']);
-			
-			if (isset($options['type'])) {
-				
-				unset($options['type']);
-				
-			}
-			
-		}
-		
+        } 
+        
 		if (isset($options['elementClass'])) {
 			
 			$class = $options['elementClass'];
