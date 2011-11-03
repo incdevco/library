@@ -10,7 +10,8 @@ class Inclusive_View_Helper_Table extends Zend_View_Helper_Abstract {
 			
 		}
 		
-		$string = '<table '.((isset($options['class'])) ? $options['class'] : '').'>';
+		$string = '<table class="'.((isset($options['class'])) ? 
+		    $options['class'] : '').'">';
 		
 		if (isset($options['caption'])) {
 			
@@ -20,7 +21,7 @@ class Inclusive_View_Helper_Table extends Zend_View_Helper_Abstract {
 		
 		$string .= "<thead>\n";
 		
-		$string .= $this->renderHeader($rows[0]);
+		$string .= $this->renderHeader($rows[0],$options);
 		
 		$string .= "</thead>\n";
 		
@@ -28,7 +29,7 @@ class Inclusive_View_Helper_Table extends Zend_View_Helper_Abstract {
 		
 		foreach ($rows as $row) {
 			
-			$string .= $this->renderRow($row);
+			$string .= $this->renderRow($row,$options);
 			
 		}
 		
