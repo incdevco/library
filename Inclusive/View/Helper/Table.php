@@ -10,7 +10,8 @@ class Inclusive_View_Helper_Table extends Zend_View_Helper_Abstract {
 			
 		}
 		
-		$string = '<table '.((isset($options['class'])) ? $options['class'] : '').'>';
+		$string = '<table class="'.((isset($options['class'])) ? 
+		    $options['class'] : '').'">';
 		
 		if (isset($options['caption'])) {
 			
@@ -20,7 +21,7 @@ class Inclusive_View_Helper_Table extends Zend_View_Helper_Abstract {
 		
 		$string .= "<thead>\n";
 		
-		$string .= $this->renderHeader($rows[0]);
+		$string .= $this->renderHeader($rows[0],$options);
 		
 		$string .= "</thead>\n";
 		
@@ -28,7 +29,7 @@ class Inclusive_View_Helper_Table extends Zend_View_Helper_Abstract {
 		
 		foreach ($rows as $row) {
 			
-			$string .= $this->renderRow($row);
+			$string .= $this->renderRow($row,$options);
 			
 		}
 		
@@ -44,31 +45,73 @@ class Inclusive_View_Helper_Table extends Zend_View_Helper_Abstract {
 		
 	}
 	
-	public function renderHeader(array $row,array $options=null) {
+	public function renderHeader($row,array $options=null) {
 		
-		$string = '<tr>';
+		$string = '';
 		
-		foreach ($row as $key => $value) {
+		if (is_array($row)) {
 			
-			$string .= '<th class="'.strtolower($key).'">'.$key.'</th>';
+			$string .= '<tr>';
+			
+			foreach ($row as $key => $value) {
+				
+				$string .= '<th class="'.strtolower($key).'"><span>'.$key.'</span></th>';
+				
+			}
+			
+			$string .= "</tr>\n";
+			
+		} elseif ($row instanceof Inclusive_Table_Row) {
+			
+			$string .= '<tr>';
+			
+			foreach ($row->getFields() as $field) {
+				
+				$string .= '<th class="'.strtolower($field).'">'.$field.'</th>';
+				
+			}
+			
+			$string .= '</tr>';
+			
+		} else {
+			
+			$string .=  $row;
 			
 		}
 		
-		return $string .= "</tr>\n";
+		return $string;
 		
 	}
 	
-	public function renderRow(array $row,array $options=null) {
+	public function renderRow($row,array $options=null) {
 		
-		$string = '<tr>';
+		$string = '';
 		
-		foreach ($row as $key => $value) {
+		if (is_array($row)) {
+		
+			$string .= '<tr>';
 			
-			$string .= '<td class="'.strtolower($key).'">'.$value.'</td>';
+			foreach ($row as $key => $value) {
+				
+				$string .= '<td class="'.strtolower($key).'">'.$value.'</td>';
+				
+			}
+			
+			$string .= "</tr>\n";
+		
+		} elseif ($row instanceof Inclusive_Table_Row) {
+			
+			$this->view->addHelperPath('Inclusive/View/Helper/Table','Inclusive_View_Helper_Table');
+			
+			$string .= $this->view->row($row);
+			
+		} else {
+			
+			$string .= $row;
 			
 		}
 		
-		return $string .= "</tr>\n";
+		return $string;
 		
 	}
 	
