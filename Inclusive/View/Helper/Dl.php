@@ -4,7 +4,7 @@ class Inclusive_View_Helper_Dl extends Zend_View_Helper_Abstract {
 	
 	public function dl(array $row,array $options=null) {
 		
-		$string = '<dl '.((isset($options['class'])) ? $options['class'] : '').'>';
+		$string = '<dl'.((isset($options['class'])) ? ' class="'.$options['class'].'"' : '').'>';
 		
 		foreach ($row as $key => $value) {
 			
