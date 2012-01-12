@@ -8,7 +8,7 @@ class Inclusive_Auth extends Zend_Auth {
 		
 		if ($result) {
 			
-			if (($this->getIdentity() instanceof User_Model_User)) {
+			if (($this->getIdentity() instanceof Inclusive_Auth_User)) {
 				
 				return true;
 				

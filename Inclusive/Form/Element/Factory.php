@@ -68,4 +68,10 @@ class Inclusive_Form_Element_Factory {
 		
 	}
 	
+	static function service($name,$module=null) {
+		
+		return Inclusive_Locator::service($name,$module);
+		
+	}
+	
 }
