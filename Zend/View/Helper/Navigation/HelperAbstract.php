@@ -752,30 +752,14 @@ abstract class Zend_View_Helper_Navigation_HelperAbstract
         }
 
         $role = $this->getRole();
+        
         $resource = $page->getResource();
         $privilege = $page->getPrivilege();
 
         if ($resource || $privilege) {
             
-            if (is_array($role)) {
-                
-                foreach ($role as $r) {
-                    
-                    if ($acl->isAllowed($r,$resource,$privilege)) {
-                        
-                        return true;
-                        
-                    }
-                    
-                }
-                
-                return false;
-                
-            } else {
-                // determine using helper role and page resource/privilege
-                return $acl->isAllowed($role, $resource, $privilege);
+        	return $acl->isAllowed($role, $resource, $privilege);
             
-            }
         }
 
         return true;

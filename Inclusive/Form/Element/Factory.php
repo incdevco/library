@@ -16,6 +16,12 @@ class Inclusive_Form_Element_Factory {
         
 	}
 	
+	static function service($service,$module=null) {
+	
+		return Inclusive_Locator::service($service,$module);
+	
+	}
+	
 	static function factory($spec,$options=null) {
 		
 		$type = self::determineType($options);
