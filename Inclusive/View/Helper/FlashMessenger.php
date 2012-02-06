@@ -14,7 +14,7 @@ class Inclusive_View_Helper_FlashMessenger extends Zend_View_Helper_Abstract {
 	 * Set $autoHide to true, to add javascript to fade out flashMessenger container.
 	 * Set $autoHide to an integer of milliseconds to auto hide after, will also enable auto hide.
 	 */
-	public function flashMessenger($currentMessages=false,$autoHide=false) {
+	public function flashMessenger($currentMessages=true,$autoHide=true) {
 		
 		$flashMessenger = Zend_Controller_Action_HelperBroker::getStaticHelper('FlashMessenger');
 		
@@ -33,7 +33,7 @@ class Inclusive_View_Helper_FlashMessenger extends Zend_View_Helper_Abstract {
 		}
 		
         $string = '<div id="flash_messenger">'."\n".
-        	'<h3>Messages <a href=""><span>Close</span></a></h3>'."\n".
+        	'<h3>Messages</h3>'."\n".
         	'<ul class="messages">'."\n";
         
         foreach ($messages as $message) {
@@ -66,15 +66,15 @@ class Inclusive_View_Helper_FlashMessenger extends Zend_View_Helper_Abstract {
 		
 		if (!$this->_javascriptAdded) {
 			
-			$javascript = '$("#flash_messenger h3 a").click(function(){ '.
-				'$("#flash_messenger").hide(); return false; });';
+			$javascript = '$("#flash_messenger h3").append($("<a href=\"#\">Close</a>").click(function(){ $("#flash_messenger").hide(); return false; }));';
 			
 			if ($this->_autoHide) {
 				
 				$javascript .= 'setTimeout("$(\'#flash_messenger\').fadeOut()",'.$this->_autoHideMilliseconds.');';
 				
 			}
-				
+			
+			$javascript .= '$("body").append($("<a href=\"#\" id=\"flash_messenger_show\">Show Messages</a>").click(function(){ if (!$("#flash_messenger").is(":visible")) { $("#flash_messenger").show(); } return false; }));';	
 		
 			$this->view->JQuery()->addOnLoad($javascript);
 			
