@@ -2,12 +2,28 @@
 
 class Inclusive_View_Helper_Table extends Zend_View_Helper_Abstract {
 	
-	public function table(array $rows,array $options=null) {
+	public function table($table,array $options=null) {
 		
-		if (!count($rows)) {
+		if ($table instanceof Inclusive_Table) {
+		
+			if (!$table->count()) {
 			
-			return 'No Rows';
+				return 'No Rows';
 			
+			}
+		
+		} elseif (is_array($table)) {
+			
+			if (!count($table)) {
+				
+				return 'No Rows';
+				
+			}
+					
+		} else {
+		
+			return '';
+		
 		}
 		
 		$string = '<table class="'.((isset($options['class'])) ? 
@@ -21,11 +37,31 @@ class Inclusive_View_Helper_Table extends Zend_View_Helper_Abstract {
 		
 		$string .= "<thead>\n";
 		
-		$string .= $this->renderHeader($rows[0],$options);
+		if ($table instanceof Inclusive_Table) {
+		
+			$header = $table->getFirstRow();
+		
+		} elseif (is_array($table)) {
+			
+			$header = $table[0];
+					
+		}
+		
+		$string .= $this->renderHeader($header,$options);
 		
 		$string .= "</thead>\n";
 		
 		$string .= "<tbody>\n";
+		
+		if ($table instanceof Inclusive_Table) {
+		
+			$rows = $table->getRows();
+		
+		} elseif (is_array($table)) {
+			
+			$rows = $table;
+					
+		}
 		
 		foreach ($rows as $row) {
 			
