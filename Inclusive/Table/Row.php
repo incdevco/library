@@ -20,7 +20,7 @@ class Inclusive_Table_Row {
 		
 		if ($this->getOption('navigation')) {
 			
-			$fields[] = 'Navigation';
+			$fields[] = '&nbsp;';
 			
 		}
 		
@@ -42,9 +42,9 @@ class Inclusive_Table_Row {
 	
 	public function getValue($field) {
 		
-		if ($field == 'Navigation') {
+		if ($field == '&nbsp;') {
 			
-			return $this->getOption(strtolower($field));
+			return $this->getOption('navigation');
 			
 		}
 		

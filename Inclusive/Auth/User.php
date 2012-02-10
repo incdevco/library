@@ -1,6 +1,6 @@
 <?php
 
-class Inclusive_Auth_User {
+interface Inclusive_Auth_User {
 	
 	
 	
