@@ -18,6 +18,12 @@ class Inclusive_Form_Element_Factory {
 	
 	static function service($service,$module=null) {
 	
+		if (isset(self::$_module)) {
+		
+			$module = self::$_module;
+		
+		}
+	
 		return Inclusive_Locator::service($service,$module);
 	
 	}
