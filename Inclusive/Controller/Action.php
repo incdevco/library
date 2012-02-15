@@ -16,4 +16,10 @@ abstract class Inclusive_Controller_Action extends Zend_Controller_Action {
 		
 	}
 	
+	protected function _getAuth() {
+	
+		return Inclusive_Auth::getInstance();
+	
+	}
+	
 }

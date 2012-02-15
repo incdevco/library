@@ -42,4 +42,24 @@ abstract class Inclusive_Db_Table_Abstract extends Zend_Db_Table_Abstract {
 		
 	}
 	
+	protected function _createUniqueId($length=10) {
+	
+		$lenth = (int) $length;
+		
+		while (true) {
+		
+			$id = substr(md5(uniqid(rand(),true)),0,$length);
+			
+			$row = $this->find($id);
+			
+			if (!$row->count()) {
+			
+				return $id;
+			
+			}
+		
+		}
+	
+	}
+	
 }
