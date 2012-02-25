@@ -33,6 +33,15 @@ class Inclusive_Application_Bootstrap extends Zend_Application_Bootstrap_Bootstr
 		
 		}
 		
+		$this->bootstrap('View');
+		
+		$view = $this->getResource('View');
+		
+		$view
+			->addHelperPath(
+				'ZendX/JQuery/View/Helper',
+				'ZendX_JQuery_View_Helper');
+		
 	}
 	
 }
