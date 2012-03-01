@@ -4,6 +4,12 @@ class Inclusive_View_Helper_Table extends Zend_View_Helper_Abstract {
 	
 	public function table($table,array $options=null) {
 		
+		if ($table instanceof Inclusive_Set_Abstract) {
+		
+			$table = $table->toViewTable();
+		
+		}
+		
 		if ($table instanceof Inclusive_Table
 			or $table instanceof Inclusive_View_Table) {
 		
@@ -23,7 +29,7 @@ class Inclusive_View_Helper_Table extends Zend_View_Helper_Abstract {
 					
 		} else {
 		
-			return '';
+			return $table;
 		
 		}
 		

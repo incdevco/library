@@ -1,6 +1,6 @@
 <?php
 
-abstract Inclusive_Service_Abstract {
+abstract class Inclusive_Service_Abstract {
 	
 	protected $_name = null;
 	
@@ -10,7 +10,7 @@ abstract Inclusive_Service_Abstract {
 	
 	protected $_setClass = 'Inclusive_Db_Table_Rowset';
 	
-	protected $_adapterClass = 'Inclusive_Db_Table';
+	protected $_serviceAdapterClass = 'Inclusive_Db_Table';
 	
 	protected $_adapter = null;
 
@@ -36,9 +36,11 @@ abstract Inclusive_Service_Abstract {
 		
 		}
 		
-		$this->_adapter = new $this->_adapterClass(
+		$adapterClass = $this->_serviceAdapterClass;
+		
+		$this->_adapter = new $adapterClass(
 			$this->_name,
-			$this->primary,
+			$this->_primary,
 			$this->_modelClass,
 			$this->_setClass
 			);
