@@ -8,6 +8,16 @@ class Inclusive_Filter_HtmlPurifier implements Zend_Filter_Interface {
 	
 	protected $_purifier;
 	
+	public function __construct($config=null) {
+	
+		if ($config) {
+		
+			$this->setConfig($config);
+		
+		}
+	
+	}
+	
 	public function filter($value) {
 		
 		$value = $this->getPurifier()->purify($value);
@@ -20,10 +30,14 @@ class Inclusive_Filter_HtmlPurifier implements Zend_Filter_Interface {
 		
 		$config = HTMLPurifier_Config::createDefault();
         $config->set('HTML.Doctype', 'XHTML 1.1');
-        $config->set('HTML.DefinitionID', 'testing-purifier');
+        $config->set('HTML.DefinitionID', 'inclusivedv-default');
         $config->set('HTML.DefinitionRev', '1');
         $config->set('Cache.DefinitionImpl', null);
+        $config->set('Attr.EnableId',true);
+        $config->set('Attr.IDPrefix','user_');
         $config->set('Filter.YouTube',true);
+        $def = $config->getHTMLDefinition(true);
+        $def->addAttribute('a', 'target', 'Enum#_blank,_self,_target,_top');
                 
         return $config;
         
