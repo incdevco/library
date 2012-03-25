@@ -72,6 +72,10 @@ class Inclusive_Form_Element_Factory {
 				
 				$element = new Zend_Form_Element_Hidden($spec,$options);
 				
+				$element
+					->removeDecorator('Label')
+					->removeDecorator('DtDdWrapper');
+				
 			}
 			
 		}
