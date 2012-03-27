@@ -58,6 +58,10 @@ class Inclusive_Form_Element_Factory {
 	                    
 				$element = new Zend_Form_Element_Select($spec,$options);
 				
+			} elseif ($type == 'multiselect') {
+				
+				$element = new Zend_Form_Element_Multiselect($spec,$options);
+				
 			} elseif ($type == 'text') {
 				
 				$element = new Zend_Form_Element_Text($spec,$options);
