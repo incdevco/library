@@ -757,8 +757,26 @@ abstract class Zend_View_Helper_Navigation_HelperAbstract
         $privilege = $page->getPrivilege();
 
         if ($resource || $privilege) {
-            
-        	return $acl->isAllowed($role, $resource, $privilege);
+        
+        	if (is_array($role)) {
+        	
+        		$roles = $role;
+        		
+        		foreach ($roles as $role) {
+        		
+        			if ($acl->isAllowed($role,$resource,$privilege)) {
+        			
+        				return true;
+        				
+        			}
+        		
+        		}
+        	
+        	} else {
+        	
+        		return $acl->isAllowed($role, $resource, $privilege);
+        	
+        	}
             
         }
 
