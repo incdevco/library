@@ -771,6 +771,8 @@ abstract class Zend_View_Helper_Navigation_HelperAbstract
         			}
         		
         		}
+        		
+        		return false;
         	
         	} else {
         	
