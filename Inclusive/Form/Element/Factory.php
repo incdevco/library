@@ -1,7 +1,15 @@
 <?php
 
 class Inclusive_Form_Element_Factory {
-	
+
+	static $_hiddenClass = 'Zend_Form_Element_Hidden';
+
+	static $_multiselectClass = 'Zend_Form_Element_MultiSelect';
+
+	static $_selectClass = 'Zend_Form_Element_Select';
+
+	static $_textClass = 'Zend_Form_Element_Text';
+		
 	static function determineType($options=null) {
 		
         $type = 'hidden';
@@ -55,20 +63,28 @@ class Inclusive_Form_Element_Factory {
 	                unset($options['where']);
 	                        
 	            }
+	            
+	            $class = self::$_selectClass;
 	                    
-				$element = new Zend_Form_Element_Select($spec,$options);
+				$element = new $class($spec,$options);
 				
 			} elseif ($type == 'multiselect') {
 				
-				$element = new Zend_Form_Element_Multiselect($spec,$options);
+				$class = self::$_multiselectClass;
+				
+				$element = new $class($spec,$options);
 				
 			} elseif ($type == 'text') {
 				
-				$element = new Zend_Form_Element_Text($spec,$options);
+				$class = self::$_textClass;
+				
+				$element = new $class($spec,$options);
 				
 			} else {
 				
-				$element = new Zend_Form_Element_Hidden($spec,$options);
+				$class = self::$_hiddenClass;
+				
+				$element = new $class($spec,$options);
 				
 			}
 			
