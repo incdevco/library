@@ -2,55 +2,290 @@
 
 abstract class Inclusive_Service_Ebay_Request_Abstract {
 	
-	const ACK = 'Ack';
+	protected $_ErrorHandling = 'BestEffort';
 	
-	const BUILD = 'Build';
+	protected $_ErrorLanguage = 'en_US';
 	
-	const CORRELATIONID = 'CorrelationID';
+	protected $_MessageID = null;
 	
-	const DUPLICATEINVOCATIONDETAILS = 'DuplicateInvocationDetails';
+	protected $_Version = 765;
 	
-	const DUPLICATEINVOCATIONDETAILS_DUPLICATEINVOCATIONID = 
-		'DuplicateInvocationDetails.DuplicateInvocationID';
+	protected $_WarningLevel = 'High';
 	
-	const DUPLICATEINVOCATIONDETAILS_INVOCATIONTRACKINGID = 
-		'DuplicateInvocationDetails.InvocationTrackingID';
+	protected $_eBayAuthToken = null;
 	
-	const DUPLICATEINVOCATIONDETAILS_STATUS = 
-		'DuplicateInvocationDetails.Status';
+	
+	abstract public function toXml();
+	
+	
+	public function getErrorHandling() {
+	
+		return $this->_ErrorHandling;
 		
-	const ERRORS = 'Errors';
+	}
 	
-	const ERRORS_ERRORCLASSIFICATION = 'Errors.ErrorClassification';
+	public function setErrorHandling($value) {
 	
-	const ERRORS_ERRORCODE = 'Errors.ErrorCode';
+		$this->_ErrorHandling = $value;
+		
+		return $this;
+		
+	}
 	
-	const ERRORS_ERRORPARAMETERS = 'Errors.ErrorParameters';
+	public function getErrorLanguage() {
 	
-	const ERRORS_ERRORPARAMETERS_VALUE = 'Errors.ErrorParameters.Value';
+		return $this->_ErrorLanguage;
+		
+	}
 	
-	const ERRORS_LONGMESSAGE = 'Errors.LongMessage';
+	public function setErrorLanguage($value) {
 	
-	const ERRORS_SEVERITYCODE = 'Errors.SeverityCode';
+		$this->_ErrorLanguage = $value;
+		
+		return $this;
+		
+	}
 	
-	const ERRORS_SHORTMESSAGE = 'Errors.ShortMessage';
+	public function getMessageID() {
 	
-	const ERRORS_USERDISPLAYHINT = 'Errors.UserDisplayHint';
+		return $this->_MessageID;
+		
+	}
 	
-	const HARDEXPIRATIONWARNING = 'HardExpirationWarning';
+	public function setMessageID($value) {
 	
-	const MESSAGE = 'Message';
+		$this->_MessageID = $value;
+		
+		return $this;
+		
+	}
 	
-	const TIMESTAMP = 'Timestamp';
+	public function getVersion() {
 	
-	const VERSION = 'Version';
+		return $this->_Version;
+		
+	}
 	
-	const ERRORHANDLING = 'ErrorHandling';
+	public function setVersion($value) {
 	
-	const ERRORLANGUAGE = 'ErrorLanguage';
+		$this->_Version = $value;
+		
+		return $this;
+		
+	}
 	
-	const MESSAGEID = 'MessageID';
+	public function getWarningLevel() {
 	
-	const WARNINGLEVEL = 'WarningLevel';
+		return $this->_WarningLevel;
+		
+	}
+	
+	public function setWarningLevel($value) {
+	
+		$this->_WarningLevel = $value;
+		
+		return $this;
+		
+	}
+	
+	public function geteBayAuthToken() {
+	
+		return $this->_eBayAuthToken;
+	
+	}
+	
+	public function seteBayAuthToken($token) {
+	
+		$this->_eBayAuthToken = $token;
+		
+		return $this;
+	
+	}
+	
+	// 
+	
+	protected function _renderErrorHandling() {
+	
+		return $this->_renderValue('ErrorHandling');
+	
+	}
+	
+	protected function _renderErrorLanguage() {
+	
+		return $this->_renderValue('ErrorLanguage');
+	
+	}
+	
+	protected function _renderMessageID() {
+	
+		return $this->_renderValue('MessageID');
+	
+	}
+	
+	protected function _renderVersion() {
+	
+		return $this->_renderValue('Version');
+	
+	}
+	
+	protected function _renderWarningLevel() {
+	
+		return $this->_renderValue('WarningLevel');
+	
+	}
+	
+	protected function _rendereBayAuthToken() {
+	
+		$string = '<RequesterCredentials>';
+		
+		$string .= $this->_renderValue('eBayAuthToken');
+		
+		$string .= '</RequesterCredentials>';
+		
+		return $string;
+	
+	}
+	
+	// render functions
+	
+	protected function _createKey($name,$prefix='') {
+	
+		return $prefix.'_'.$name;
+		
+	}
+	
+	protected function _isArrayAssociative(array $array) {
+	
+		return array_keys($array) !== range(0,count($array) - 1);
+	
+	}
+	
+	protected function _shouldRenderArray($name,$prefix='') {
+	
+		$key = $this->_createKey($name,$prefix);
+	
+		if (!empty($this->$key)) {
+		
+			return true;
+			
+		}
+		
+		return false;
+	
+	}
+	
+	protected function _renderArray($name,$prefix='') {
+	
+		$arrayKey = $this->_createKey($name,$prefix);
+	
+		$arrayName = $name;
+	
+		$arrayValue = $this->$arrayKey;
+	
+		$string = '';
+	
+		if ($this->_isArrayAssociative($arrayValue)) {
+		
+			$string .= '<'.$arrayName.'>';
+		
+			foreach ($arrayValue as $name => $value) {
+			
+				if (!is_int($name)) {
+				
+					$key = $this->_createKey($name,$arrayKey);
+				
+					$value = $this->$key;
+					
+					if (is_array($value)) {
+					
+						if ($this->_shouldRenderArray($name,$arrayKey)) {
+						
+							$string .= $this->_renderArray($name,$arrayKey);
+						
+						}
+					
+					} else {
+					
+						if ($this->_shouldRenderValue($name,$arrayKey)) {
+						
+							$string .= $this->_renderValue($name,$arrayKey);
+						
+						}
+					
+					}
+					
+				} else {
+				
+					
+				
+				}
+			
+			}
+			
+			$string .= '</'.$arrayName.'>';
+		
+		} else {
+		
+			foreach ($arrayValue as $value) {
+			
+				$string .= '<'.$arrayName.'>';
+				
+				$string .= $value;
+			
+				$string .= '</'.$arrayName.'>';
+			
+			}
+		
+		}
+		
+		return $string;
+	
+	}
+	
+	protected function _shouldRenderValue($name,$prefix='') {
+	
+		$key = $this->_createKey($name,$prefix);
+	
+		if ($this->$key !== null) {
+		
+			return true;
+			
+		}
+		
+		return false;
+	
+	}
+	
+	protected function _renderValue($name,$prefix='') {
+	
+		$string = '<'.$name.'>';
+	
+		$key = $this->_createKey($name,$prefix);
+	
+		$value = $this->$key;
+		
+		if (is_bool($value)) {
+		
+			if ($value) {
+		
+				$string .= '1';
+			
+			} else {
+			
+				$string .= '0';
+			
+			}
+			
+		} else {
+		
+			$string .= $value;
+		
+		}
+		
+		$string .= '</'.$name.'>';
+		
+		return $string;
+	
+	}
 	
 }
