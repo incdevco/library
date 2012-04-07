@@ -3,6 +3,8 @@
 class Inclusive_Service_Ebay_Request_AddItem 
 	extends Inclusive_Service_Ebay_Request_Abstract {
 	
+	public $callName = 'AddItem';
+	
 	protected $_ApplicationData = null;
 	
 	protected $_AutoPay = null;
@@ -17,6 +19,8 @@ class Inclusive_Service_Ebay_Request_AddItem
 	
 	protected $_Charity = array();
 	
+	protected $_CODCost = null;
+	
 	protected $_ConditionID = null;
 	
 	protected $_Country = null;
@@ -30,6 +34,8 @@ class Inclusive_Service_Ebay_Request_AddItem
 	protected $_DisableBuyerRequirements = null;
 	
 	protected $_DispatchTimeMax = null;
+	
+	protected $_ExcludeShipToLocation = null;
 	
 	protected $_ExternalPictureURL = null;
 	
@@ -48,6 +54,12 @@ class Inclusive_Service_Ebay_Request_AddItem
 	protected $_HitCounter = null;
 	
 	protected $_ItemCompatibility = array();
+	
+	protected $_InsuranceDetails = null;
+	
+	protected $_InsuranceFee = null;
+	
+	protected $_InsuranceOption = null;
 	
 	protected $_ItemSpecifics = array();
 	
@@ -119,6 +131,12 @@ class Inclusive_Service_Ebay_Request_AddItem
 	public function toXml() {
 	
 		return $this->_renderRequest();
+	
+	}
+	
+	public function getResponse($response) {
+	
+		return new Inclusive_Service_Ebay_Response_AddItem($response);
 	
 	}
 	
@@ -692,10 +710,14 @@ class Inclusive_Service_Ebay_Request_AddItem
 	}
 	
 	public function setPayPalEmailAddress($emailAddress) {
-	
-		$this->_PaypalEmailAddress = $emailAddress;
 		
-		$this->addPaymentMethod('PayPal');
+		$this->_PayPalEmailAddress = $emailAddress;
+		
+		if ($this->_shouldRenderPaypalEmailAddress()) {
+		
+			$this->addPaymentMethod('PayPal');
+		
+		}
 	
 		return $this;
 	
@@ -786,14 +808,14 @@ class Inclusive_Service_Ebay_Request_AddItem
 		) {
 	
 		$this->_ReturnPolicy = array(
-			'description'=>$description,
-			'refund'=>$refund,
-			'returnAccepted'=>$returnAccepted,
-			'shippingCostPaidBy'=>$shippingCostPaidBy,
-			'warrantyDuration'=>$warrantyDuration,
-			'warrantyOffered'=>$warrantyOffered,
-			'warrantyType'=>$warrantyType,
-			'ean'=>$ean
+			'Description'=>$description,
+			'RefundOption'=>$refund,
+			'ReturnsAcceptedOption'=>$returnAccepted,
+			'ShippingCostPaidByOption'=>$shippingCostPaidBy,
+			'WarrantyDuration'=>$warrantyDuration,
+			'WarrantyOffered'=>$warrantyOffered,
+			'WarrantyType'=>$warrantyType,
+			'EAN'=>$ean
 			);
 			
 		return $this;
@@ -831,7 +853,7 @@ class Inclusive_Service_Ebay_Request_AddItem
 		
 		}
 		
-		$this->_ShippingServiceOptions[$service] = array(
+		$this->_ShippingServices[$service] = array(
 			'FreeShipping'=>$free,
 			'ShippingService'=>$service,
 			'ShippingServiceAdditionalCost'=>$additionalCost,
@@ -846,13 +868,13 @@ class Inclusive_Service_Ebay_Request_AddItem
 	
 	public function getShippingServiceOptions() {
 	
-		return $this->_ShippingServiceOptions;
+		return $this->_ShippingServices;
 		
 	}
 	
 	public function hasShippingServiceOption($service) {
 	
-		if (in_array($service,$this->_ShippingServiceOptions)) {
+		if (in_array($service,$this->_ShippingServices)) {
 		
 			return true;
 		
@@ -864,7 +886,7 @@ class Inclusive_Service_Ebay_Request_AddItem
 	
 	public function setShippingServiceOptions(array $options) {
 	
-		$this->_ShippingServiceOptions = $options;
+		$this->_ShippingServices = $options;
 		
 		return $this;
 	
@@ -886,8 +908,8 @@ class Inclusive_Service_Ebay_Request_AddItem
 		
 		$this->_ShippingPackageDetails = array(
 			'MeasurementUnit'=>$system,
-			'ShippingPckage'=>$package,
-			'ShippingIrregular'=>$irregular,
+			'ShippingPackage'=>$package,
+			'ShippingIrregular'=>($irregular) ? 1 : 0,
 			'PackageDepth'=>$depth,
 			'PackageLength'=>$length,
 			'PackageWidth'=>$width,
@@ -1104,6 +1126,8 @@ class Inclusive_Service_Ebay_Request_AddItem
 			
 		}
 		
+		$string .= $this->_renderCountry()."\n";
+				
 		if ($this->_shouldRenderDescription()) {
 		
 			$string .= $this->_renderDescription()."\n";
@@ -1536,6 +1560,18 @@ class Inclusive_Service_Ebay_Request_AddItem
 	
 	}
 	
+	protected function _renderCODCost() {
+	
+		return $this->_renderValue('CODCost');
+	
+	}
+	
+	protected function _shouldRenderCODCost() {
+	
+		return $this->_shouldRenderValue('CODCost');
+	
+	}
+	
 	protected function _renderConditionID() {
 	
 		return $this->_renderValue('ConditionID');
@@ -1545,6 +1581,12 @@ class Inclusive_Service_Ebay_Request_AddItem
 	protected function _shouldRenderConditionID() {
 	
 		return $this->_shouldRenderValue('ConditionID');
+	
+	}
+	
+	protected function _renderCountry() {
+	
+		return $this->_renderValue('Country');
 	
 	}
 	
@@ -1605,6 +1647,18 @@ class Inclusive_Service_Ebay_Request_AddItem
 	protected function _shouldRenderDispatchTimeMax() {
 	
 		return $this->_shouldRenderValue('DispatchTimeMax');
+	
+	}
+	
+	protected function _renderExcludeShipToLocation() {
+	
+		return $this->_renderValue('ExcludeShipToLocation');
+	
+	}
+	
+	protected function _shouldRenderExcludeShipToLocation() {
+	
+		return $this->_shouldRenderValue('ExcludeShipToLocation');
 	
 	}
 	
@@ -1704,6 +1758,42 @@ class Inclusive_Service_Ebay_Request_AddItem
 	
 	}
 	
+	protected function _renderInsuranceDetails() {
+	
+		return $this->_renderValue('InsuranceDetails');
+	
+	}
+	
+	protected function _shouldRenderInsuranceDetails() {
+	
+		return $this->_shouldRenderValue('InsuranceDetails');
+	
+	}
+	
+	protected function _renderInsuranceFee() {
+	
+		return $this->_renderValue('InsuranceFee');
+	
+	}
+	
+	protected function _shouldRenderInsuranceFee() {
+	
+		return $this->_shouldRenderValue('InsuranceFee');
+	
+	}
+	
+	protected function _renderInsuranceOption() {
+	
+		return $this->_renderValue('InsuranceOption');
+	
+	}
+	
+	protected function _shouldRenderInsuranceOption() {
+	
+		return $this->_shouldRenderValue('InsuranceOption');
+	
+	}
+	
 	protected function _renderInternationalShippingServiceOption(array $option) {
 	
 		$string = '<InternationalShippingServiceOption>';
@@ -1774,7 +1864,13 @@ class Inclusive_Service_Ebay_Request_AddItem
 	
 	protected function _renderListingDuration() {
 	
-		return $this->_renderValue('ListingDuration');
+		$string = '<ListingDuration>';
+		
+		$string .= 'Days_'.$this->_ListingDuration;
+		
+		$string .= '</ListingDuration>';
+		
+		return $string;
 	
 	}
 	
@@ -1862,22 +1958,16 @@ class Inclusive_Service_Ebay_Request_AddItem
 	
 	}
 	
-	protected function _shouldRenderPayPalEmailAddress() {
-	
-		return $this->_shouldRenderValue('PayPalEmailAddress');
-	
-	}
-	
 	protected function _renderPayPalEmailAddress() {
 	
 		return $this->_renderValue('PayPalEmailAddress');
 	
 	}
 	
-	protected function _shoudlRenderPayPalEmailAddress() {
+	protected function _shouldRenderPayPalEmailAddress() {
 	
 		return $this->_shouldRenderValue('PayPalEmailAddress');
-	
+		
 	}
 	
 	protected function _shouldRenderPhotoDisplay() {
@@ -2097,7 +2187,7 @@ class Inclusive_Service_Ebay_Request_AddItem
 	
 	protected function _shouldRenderShippingDetails() {
 	
-		
+		return $this->_shouldRenderArray('ShippingServices');
 	
 	}
 	
@@ -2109,7 +2199,7 @@ class Inclusive_Service_Ebay_Request_AddItem
 		
 		$shippingString = '';
 		
-		foreach ($this->_ShippingServiceOptions as $option) {
+		foreach ($this->_ShippingServices as $option) {
 		
 			$calculatedString .= 
 				$this->_renderCalculatedShippingRate($option);
@@ -2151,6 +2241,7 @@ class Inclusive_Service_Ebay_Request_AddItem
 		
 		}
 		
+		/*
 		if ($this->_shouldRenderInternationalInsuranceDetails()) {
 		
 			$string .= $this->_renderInternationalInsuranceDetails();
@@ -2167,6 +2258,7 @@ class Inclusive_Service_Ebay_Request_AddItem
 			}
 		
 		}
+		*/
 		
 		if ($this->_shouldRenderPaymentInstructions()) {
 		
@@ -2198,6 +2290,30 @@ class Inclusive_Service_Ebay_Request_AddItem
 	
 		return $this->_renderArray('ShippingPackageDetails');
 		
+	}
+	
+	protected function _renderShippingServiceOption($option) {
+	
+		$string = '<ShippingServiceOptions>';
+		
+		foreach ($option as $key => $value) {
+		
+			if ($value !== null) {
+		
+				$string .= '<'.$key.'>';
+				
+				$string .= $value;
+				
+				$string .= '</'.$key.'>';
+			
+			}
+		
+		}
+		
+		$string .= '</ShippingServiceOptions>';
+		
+		return $string;
+	
 	}
 	
 	protected function _shouldRenderShippingTermsInDescription() {

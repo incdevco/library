@@ -17,6 +17,8 @@ abstract class Inclusive_Service_Ebay_Request_Abstract {
 	
 	abstract public function toXml();
 	
+	abstract public function getResponse($response);
+	
 	
 	public function getErrorHandling() {
 	
@@ -103,6 +105,12 @@ abstract class Inclusive_Service_Ebay_Request_Abstract {
 	}
 	
 	// 
+	
+	protected function _renderXml() {
+	
+		return '<?xml version="1.0" encoding="utf-8"?>';
+		
+	}
 	
 	protected function _renderErrorHandling() {
 	
@@ -192,31 +200,27 @@ abstract class Inclusive_Service_Ebay_Request_Abstract {
 			
 				if (!is_int($name)) {
 				
-					$key = $this->_createKey($name,$arrayKey);
-				
-					$value = $this->$key;
-					
-					if (is_array($value)) {
-					
-						if ($this->_shouldRenderArray($name,$arrayKey)) {
+					if ($value !== null) {
 						
-							$string .= $this->_renderArray($name,$arrayKey);
+						$string .= '<'.$name.'>';
+												
+						$string .= $value;
 						
-						}
-					
-					} else {
-					
-						if ($this->_shouldRenderValue($name,$arrayKey)) {
-						
-							$string .= $this->_renderValue($name,$arrayKey);
-						
-						}
+						$string .= '</'.$name.'>';
 					
 					}
 					
 				} else {
 				
+					foreach ($value as $v) {
 					
+						$string .= '<'.$name.'>';
+						
+						$string .= $v;
+					
+						$string .= '</'.$name.'>';
+					
+					}
 				
 				}
 			
@@ -245,7 +249,7 @@ abstract class Inclusive_Service_Ebay_Request_Abstract {
 	protected function _shouldRenderValue($name,$prefix='') {
 	
 		$key = $this->_createKey($name,$prefix);
-	
+		
 		if ($this->$key !== null) {
 		
 			return true;
