@@ -40,7 +40,7 @@ class ZendX_JQuery
      * 
      * @const string
      */
-    const DEFAULT_JQUERY_VERSION = "1.3.2";
+    const DEFAULT_JQUERY_VERSION = "1.7.1";
 
     /**
      * Currently supported jQuery UI library version with ZendX_JQuery
