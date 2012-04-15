@@ -45,6 +45,8 @@ abstract class Inclusive_Db_Table_Abstract extends Zend_Db_Table_Abstract {
 	protected function _createUniqueId($length=10) {
 	
 		while(true) {
+
+			$lenth = (int) $length;
 		
 			$id = substr(md5(uniqid(rand(),true)),0,$length);
 			
@@ -57,6 +59,18 @@ abstract class Inclusive_Db_Table_Abstract extends Zend_Db_Table_Abstract {
 			}
 		
 		}
+	
+	}
+	
+	public function fetchEmpty() {
+	
+		$rowsetClass = $this->getRowsetClass();
+		
+		return new $rowsetClass(array(
+			'table'=>$this,
+			'rowClass'=>$this->getRowClass(),
+			'stored'=>true
+			));
 	
 	}
 	

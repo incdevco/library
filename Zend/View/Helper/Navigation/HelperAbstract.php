@@ -757,7 +757,7 @@ abstract class Zend_View_Helper_Navigation_HelperAbstract
         $privilege = $page->getPrivilege();
 
         if ($resource || $privilege) {
-            
+
             if (is_array($role)) {
 	            
             	$roles = $role;
