@@ -2,6 +2,38 @@
 
 class Inclusive_Form_Element_Factory {
 	
+	static function createMultiOptions(
+		Inclusive_Db_Table_Abstract $service,
+		$key,
+		$value,
+		$options=null
+		) {
+	
+		$multiOptions = array();
+		
+		if (!isset($options['required'])
+			or $options['required']) {
+			
+			$multiOptions[''] = 
+				(isset($options['notRequired'])) ?
+					$options['notRequired'] : 'None';
+					
+		}
+		
+		$rows = $service
+			->fetchAll((isset($options['where'])) ? 
+				$options['where'] : null);
+				
+		foreach ($rows as $row) {
+		
+			$multiOptions[$row->$key] = $row->$value;
+		
+		}
+		
+		return $multiOptions;
+	
+	}
+	
 	static function determineType($options=null) {
 		
         $type = 'hidden';
@@ -14,18 +46,6 @@ class Inclusive_Form_Element_Factory {
         
         return $type;
         
-	}
-	
-	static function service($service,$module=null) {
-	
-		if (isset(self::$_module)) {
-		
-			$module = self::$_module;
-		
-		}
-	
-		return Inclusive_Locator::service($service,$module);
-	
 	}
 	
 	static function factory($spec,$options=null) {
@@ -62,15 +82,24 @@ class Inclusive_Form_Element_Factory {
 	                        
 	            }
 	                    
-				$element = new Zend_Form_Element_Select($spec,$options);
+				$element = new Zend_Form_Element_Select(
+					$spec,
+					$options
+					);
 				
 			} elseif ($type == 'text') {
 				
-				$element = new Zend_Form_Element_Text($spec,$options);
+				$element = new Zend_Form_Element_Text(
+					$spec,
+					$options
+					);
 				
 			} else {
 				
-				$element = new Zend_Form_Element_Hidden($spec,$options);
+				$element = new Zend_Form_Element_Hidden(
+					$spec,
+					$options
+					);
 				
 				$element
 					->removeDecorator('Label')
@@ -82,6 +111,19 @@ class Inclusive_Form_Element_Factory {
 		
 		return $element;
 		
+	}
+	
+	static function service($service,$module=null) {
+	
+		if (isset(self::$_module)) {
+		
+			$module = self::$_module;
+		
+		}
+	
+		return 
+			Inclusive_Locator::service($service,$module);
+	
 	}
 	
 }
