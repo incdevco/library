@@ -1,50 +1,93 @@
 <?php
 
-abstract Inclusive_Service_Abstract {
-	
-	protected $_name = null;
-	
-	protected $_primary = null;
-	
-	protected $_modelClass = 'Inclusive_Db_Table_Row';
-	
-	protected $_setClass = 'Inclusive_Db_Table_Rowset';
-	
-	protected $_adapterClass = 'Inclusive_Db_Table';
+abstract class Inclusive_Service_Abstract {
 	
 	protected $_adapter = null;
-
-	public function __call($function,$args) {
 	
-		$adapter = $this->getAdapter();
+	protected $_adapterClass = null;
 	
-		if (!method_exists($adapter, $function)) {
+	protected $_modelClass = null;
+	
+	protected $_setClass = null;
+	
+	public function __construct($adapter=null) {
 		
-			throw new Inclusive_Service_Exception_FunctionNotImplemented($function,$adapter);
+		if ($adapter == null) 
+		{
+		
+			$class = $this->_adapterClass;
+			
+			$adapter = new $class();
 		
 		}
 		
-		return $adapter->$function($args);
+		$this->setAdapter($adapter);
+		
+	}
+	
+	public function createUniqueId($length=10) {
+	
+		return $this->getAdapter()
+			->createUniqueId($length);
+	
+	}
+	
+	public function fetchNew() {
+	
+		$class = $this->_modelClass;
+		
+		return new $class($this);
 	
 	}
 	
 	public function getAdapter() {
 	
-		if ($this->_adapter instanceof Inclusive_Service_Adapter_Interface) {
-		
-			return $this->_adapter;
-		
-		}
-		
-		$this->_adapter = new $this->_adapterClass(
-			$this->_name,
-			$this->primary,
-			$this->_modelClass,
-			$this->_setClass
-			);
-		
 		return $this->_adapter;
 	
 	}
-
+	
+	public function getModelClass()
+	{
+	
+		return $this->_modelClass;
+		
+	}
+	
+	public function getSetClass()
+	{
+	
+		return $this->_setClass;
+		
+	}
+	
+	public function setAdapter(
+		Inclusive_Service_Adapter_Abstract $adapter
+		) {
+		
+		$adapter->setService($this);
+	
+		$this->_adapter = $adapter;
+		
+		return $this;
+	
+	}
+	
+	public function setModelClass($class)
+	{
+	
+		$this->_modelClass = $class;
+		
+		return $this;
+		
+	}
+	
+	public function setSetClass($class)
+	{
+	
+		$this->_setClass = $class;
+		
+		return $this;
+		
+	}
+	
 }

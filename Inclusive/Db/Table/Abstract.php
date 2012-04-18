@@ -1,10 +1,37 @@
 <?php
 
-abstract class Inclusive_Db_Table_Abstract extends Zend_Db_Table_Abstract {
+abstract class Inclusive_Db_Table_Abstract 
+	extends Zend_Db_Table_Abstract {
 	
 	protected $_module = null;
 	
 	protected $_multiDb = null;
+	
+	public function createUniqueId($length=10) {
+	
+		return $this->_createUniqueId($length);
+	
+	}
+	
+	public function fetchEmpty() {
+	
+		$rowsetClass = $this->getRowsetClass();
+		
+		return new $rowsetClass(array(
+			'table'=>$this,
+			'rowClass'=>$this->getRowClass(),
+			'stored'=>true
+			));
+	
+	}
+	
+	public function getPrimaryKey() {
+	
+		$this->_setupPrimaryKey();
+		
+		return (array) $this->_primary;
+	
+	}
 	
 	public function service($name,$module=null) {
 		
@@ -59,18 +86,6 @@ abstract class Inclusive_Db_Table_Abstract extends Zend_Db_Table_Abstract {
 			}
 		
 		}
-	
-	}
-	
-	public function fetchEmpty() {
-	
-		$rowsetClass = $this->getRowsetClass();
-		
-		return new $rowsetClass(array(
-			'table'=>$this,
-			'rowClass'=>$this->getRowClass(),
-			'stored'=>true
-			));
 	
 	}
 	

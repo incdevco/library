@@ -4,18 +4,20 @@ class Inclusive_Form_Element_Factory {
 
 	static $_hiddenClass = 'Zend_Form_Element_Hidden';
 
-	static $_multiselectClass = 'Zend_Form_Element_MultiSelect';
+	static $_multiselectClass = 
+		'Zend_Form_Element_MultiSelect';
 
 	static $_selectClass = 'Zend_Form_Element_Select';
 
 	static $_textClass = 'Zend_Form_Element_Text';
 	
 	static function createMultiOptions(
-		Inclusive_Db_Table_Abstract $service,
+		$service,
 		$key,
 		$value,
 		$options=null
-		) {
+		) 
+	{
 	
 		$multiOptions = array();
 		
@@ -28,8 +30,17 @@ class Inclusive_Form_Element_Factory {
 					
 		}
 		
+		$method = 'fetchAll';
+		
+		if ($service instanceof Inclusive_Service_Abstract)
+		{
+		
+			$method = 'find';
+		
+		}
+		
 		$rows = $service
-			->fetchAll((isset($options['where'])) ? 
+			->$method((isset($options['where'])) ? 
 				$options['where'] : null);
 				
 		foreach ($rows as $row) {
@@ -56,7 +67,8 @@ class Inclusive_Form_Element_Factory {
         
 	}
 	
-	static function factory($spec,$options=null) {
+	static function factory($spec,$options=null) 
+	{
 		
 		$type = self::determineType($options);
 			

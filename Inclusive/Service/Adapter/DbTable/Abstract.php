@@ -1,0 +1,43 @@
+<?php
+
+abstract class Inclusive_Service_Adapter_DbTable_Abstract 
+	extends Inclusive_Service_Adapter_Abstract {
+
+	protected $_table = null;
+	
+	public function __construct($table=null) {
+	
+		if ($table == null) {
+		
+			$class = $this->_tableClass;
+			
+			$table = new $class();
+		
+		}
+		
+		$this->setTable($table);
+	
+	}
+	
+	public function createUniqueId($length=10) {
+	
+		return $this->getTable()
+			->createUniqueId($length);
+	
+	}
+	
+	public function getTable() {
+	
+		return $this->_table;
+	
+	}
+	
+	public function setTable(
+		Inclusive_Db_Table_Abstract $table
+		) {
+	
+		$this->_table = $table;
+	
+	}
+	
+}
