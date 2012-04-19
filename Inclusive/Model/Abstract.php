@@ -30,12 +30,12 @@ abstract class Inclusive_Model_Abstract {
 		if ($this->_isNew()) {
 		
 			$this->getService()
-				->add($this->_data);
+				->add($this->toArray());
 		
 		} else {
 		
 			$this->getService()
-				->edit($this->_data);
+				->edit($this->toArray());
 		
 		}
 		

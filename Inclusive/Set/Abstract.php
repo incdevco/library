@@ -1,6 +1,6 @@
 <?php
 
-abstract class Inclusive_Set_Abstract {
+abstract class Inclusive_Set_Abstract implements Iterator {
 	
 	protected $_service = null;
 	
@@ -44,5 +44,44 @@ abstract class Inclusive_Set_Abstract {
 		return $this;
 	
 	}
+
+	// Iterator Functions
 	
+	protected $_pointer = 0;
+	
+	public function current()
+	{
+	
+		return $this->_set[$this->_pointer];
+	
+	}
+	
+	public function key()
+	{
+	
+		return $this->_pointer;
+	
+	}
+	
+	public function next()
+	{
+	
+		$this->_pointer++;
+	
+	}
+	
+	public function rewind()
+	{
+	
+		$this->_pointer = 0;
+	
+	}
+	
+	public function valid()
+	{
+	
+		return isset($this->_set[$this->_pointer]);
+	
+	}
+
 }

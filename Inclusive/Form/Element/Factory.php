@@ -39,13 +39,13 @@ class Inclusive_Form_Element_Factory {
 		
 		}
 		
-		$rows = $service
+		$set = $service
 			->$method((isset($options['where'])) ? 
 				$options['where'] : null);
 				
-		foreach ($rows as $row) {
+		foreach ($set as $model) {
 		
-			$multiOptions[$row->$key] = $row->$value;
+			$multiOptions[$model->$key] = $model->$value;
 		
 		}
 		
