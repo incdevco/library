@@ -4,8 +4,6 @@ abstract class Inclusive_Service_Adapter_Abstract {
 
 	protected $_service = null;
 	
-	protected $_tableClass = 'Inclusive_Db_Table';
-
 	abstract public function add(array $clean);
 
 	abstract public function createUniqueId($length=10);
@@ -16,21 +14,6 @@ abstract class Inclusive_Service_Adapter_Abstract {
 	
 	abstract public function get($where);
 
-	public function __construct($table=null) 
-	{
-	
-		if ($table == null) {
-		
-			$class = $this->_tableClass;
-		
-			$table = new $class();
-		
-		} 
-		
-		$this->setTable($table);
-		
-	}
-	
 	public function getService() 
 	{
 	

@@ -5,6 +5,8 @@ abstract class Inclusive_Service_Adapter_DbTable_Abstract
 
 	protected $_table = null;
 	
+	protected $_tableClass = 'Inclusive_Db_Table';
+	
 	public function __construct($table=null) {
 	
 		if ($table == null) {

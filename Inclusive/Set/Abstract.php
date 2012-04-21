@@ -14,11 +14,18 @@ abstract class Inclusive_Set_Abstract implements Iterator {
 	
 		$this->setService($service);
 		
-		$this->_set = $set;
+		foreach ($set as $model)
+		{
+		
+			$this->addModel($model);
+		
+		}
 	
 	}
 	
-	public function addModel(Inclusive_Model_Abstract $model)
+	public function addModel(
+		Inclusive_Model_Abstract $model
+		)
 	{
 	
 		$this->_set[] = $model;
@@ -42,6 +49,13 @@ abstract class Inclusive_Set_Abstract implements Iterator {
 		$this->_service = $service;
 		
 		return $this;
+	
+	}
+	
+	public function count()
+	{
+	
+		return count($this->_set);
 	
 	}
 

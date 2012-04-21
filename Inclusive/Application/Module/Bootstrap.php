@@ -6,7 +6,9 @@ class Inclusive_Application_Module_Bootstrap
 	public function _initSets() {
 	
 		$this->getResourceLoader()
-			->addResourceType('Set','sets','Set');
+			->addResourceType('Filter','filters','Filter')
+			->addResourceType('Set','sets','Set')
+			->addResourceType('Validate','validators','Validate');
 	
 	}
 
