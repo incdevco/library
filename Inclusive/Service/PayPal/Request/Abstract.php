@@ -1,6 +1,6 @@
 <?php
 
-abstract class Inclusive_Service_PayPal_Request_Abstract 
+class Inclusive_Service_Paypal_Request_Abstract 
 {
 
 

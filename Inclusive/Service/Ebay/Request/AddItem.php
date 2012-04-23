@@ -79,7 +79,7 @@ class Inclusive_Service_Ebay_Request_AddItem
 	
 	protected $_PaymentMethods = array();
 	
-	protected $_PayPalEmailAddress = null;
+	protected $_PaypalEmailAddress = null;
 	
 	protected $_PhotoDisplay = null;
 	
@@ -709,13 +709,13 @@ class Inclusive_Service_Ebay_Request_AddItem
 	
 	}
 	
-	public function setPayPalEmailAddress($emailAddress) {
+	public function setPaypalEmailAddress($emailAddress) {
 		
-		$this->_PayPalEmailAddress = $emailAddress;
+		$this->_PaypalEmailAddress = $emailAddress;
 		
 		if ($this->_shouldRenderPaypalEmailAddress()) {
 		
-			$this->addPaymentMethod('PayPal');
+			$this->addPaymentMethod('Paypal');
 		
 		}
 	
@@ -1226,9 +1226,9 @@ class Inclusive_Service_Ebay_Request_AddItem
 			
 		}
 		
-		if ($this->_shouldRenderPayPalEmailAddress()) {
+		if ($this->_shouldRenderPaypalEmailAddress()) {
 		
-			$string .= $this->_renderPayPalEmailAddress()."\n";
+			$string .= $this->_renderPaypalEmailAddress()."\n";
 			
 		}
 		
@@ -1958,15 +1958,15 @@ class Inclusive_Service_Ebay_Request_AddItem
 	
 	}
 	
-	protected function _renderPayPalEmailAddress() {
+	protected function _renderPaypalEmailAddress() {
 	
-		return $this->_renderValue('PayPalEmailAddress');
+		return $this->_renderValue('PaypalEmailAddress');
 	
 	}
 	
-	protected function _shouldRenderPayPalEmailAddress() {
+	protected function _shouldRenderPaypalEmailAddress() {
 	
-		return $this->_shouldRenderValue('PayPalEmailAddress');
+		return $this->_shouldRenderValue('PaypalEmailAddress');
 		
 	}
 	

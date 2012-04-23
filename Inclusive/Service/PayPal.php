@@ -1,28 +1,72 @@
 <?php
 
-class Inclusive_Service_PayPal
+class Inclusive_Service_Paypal
 {
 
 	protected $_env = 'sandbox';
+
+	public function createDoExpressCheckoutRequest($data)
+	{
 	
+		$request = new Inclusive_Service_Paypal_Request_DoExpressCheckout();
+		
+		return $request;
+	
+	}
+
+	public function createGetExpressCheckoutDetailsRequest(
+		$data
+		)
+	{
+	
+		$request = new Inclusive_Service_Paypal_Request_GetExpressCheckoutDetails();
+		
+		return $request;
+	
+	}
+
+	public function createSetExpressCheckoutRequest($data)
+	{
+	
+		$request = new Inclusive_Service_Paypal_Request_SetExpressCheckout();
+		
+		return $request;
+	
+	}
+
 	public function doExpressCheckout(
-		Inclusive_Service_PayPal_Request_DoExpressCheckout $request
+		Inclusive_Service_Paypal_Request_DoExpressCheckout $request
 		)
 	{
 	
 		return
-		new Inclusive_Service_PayPal_Response_DoExpressCheckout();
+		new Inclusive_Service_Paypal_Response_DoExpressCheckout();
 		
 	}
 	
-	public function callSetExpressCheckout(array $data)
+	public function setExpressCheckout(
+		Inclusive_Service_Paypal_Request_SetExpressCheckout $request
+		)
 	{
 	
+		$response = new Inclusive_Service_Paypal_Response_SetExpressCheckout();
 		
+		return $response;
+	
+	}
+	
+	public function getExpressCheckoutDetails(
+		Inclusive_Service_Paypal_Request_GetExpressCheckoutDetails $request
+		)
+	{
+	
+		$response = new Inclusive_Service_Paypal_Response_GetExpressCheckoutDetails();
+		
+		return $response;
 	
 	}
 
-	public function createExpressCheckoutRedirectUrl($token)
+	public function getExpressCheckoutRedirectUrl($token)
 	{
 	
 		$url = 'https://';
@@ -47,5 +91,5 @@ class Inclusive_Service_PayPal
 		return $url;
 	
 	}
-
+	
 }

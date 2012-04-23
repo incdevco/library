@@ -6,11 +6,11 @@ abstract class Inclusive_Service_Adapter_Abstract {
 	
 	abstract public function add(array $clean);
 
-	abstract public function createUniqueId($length=10);
+	abstract public function createUniqueId($length);
 	
 	abstract public function delete($where);
 	
-	abstract public function edit(array $clean,$where);
+	abstract public function edit(array $clean,$where=null);
 	
 	abstract public function get($where);
 
