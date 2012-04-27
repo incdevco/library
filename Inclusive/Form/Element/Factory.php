@@ -5,7 +5,7 @@ class Inclusive_Form_Element_Factory {
 	static $_hiddenClass = 'Zend_Form_Element_Hidden';
 
 	static $_multiselectClass = 
-		'Zend_Form_Element_MultiSelect';
+		'Zend_Form_Element_Multiselect';
 
 	static $_selectClass = 'Zend_Form_Element_Select';
 
