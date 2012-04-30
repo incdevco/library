@@ -1,15 +1,28 @@
 <?php
 
-class Inclusive_Service_Exception_Form
-	extends Zend_Exception {
+class Inclusive_Service_Exception_Form extends Zend_Exception 
+{
 	
 	protected $_form = null;
 	
-	public function __construct($form) {
+	public function __construct(
+		$msg='',
+		$code=0,
+		Exception $previous=null
+	) 
+	{
 	
-		$this->_form = $form;
+		if ($msg instanceof Zend_Form)
+		{
+		
+			$this->setForm($msg);
+			
+			$msg = get_class($msg).' is Invalid : '
+				.print_r($msg->getMessages(),true);	
+		
+		}
 	
-		parent::__construct('Form Invalid');
+		parent::__construct($msg,$code,$previous);
 	
 	}
 	
@@ -19,7 +32,7 @@ class Inclusive_Service_Exception_Form
 		
 	}
 	
-	public function setForm(Inclusive_Form $form) {
+	public function setForm(Zend_Form $form) {
 	
 		$this->_form = $form;
 		
