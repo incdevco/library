@@ -1,6 +1,7 @@
 <?php
 
-class Inclusive_Service_Exception_Form extends Zend_Exception 
+class Inclusive_Service_Exception_Form 
+	extends Inclusive_Service_Exception 
 {
 	
 	protected $_form = null;
@@ -17,8 +18,7 @@ class Inclusive_Service_Exception_Form extends Zend_Exception
 		
 			$this->setForm($msg);
 			
-			$msg = get_class($msg).' is Invalid : '
-				.print_r($msg->getMessages(),true);	
+			$msg = get_class($msg).' is Invalid';	
 		
 		}
 	
