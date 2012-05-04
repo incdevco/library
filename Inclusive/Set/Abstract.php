@@ -17,6 +17,19 @@ abstract class Inclusive_Set_Abstract implements Iterator {
 		foreach ($set as $model)
 		{
 		
+			if (is_array($model))
+			{
+			
+				$class = $this->getService()
+					->getModelClass();
+					
+				$model = new $class(
+					$this->getService(),
+					$model
+					);
+			
+			}
+		
 			$this->addModel($model);
 		
 		}
