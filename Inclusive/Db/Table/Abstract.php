@@ -27,9 +27,7 @@ abstract class Inclusive_Db_Table_Abstract
 	
 	public function getPrimaryKey() {
 	
-		$this->_setupPrimaryKey();
-		
-		return (array) $this->_primary;
+		return $this->_primary;
 	
 	}
 	
