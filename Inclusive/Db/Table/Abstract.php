@@ -31,6 +31,13 @@ abstract class Inclusive_Db_Table_Abstract
 	
 	}
 	
+	public function getName()
+	{
+	
+		return $this->_name;
+	
+	}
+	
 	public function service($name,$module=null) {
 		
 		if (!$module) {
