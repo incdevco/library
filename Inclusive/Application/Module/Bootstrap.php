@@ -8,7 +8,8 @@ class Inclusive_Application_Module_Bootstrap
 		$this->getResourceLoader()
 			->addResourceType('Filter','filters','Filter')
 			->addResourceType('Set','sets','Set')
-			->addResourceType('Validate','validators','Validate');
+			->addResourceType('Validate','validators','Validate')
+			->addResourceType('Assert','assertions','Assert');
 	
 	}
 
