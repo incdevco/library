@@ -10,7 +10,12 @@ abstract class Inclusive_Service_Abstract {
 	
 	protected $_setClass = null;
 	
-	public function __construct($adapter=null) {
+	protected $_forms = array();
+	
+	protected $_formClasses = array();
+	
+	public function __construct($adapter=null) 
+	{
 		
 		if ($adapter == null) 
 		{
@@ -25,14 +30,16 @@ abstract class Inclusive_Service_Abstract {
 		
 	}
 	
-	public function createUniqueId($length=10) {
+	public function createUniqueId($length=10) 
+	{
 	
 		return $this->getAdapter()
 			->createUniqueId($length);
 	
 	}
 	
-	public function fetchNew() {
+	public function fetchNew() 
+	{
 	
 		$class = $this->_modelClass;
 		
@@ -40,10 +47,43 @@ abstract class Inclusive_Service_Abstract {
 	
 	}
 	
-	public function getAdapter() {
+	public function getAdapter() 
+	{
 	
 		return $this->_adapter;
 	
+	}
+	
+	public function getForm($key)
+	{
+	
+		if (!isset($this->_forms[$key]))
+		{
+		
+			$class = $this->getFormClass($key);
+		
+			$this->setForm($key,new $class());
+			
+		}
+		
+		return $this->_forms[$key];
+	
+	}
+	
+	public function getFormClass($key)
+	{
+	
+		if (isset($this->_formClasses[$key]))
+		{
+		
+			return $this->_formClasses[$key];
+		
+		}
+		
+		throw new Inclusive_Service_Exception(
+			'No Class Found For: '.$key
+			);
+			
 	}
 	
 	public function getModelClass()
@@ -62,11 +102,30 @@ abstract class Inclusive_Service_Abstract {
 	
 	public function setAdapter(
 		Inclusive_Service_Adapter_Abstract $adapter
-		) {
+	) 
+	{
 		
 		$adapter->setService($this);
 	
 		$this->_adapter = $adapter;
+		
+		return $this;
+	
+	}
+	
+	public function setForm($key,Zend_Form $form)
+	{
+	
+		$this->_forms[$key] = $form;
+		
+		return $this;
+	
+	}
+	
+	public function setFormClass($key,$class)
+	{
+	
+		$this->_formClasses[$key] = $class;
 		
 		return $this;
 	
@@ -88,6 +147,14 @@ abstract class Inclusive_Service_Abstract {
 		
 		return $this;
 		
+	}
+	
+	public function _throwForm(Zend_Form $form)
+	{
+	
+		return 
+			new Inclusive_Service_Exception_Form($form);
+	
 	}
 	
 }
