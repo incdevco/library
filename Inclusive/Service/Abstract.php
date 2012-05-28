@@ -152,7 +152,7 @@ abstract class Inclusive_Service_Abstract {
 	public function _throwForm(Zend_Form $form)
 	{
 	
-		return 
+		throw 
 			new Inclusive_Service_Exception_Form($form);
 	
 	}
