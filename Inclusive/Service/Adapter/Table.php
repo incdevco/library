@@ -7,20 +7,6 @@ abstract class Inclusive_Service_Adapter_Table
 	
 	protected $_tableClass = 'Inclusive_Db_Table';
 	
-	public function __construct($table=null) {
-	
-		if ($table == null) {
-		
-			$class = $this->_tableClass;
-			
-			$table = new $class();
-		
-		}
-		
-		$this->setTable($table);
-	
-	}
-	
 	public function createUniqueId($length=10) {
 	
 		return $this->getTable()
@@ -30,6 +16,15 @@ abstract class Inclusive_Service_Adapter_Table
 	
 	public function getTable() {
 	
+		$class = $this->_tableClass;
+	
+		if (!($this->table instanceof $class))
+		{
+		
+			$this->setTable(new $class());
+		
+		}
+		
 		return $this->_table;
 	
 	}

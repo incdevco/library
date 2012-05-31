@@ -1,10 +1,79 @@
 <?php
 
 abstract class Inclusive_Controller_Action extends Zend_Controller_Action {
+
+	protected $_services = array();
 	
+	protected $_serviceClasses = array();
+
 	protected $_module = null;
 	
-	protected function _service($name,$module=null) {
+	public function getService($key)
+	{
+	
+		if (!isset($this->_services[$key])
+			or !($this->_services[$key] 
+				instanceof Inclusive_Service_Abstract))
+		{
+		
+			if (!isset($this->_serviceClasses[$key]))
+			{
+			
+				throw new Inclusive_Controller_Exception(
+					'Service Class Not Set: '.$key
+					);
+			
+			}
+			
+			$class = $this->_serviceClasses[$key];
+			
+			$this->setService($key,new $class());
+			
+		}
+		
+		return $this->_services[$key];
+		
+	}
+	
+	public function setService(
+		$key,
+		Inclusive_Service_Abstract $service
+	)
+	{
+	
+		if (isset($this->_serviceClasses[$key]))
+		{
+		
+			$class = $this->_serviceClasses[$key];
+			
+			if (!($service instanceof $class))
+			{
+			
+				throw new Inclusive_Controller_Exception(
+					'$service must be an instance of '.$class
+					);
+			
+			}
+		
+		}
+	
+		$this->_services[$key] = $service;
+		
+		return $this;
+	
+	}
+	
+	public function setServiceClass($key,$class)
+	{
+	
+		$this->_serviceClasses[$key] = $class;
+		
+		return $this;
+	
+	}
+	
+	protected function _service($name,$module=null) 
+	{
 		
 		if (!$module) {
 			
@@ -16,7 +85,8 @@ abstract class Inclusive_Controller_Action extends Zend_Controller_Action {
 		
 	}
 	
-	protected function _getAuth() {
+	protected function _getAuth() 
+	{
 	
 		return Inclusive_Auth::getInstance();
 	
