@@ -54,7 +54,8 @@ abstract class Inclusive_Db_Table_Abstract
 		
 		if ($this->_multiDb) {
 			
-			$multiDb = Zend_Controller_Front::getInstance()->getParam('bootstrap')->getResource('multidb');
+			$multiDb = Zend_Controller_Front::getInstance()
+				->getParam('bootstrap')->getResource('multidb');
 			
 			if ($multiDb) {
 				
