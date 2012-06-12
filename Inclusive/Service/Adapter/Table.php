@@ -18,7 +18,7 @@ abstract class Inclusive_Service_Adapter_Table
 	
 		$class = $this->_tableClass;
 	
-		if (!($this->table instanceof $class))
+		if (!($this->_table instanceof $class))
 		{
 		
 			$this->setTable(new $class());
@@ -34,6 +34,8 @@ abstract class Inclusive_Service_Adapter_Table
 		) {
 	
 		$this->_table = $table;
+		
+		return $this;
 	
 	}
 	
