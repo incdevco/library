@@ -54,10 +54,11 @@ abstract class Inclusive_Service_Abstract {
 	
 	}
 	
-	public function getForm($key)
+	public function getForm($key,$new=false)
 	{
 	
-		if (!isset($this->_forms[$key]))
+		if ($new
+			or !isset($this->_forms[$key]))
 		{
 		
 			$class = $this->getFormClass($key);
