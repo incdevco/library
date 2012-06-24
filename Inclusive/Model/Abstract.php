@@ -8,6 +8,8 @@ abstract class Inclusive_Model_Abstract {
 
 	protected $_service = null;
 	
+	protected $_services = array();
+	
 	public function __construct(
 		Inclusive_Service_Abstract $service,
 		array $data=array()
@@ -19,7 +21,23 @@ abstract class Inclusive_Model_Abstract {
 	
 	}
 	
-	public function getService() {
+	public function getService($class=null) 
+	{
+	
+		if ($class != null)
+		{
+		
+			if (!isset($this->_services[$class])
+				or !($this->_services[$class] instanceof $class))
+			{
+			
+				$this->setService(new $class(),$class);
+			
+			}
+			
+			return $this->_services[$class];
+		
+		}
 	
 		return $this->_service;
 	
@@ -64,8 +82,19 @@ abstract class Inclusive_Model_Abstract {
 	}
 	
 	public function setService(
-		Inclusive_Service_Abstract $service
-		) {
+		Inclusive_Service_Abstract $service,
+		$class=null
+	) 
+	{
+	
+		if ($class != null)
+		{
+		
+			$this->_services[$class] = $service;
+			
+			return $this;
+		
+		}
 	
 		$this->_service = $service;
 		
