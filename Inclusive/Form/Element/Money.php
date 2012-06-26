@@ -10,7 +10,7 @@ class Inclusive_Form_Element_Money
 		parent::init();
 	
 		$this
-			->addFilter(new Zend_Filter_Word_SeparatorToSeparator('$',''));
+			->addFilter(new Inclusive_Filter_RemoveDollarSign());
 	
 	}
 	

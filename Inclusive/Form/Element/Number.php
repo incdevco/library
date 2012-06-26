@@ -8,7 +8,7 @@ class Inclusive_Form_Element_Number
 	{
 	
 		$this
-			->addFilter(new Zend_Filter_Word_SeparatorToSeparator(',',''));
+			->addFilter(new Inclusive_Filter_RemoveCommas());
 	
 	}
 	
