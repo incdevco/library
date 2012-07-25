@@ -11,7 +11,7 @@ abstract class Inclusive_Service_Adapter_Abstract
 	{
 		
 		$this->setService($service);
-		
+	
 	}
 	
 	public function getService($key=null) 

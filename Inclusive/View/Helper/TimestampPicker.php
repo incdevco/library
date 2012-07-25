@@ -1,12 +1,11 @@
 <?php
 
-class Inclusive_View_Helper_TimestampPicker extends Zend_View_Helper_FormText {
+class Inclusive_View_Helper_TimestampPicker 
+	extends Inclusive_View_Helper_Picker {
 	
 	public function timestampPicker($name,$value=null,$attribs=null) {
 		
-		$xhtml = parent::formText($name,$value,$attribs);
-		
-		return $xhtml;
+		return parent::picker($name,$value,$attribs);
 		
 	}
 	
