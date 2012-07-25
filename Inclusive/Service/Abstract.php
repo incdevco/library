@@ -22,7 +22,7 @@ abstract class Inclusive_Service_Abstract {
 		
 			$class = $this->_adapterClass;
 			
-			$adapter = new $class();
+			$adapter = new $class($this);
 		
 		}
 		
