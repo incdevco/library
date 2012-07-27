@@ -7,6 +7,8 @@ abstract class Inclusive_Db_Table_Abstract
 	
 	protected $_multiDb = null;
 	
+	protected $_salt = 'alkaOIJS:I()_%lkjasdfnh@#43232lkJShask;lk';
+	
 	public function createUniqueId($length=10) {
 	
 		return $this->_createUniqueId($length);
@@ -92,6 +94,13 @@ abstract class Inclusive_Db_Table_Abstract
 			}
 		
 		}
+	
+	}
+	
+	protected function _createSalt()
+	{
+	
+		return md5(uniqid(rand(),true).$this->_salt);
 	
 	}
 	

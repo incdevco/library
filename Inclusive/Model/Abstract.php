@@ -10,10 +10,13 @@ abstract class Inclusive_Model_Abstract {
 	
 	protected $_services = array();
 	
+	protected $_serviceClasses = array();
+	
 	public function __construct(
 		Inclusive_Service_Abstract $service,
 		array $data=array()
-		) {
+		) 
+	{
 		
 		$this->setService($service);
 	
@@ -21,21 +24,35 @@ abstract class Inclusive_Model_Abstract {
 	
 	}
 	
-	public function getService($class=null) 
+	public function getService($key=null) 
 	{
+	
+		if ($key != null 
+			&& isset($this->_serviceClasses[$key]))
+		{
+		
+			$class = $this->_serviceClasses[$key];
+		
+		}
+		else 
+		{
+		
+			$class = $key;
+		
+		}
 	
 		if ($class != null)
 		{
 		
-			if (!isset($this->_services[$class])
-				or !($this->_services[$class] instanceof $class))
+			if (!isset($this->_services[$key])
+				or !($this->_services[$key] instanceof $class))
 			{
 			
-				$this->setService(new $class(),$class);
+				$this->setService(new $class(),$key);
 			
 			}
 			
-			return $this->_services[$class];
+			return $this->_services[$key];
 		
 		}
 	
@@ -83,14 +100,14 @@ abstract class Inclusive_Model_Abstract {
 	
 	public function setService(
 		Inclusive_Service_Abstract $service,
-		$class=null
+		$key=null
 	) 
 	{
 	
-		if ($class != null)
+		if ($key != null)
 		{
 		
-			$this->_services[$class] = $service;
+			$this->_services[$key] = $service;
 			
 			return $this;
 		
