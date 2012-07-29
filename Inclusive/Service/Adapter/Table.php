@@ -36,6 +36,13 @@ abstract class Inclusive_Service_Adapter_Table
 	
 	}
 	
+	public function getTableClass()
+	{
+	
+		return $this->_tableClass;
+		
+	}
+	
 	public function setTable(
 		Inclusive_Db_Table_Abstract $table
 		) {
