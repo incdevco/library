@@ -18,7 +18,14 @@ class Inclusive_Service_Exception_Form
 		
 			$this->setForm($msg);
 			
-			$msg = get_class($msg).' is Invalid';	
+			$msg = get_class($msg).' is Invalid. ';
+			
+			foreach ($this->getForm()->getElements() as $element)
+			{
+			
+				$msg .= print_r($element->getErrorMessages(),true);
+			
+			}	
 		
 		}
 	
