@@ -6,13 +6,19 @@ abstract class Inclusive_Service_Abstract {
 	
 	protected $_adapterClass = null;
 	
+	protected $_forms = array();
+	
+	protected $_formClasses = array();
+	
 	protected $_modelClass = null;
 	
 	protected $_setClass = null;
 	
-	protected $_forms = array();
+	protected $_service = null;
 	
-	protected $_formClasses = array();
+	protected $_services = array();
+	
+	protected $_serviceClasses = array();
 	
 	public function __construct($adapter=null) 
 	{
@@ -94,6 +100,42 @@ abstract class Inclusive_Service_Abstract {
 		
 	}
 	
+	public function getService($key=null) 
+	{
+	
+		if ($key != null 
+			&& isset($this->_serviceClasses[$key]))
+		{
+		
+			$class = $this->_serviceClasses[$key];
+		
+		}
+		else 
+		{
+		
+			$class = $key;
+		
+		}
+	
+		if ($class != null)
+		{
+		
+			if (!isset($this->_services[$key])
+				or !($this->_services[$key] instanceof $class))
+			{
+			
+				$this->setService(new $class(),$key);
+			
+			}
+			
+			return $this->_services[$key];
+		
+		}
+	
+		return $this->_throw('No Service Found');
+	
+	}
+	
 	public function getSetClass()
 	{
 	
@@ -141,6 +183,27 @@ abstract class Inclusive_Service_Abstract {
 		
 	}
 	
+	public function setService(
+		Inclusive_Service_Abstract $service,
+		$key=null
+	) 
+	{
+	
+		if ($key != null)
+		{
+		
+			$this->_services[$key] = $service;
+			
+			return $this;
+		
+		}
+	
+		$this->_service = $service;
+		
+		return $this;
+	
+	}
+	
 	public function setSetClass($class)
 	{
 	
@@ -148,6 +211,13 @@ abstract class Inclusive_Service_Abstract {
 		
 		return $this;
 		
+	}
+	
+	public function _throw($message)
+	{
+	
+		throw new Inclusive_Service_Exception($message);
+	
 	}
 	
 	public function _throwForm(Zend_Form $form)
