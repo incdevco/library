@@ -3,9 +3,27 @@
 class Inclusive_Form extends Zend_Form 
 {
 	
+	protected $_removeConfirm = false;
+	
 	protected $_services = array();
 	
 	protected $_serviceClasses = array();
+	
+	public function getValues($suppressArrayNotation=false)
+	{
+	
+		$values = parent::getValues($suppressArrayNotation);
+		
+		if ($this->_removeConfirm)
+		{
+		
+			unset($values['confirm']);
+		
+		}
+		
+		return $values;
+		
+	}
 	
 	public function getService($key) 
 	{
