@@ -2,14 +2,13 @@
 
 class Inclusive_Form_Element_Factory {
 
-	static $_hiddenClass = 'Zend_Form_Element_Hidden';
+	static $_hiddenClass = 'Inclusive_Form_Element_Hidden';
 
-	static $_multiselectClass = 
-		'Zend_Form_Element_Multiselect';
+	static $_multiselectClass = 'Inclusive_Form_Element_Multiselect';
 
-	static $_selectClass = 'Zend_Form_Element_Select';
+	static $_selectClass = 'Inclusive_Form_Element_Select';
 
-	static $_textClass = 'Zend_Form_Element_Text';
+	static $_textClass = 'Inclusive_Form_Element_Text';
 	
 	static function createMultiOptions(
 		$service,
@@ -61,7 +60,7 @@ class Inclusive_Form_Element_Factory {
 	static function factory($spec,$options=null) 
 	{
 		
-		$type = self::determineType($options);
+		$type = static::determineType($options);
 			
 		if (isset($options['type'])) {
 
@@ -79,19 +78,19 @@ class Inclusive_Form_Element_Factory {
 			
 			if ($type == 'select') {
 		  
-	            $class = self::$_selectClass;
+	            $class = static::$_selectClass;
 	            
 			} elseif ($type == 'multiselect') {
 				
-				$class = self::$_multiselectClass;
+				$class = static::$_multiselectClass;
 				
 			} elseif ($type == 'text') {
 				
-				$class = self::$_textClass;
+				$class = static::$_textClass;
 				
 			} else {
 				
-				$class = self::$_hiddenClass;
+				$class = static::$_hiddenClass;
 				
 			}
 			
@@ -107,7 +106,7 @@ class Inclusive_Form_Element_Factory {
 	
 		if (isset(self::$_module)) {
 		
-			$module = self::$_module;
+			$module = static::$_module;
 		
 		}
 	
