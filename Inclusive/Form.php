@@ -41,8 +41,8 @@ class Inclusive_Form extends Zend_Form
 		
 		}
 	
-		if (!isset($this->_services[$class])
-			or !($this->_services[$class] instanceof $class))
+		if (!isset($this->_services[$key])
+			or !($this->_services[$key] instanceof $class))
 		{
 		
 			$this->setService(new $class(),$key);
