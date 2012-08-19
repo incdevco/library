@@ -23,7 +23,7 @@ abstract class Inclusive_Service_Abstract {
 	public function __construct($adapter=null) 
 	{
 		
-		if ($this->_adapter != null)
+		if ($this->_adapterClass != null)
 		{
 			
 			if ($adapter == null) 
