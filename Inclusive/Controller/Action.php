@@ -27,7 +27,7 @@ abstract class Inclusive_Controller_Action extends Zend_Controller_Action {
 			
 			$class = $this->_serviceClasses[$key];
 			
-			$this->setService($key,new $class());
+			$this->setService(new $class(),$key);
 			
 		}
 		
@@ -36,8 +36,8 @@ abstract class Inclusive_Controller_Action extends Zend_Controller_Action {
 	}
 	
 	public function setService(
-		$key,
-		Inclusive_Service_Abstract $service
+		Inclusive_Service_Abstract $service,
+		$key
 	)
 	{
 	
