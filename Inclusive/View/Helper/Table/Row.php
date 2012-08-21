@@ -18,28 +18,27 @@ class Inclusive_View_Helper_Table_Row extends Zend_View_Helper_Abstract {
 			
 			$string .= '</tr>';
 			
-		} elseif ($row instanceof Inclusive_Table_Row) {
+		} elseif ($row instanceof Inclusive_View_Table_Row) {
 			
 			$string .= '<tr class="'.(($row->getOption('class')) ? $row->getOption('class') : '').'">';
 			
-			foreach ($row->getFields() as $field) {
+			foreach ($row->getColumns() as $column) {
 				
-				$string .= '<td class="'.strtolower($field).'">';
+				$string .= '<td class="'.$column->getOption('class').'">';
 				
-				$value = $row->getValue($field);
-				
-				if ($value instanceof Zend_Navigation) {
-					
-					$string .= $this->view->navigation()->menu($value)->render();
-					
-				} else {
-					
-					$string .= $value;
-					
-				}
+				$string .= $column->getValue();
 				
 				$string .= '</td>';
 				
+			}
+			
+			if ($row->getOption('navigation'))
+			{
+			
+				$string .= '<td class="navigation">'
+					.$this->view->navigation()->menu($row->getOption('navigation'))->render()
+					.'</td>';
+			
 			}
 			
 			$string .= '</tr>';

@@ -101,14 +101,22 @@ class Inclusive_View_Helper_Table extends Zend_View_Helper_Abstract {
 			$string .= "</tr>\n";
 			
 		} elseif ($row instanceof Inclusive_Table_Row
-			or $row instanceof Inclusive_View_Table_Row) {
+			or $row instanceof Inclusive_View_Table_Row) 
+		{
 			
 			$string .= '<tr>';
 			
-			foreach ($row->getFields() as $field) {
+			foreach ($row->getColumns() as $column) {
 				
-				$string .= '<th class="'.strtolower($field).'">'.$field.'</th>';
+				$string .= '<th class="'.strtolower($column->getOption('class')).'">'.$column->getKey().'</th>';
 				
+			}
+			
+			if ($row->getOption('navigation'))
+			{
+			
+				$string .= '<th class="navigation">&nbsp;</th>';
+			
 			}
 			
 			$string .= '</tr>';
