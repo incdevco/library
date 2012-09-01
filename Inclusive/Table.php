@@ -4,10 +4,18 @@ class Inclusive_Table {
 
 	protected $_rows = array();
 
-	public function addRow(array $columns,$options=null) {
+	public function addRow($row,$options=null) {
 	
-		$this->_rows[] = new Inclusive_Table_Row($columns,$options);
+		if ($row instanceof Inclusive_Table_Row) {
 		
+			$this->_rows[] = $row;
+		
+		} elseif (is_array($row)) {
+		
+			$this->_rows[] = new Inclusive_Table_Row($row,$options);
+			
+		}
+	
 		return $this;
 	
 	}

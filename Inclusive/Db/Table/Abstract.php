@@ -1,10 +1,44 @@
 <?php
 
-abstract class Inclusive_Db_Table_Abstract extends Zend_Db_Table_Abstract {
+abstract class Inclusive_Db_Table_Abstract 
+	extends Zend_Db_Table_Abstract {
 	
 	protected $_module = null;
 	
 	protected $_multiDb = null;
+	
+	protected $_salt = 'alkaOIJS:I()_%lkjasdfnh@#43232lkJShask;lk';
+	
+	public function createUniqueId($length=10) {
+	
+		return $this->_createUniqueId($length);
+	
+	}
+	
+	public function fetchEmpty() {
+	
+		$rowsetClass = $this->getRowsetClass();
+		
+		return new $rowsetClass(array(
+			'table'=>$this,
+			'rowClass'=>$this->getRowClass(),
+			'stored'=>true
+			));
+	
+	}
+	
+	public function getPrimaryKey() {
+	
+		return $this->_primary;
+	
+	}
+	
+	public function getName()
+	{
+	
+		return $this->_name;
+	
+	}
 	
 	public function service($name,$module=null) {
 		
@@ -22,7 +56,8 @@ abstract class Inclusive_Db_Table_Abstract extends Zend_Db_Table_Abstract {
 		
 		if ($this->_multiDb) {
 			
-			$multiDb = Zend_Controller_Front::getInstance()->getParam('bootstrap')->getResource('multidb');
+			$multiDb = Zend_Controller_Front::getInstance()
+				->getParam('bootstrap')->getResource('multidb');
 			
 			if ($multiDb) {
 				
@@ -44,9 +79,9 @@ abstract class Inclusive_Db_Table_Abstract extends Zend_Db_Table_Abstract {
 	
 	protected function _createUniqueId($length=10) {
 	
-		$lenth = (int) $length;
-		
-		while (true) {
+		while(true) {
+
+			$lenth = (int) $length;
 		
 			$id = substr(md5(uniqid(rand(),true)),0,$length);
 			
@@ -62,15 +97,10 @@ abstract class Inclusive_Db_Table_Abstract extends Zend_Db_Table_Abstract {
 	
 	}
 	
-	public function fetchEmpty() {
+	protected function _createSalt()
+	{
 	
-		$rowsetClass = $this->getRowsetClass();
-		
-		return new $rowsetClass(array(
-			'table'=>$this,
-			'rowClass'=>$this->getRowClass(),
-			'stored'=>true
-			));
+		return md5(uniqid(rand(),true).$this->_salt);
 	
 	}
 	

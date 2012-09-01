@@ -1,15 +1,8 @@
 <?php
 
-class Inclusive_Form_Element_TimestampPicker extends Zend_Form_Element_Text {
+class Inclusive_Form_Element_TimestampPicker 
+	extends Inclusive_Form_Element_Picker {
 	
 	public $helper = 'timestampPicker';
-	
-	public function init() {
-	
-		parent::init();
-		
-		$this->addFilter(new Inclusive_Filter_StringToTime());
-		
-	}
 	
 }

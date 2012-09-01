@@ -6,6 +6,32 @@ class Inclusive_Application_Bootstrap extends Zend_Application_Bootstrap_Bootstr
 		
 		Zend_Loader_Autoloader::getInstance()
 			->registerNamespace('Inclusive');
+
+		$this->bootstrap('View');
+		
+		$view = $this->getResource('View');
+		
+		if ($view) {
+		
+			$view
+				->addHelperPath('Inclusive/View/Helper','Inclusive_View_Helper');
+		
+		}
+		
+	}
+	
+	public function _initJQuery() {
+		
+		$this->bootstrap('View');
+		
+		$view = $this->getResource('View');
+		
+		if ($view) {
+		
+			$view
+				->addHelperPath('ZendX/JQuery/View/Helper','ZendX_JQuery_View_Helper');
+		
+		}
 		
 	}
 	
@@ -17,6 +43,20 @@ class Inclusive_Application_Bootstrap extends Zend_Application_Bootstrap_Bootstr
 		
 		}
 	
+	}
+	
+	public function _initRequestTime()
+	{
+	
+		if (!defined('REQUEST_TIME'))
+		{
+		
+			define('REQUEST_TIME',
+				(isset($_SERVER['REQUEST_TIME']) && $_SERVER['REQUEST_TIME']) ? 
+					$_SERVER['REQUEST_TIME'] : microtime(true));
+		
+		}
+		
 	}
 	
 }

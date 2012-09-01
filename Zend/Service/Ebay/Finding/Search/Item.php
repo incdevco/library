@@ -38,7 +38,7 @@ class Zend_Service_Ebay_Finding_Search_Item extends Zend_Service_Ebay_Finding_Ab
     /**
      * If true, the seller requires immediate payment for the item. If false (or
      * not specified), immediate payment is not requested. Buyers must have a
-     * PayPal account to purchase items that require immediate payment.
+     * Paypal account to purchase items that require immediate payment.
      *
      * A seller can choose to require immediate payment for Fixed Price and Buy
      * It Now listings, including eBay Stores Inventory listings. If a Buy It
@@ -151,7 +151,7 @@ class Zend_Service_Ebay_Finding_Search_Item extends Zend_Service_Ebay_Finding_Ab
 
     /**
      * Identifies the payment method (or methods) the seller will accept for the
-     * item (such as PayPal).
+     * item (such as Paypal).
      *
      *  Payment methods are not applicable to eBay Real Estate advertisement
      *  listings or other Classified Ad listing formats.

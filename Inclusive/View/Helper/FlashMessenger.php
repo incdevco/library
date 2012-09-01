@@ -18,12 +18,14 @@ class Inclusive_View_Helper_FlashMessenger extends Zend_View_Helper_Abstract {
 		
 		$flashMessenger = Zend_Controller_Action_HelperBroker::getStaticHelper('FlashMessenger');
 		
-		$messages = $flashMessenger->getMessages();
-		
 		if ($currentMessages) {
 			
-			$messages = array_merge($messages,$flashMessenger->getCurrentMessages());
+			$messages = $flashMessenger->getCurrentMessages();
 			
+		} else {
+		
+			$messages = $flashMessenger->getMessages();
+		
 		}
 		
 		if (!count($messages)) {
@@ -74,7 +76,7 @@ class Inclusive_View_Helper_FlashMessenger extends Zend_View_Helper_Abstract {
 				
 			}
 			
-			$javascript .= '$("body").append($("<a href=\"#\" id=\"flash_messenger_show\">Show Messages</a>").click(function(){ if (!$("#flash_messenger").is(":visible")) { $("#flash_messenger").show(); } return false; }));';	
+			$javascript .= '$("body").prepend($("<a href=\"#\" id=\"flash_messenger_show\">Show Messages</a>").click(function(){ if (!$("#flash_messenger").is(":visible")) { $("#flash_messenger").show(); } return false; }));';	
 		
 			$this->view->JQuery()->addOnLoad($javascript);
 			
