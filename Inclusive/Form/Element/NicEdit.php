@@ -1,6 +1,7 @@
 <?php
 
-class Inclusive_Form_Element_NicEdit extends Zend_Form_Element_Textarea {
+class Inclusive_Form_Element_NicEdit 
+	extends Zend_Form_Element_Textarea {
 	
 	public function __construct($spec,$options=null) {
 		
