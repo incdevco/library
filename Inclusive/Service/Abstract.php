@@ -1,6 +1,7 @@
 <?php
 
-abstract class Inclusive_Service_Abstract {
+abstract class Inclusive_Service_Abstract 
+{
 	
 	protected $_adapter = null;
 	
@@ -20,24 +21,10 @@ abstract class Inclusive_Service_Abstract {
 	
 	protected $_serviceClasses = array();
 	
-	public function __construct($adapter=null) 
+	public function __construct() 
 	{
 		
-		if ($this->_adapterClass != null)
-		{
-			
-			if ($adapter == null) 
-			{
-			
-				$class = $this->_adapterClass;
-				
-				$adapter = new $class($this);
-			
-			}
-			
-			$this->setAdapter($adapter);
-			
-		}
+		
 		
 	}
 	
@@ -61,6 +48,22 @@ abstract class Inclusive_Service_Abstract {
 	public function getAdapter() 
 	{
 	
+		if ($this->_adapter === null)
+		{
+		
+			if ($this->_adapterClass === null)
+			{
+			
+				$this->_throw('No Adapter Class Set');
+			
+			}
+			
+			$class = $this->_adapterClass;
+			
+			$this->setAdapter(new $class());
+		
+		}
+		
 		return $this->_adapter;
 	
 	}
