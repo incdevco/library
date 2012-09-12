@@ -58,9 +58,7 @@ abstract class Inclusive_Service_Abstract
 			
 			}
 			
-			$class = $this->_adapterClass;
-			
-			$this->setAdapter(new $class());
+			$this->setAdapter($this->_adapterClass);
 		
 		}
 		
@@ -151,13 +149,33 @@ abstract class Inclusive_Service_Abstract
 		
 	}
 	
-	public function setAdapter(
-		Inclusive_Service_Adapter_Abstract $adapter
-	) 
+	public function setAdapter($adapter) 
 	{
 		
-		$adapter->setService($this);
+		if (is_string($adapter))
+		{
+		
+			$adapter = new $adapter($this);
+		
+		}
+		else 
+		{
+		
+			if ($adapter instanceof Inclusive_Service_Adapter_Abstract)
+			{
+			
+				$adapter->setService($this);
+				
+			}
+			else 
+			{
+			
+				return $this->_throw('Adapter must be instanceof Inclusive_Service_Adapter_Abstract');
+			
+			}
 	
+		}
+		
 		$this->_adapter = $adapter;
 		
 		return $this;
