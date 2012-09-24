@@ -13,7 +13,9 @@ class Inclusive_Service_Exception_Form extends Inclusive_Service_Exception
 		
 			$this->setForm($msg);
 			
-			$msg = get_class($msg).' is Invalid';
+			$msg = get_class($msg).' is Invalid : ';
+			
+			$msg .= print_r($this->getForm()->getMessages(),true);
 			
 		}
 	

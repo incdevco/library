@@ -209,10 +209,7 @@ abstract class Inclusive_Service_Abstract
 		
 	}
 	
-	public function setService(
-		Inclusive_Service_Abstract $service,
-		$key=null
-	) 
+	public function setService(Inclusive_Service_Abstract $service,$key=null) 
 	{
 	
 		if ($key != null)
@@ -249,8 +246,7 @@ abstract class Inclusive_Service_Abstract
 	public function _throwForm(Zend_Form $form)
 	{
 	
-		throw 
-			new Inclusive_Service_Exception_Form($form);
+		throw new Inclusive_Service_Exception_Form($form);
 	
 	}
 	
