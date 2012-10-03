@@ -5,6 +5,20 @@ class Inclusive_View_Table
 
 	protected $_rows = array();
 
+	protected $_options = array();
+
+	public function __construct($options=null)
+	{
+	
+		if ($options !== null)
+		{
+		
+			$this->setOptions($options);
+		
+		}
+	
+	}
+
 	public function addRow($row,$options=null) 
 	{
 	
@@ -41,6 +55,22 @@ class Inclusive_View_Table
 	
 	}
 	
+	public function getClass()
+	{
+	
+		$class = 'inclusive_table';
+	
+		if (isset($this->_options['class']))
+		{
+		
+			$class = $this->_options['class'];
+		
+		}
+		
+		return $class;
+		
+	}
+	
 	public function getFirstRow() 
 	{
 	
@@ -59,6 +89,18 @@ class Inclusive_View_Table
 	
 		return $this->_rows;
 		
+	}
+	
+	public function setOptions($options)
+	{
+	
+		if (is_array($options))
+		{
+		
+			$this->_options = $options;
+		
+		}
+	
 	}
 
 }

@@ -4,8 +4,12 @@ class Inclusive_View_Helper_Table extends Zend_View_Helper_Abstract {
 	
 	public function table($table,array $options=null) {
 		
-		if ($table instanceof Inclusive_Table
-			or $table instanceof Inclusive_View_Table) {
+		
+		if ($table instanceof Inclusive_Table) {
+		
+			return 'Inclusive_Table is depreciated';
+			
+		} elseif ($table instanceof Inclusive_View_Table) {
 		
 			if (!$table->count()) {
 			
@@ -27,8 +31,23 @@ class Inclusive_View_Helper_Table extends Zend_View_Helper_Abstract {
 		
 		}
 		
-		$string = '<table class="'.((isset($options['class'])) ? 
-		    $options['class'] : '').'">';
+		$class = 'inclusive_table';
+		
+		if ($table instanceof Inclusive_View_Table)
+		{
+		
+			$class = $table->getClass();
+		
+		}
+		
+		if (isset($options['class']))
+		{
+		
+			$class = $options['class'];
+		
+		}
+		
+		$string = '<table class="'.$class.'">';
 		
 		if (isset($options['caption'])) {
 			
@@ -38,8 +57,7 @@ class Inclusive_View_Helper_Table extends Zend_View_Helper_Abstract {
 		
 		$string .= "<thead>\n";
 		
-		if ($table instanceof Inclusive_Table
-			or $table instanceof Inclusive_View_Table) {
+		if ($table instanceof Inclusive_View_Table) {
 		
 			$header = $table->getFirstRow();
 		
