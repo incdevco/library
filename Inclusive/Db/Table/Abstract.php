@@ -1,15 +1,17 @@
 <?php
 
-abstract class Inclusive_Db_Table_Abstract 
-	extends Zend_Db_Table_Abstract {
+abstract class Inclusive_Db_Table_Abstract extends Zend_Db_Table_Abstract 
+{
 	
 	protected $_module = null;
 	
 	protected $_multiDb = null;
 	
+	protected $_primaryCreateUnique = false;
+	
 	protected $_salt = 'alkaOIJS:I()_%lkjasdfnh@#43232lkJShask;lk';
 	
-	public function createUniqueId($length=10) {
+	public function createUniqueId($length=40) {
 	
 		return $this->_createUniqueId($length);
 	
@@ -37,6 +39,27 @@ abstract class Inclusive_Db_Table_Abstract
 	{
 	
 		return $this->_name;
+	
+	}
+	
+	public function insert(array $data)
+	{
+	
+		if ($this->_primaryCreateUnique && is_string($this->_primary))
+		{
+		
+			if (!isset($data[$this->_primary]))
+			{
+			
+				$length = intval($this->_primaryCreateUnique);
+			
+				$data[$this->_primary] = $this->_createUniqueId($length);
+			
+			}
+		
+		}
+		
+		return parent::insert($data);
 	
 	}
 	
@@ -77,13 +100,13 @@ abstract class Inclusive_Db_Table_Abstract
 		
 	}
 	
-	protected function _createUniqueId($length=10) {
+	protected function _createUniqueId($length=40) {
 	
 		while(true) {
 
 			$lenth = (int) $length;
 		
-			$id = substr(md5(uniqid(rand(),true)),0,$length);
+			$id = substr(md5(uniqid(rand(),true).$this->_createSalt()),0,$length);
 			
 			$row = $this->find($id);
 			
