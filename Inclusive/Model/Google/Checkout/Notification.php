@@ -194,13 +194,13 @@ class Inclusive_Model_Google_Checkout_Notification extends Inclusive_Model_Abstr
 					
 				}
 			
-				$nice[$firstKey][] = $value;
+				$nice[$firstKey][] = trim($value);
 				
 			}
 			else 
 			{
 			
-				$nice[$firstKey] = $value;
+				$nice[$firstKey] = trim($value);
 				
 			}
 		
