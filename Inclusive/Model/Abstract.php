@@ -12,10 +12,7 @@ abstract class Inclusive_Model_Abstract {
 	
 	protected $_serviceClasses = array();
 	
-	public function __construct(
-		Inclusive_Service_Abstract $service,
-		array $data=array()
-		) 
+	public function __construct(Inclusive_Service_Abstract $service,array $data=array()) 
 	{
 		
 		$this->setService($service);

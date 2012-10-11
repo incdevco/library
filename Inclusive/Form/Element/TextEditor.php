@@ -1,7 +1,6 @@
 <?php
 
-class Inclusive_Form_Element_TextEditor 
-	extends Inclusive_Form_Element_Textarea 
+class Inclusive_Form_Element_TextEditor extends Inclusive_Form_Element_Textarea 
 {
 
 	public $helper = 'textEditor';
