@@ -31,8 +31,23 @@ class Inclusive_View_Helper_Table extends Zend_View_Helper_Abstract {
 		
 		}
 		
-		$string = '<table class="'.((isset($options['class'])) ? 
-		    $options['class'] : '').'">';
+		$class = 'inclusive_table';
+		
+		if ($table instanceof Inclusive_View_Table)
+		{
+		
+			$class = $table->getClass();
+		
+		}
+		
+		if (isset($options['class']))
+		{
+		
+			$class = $options['class'];
+		
+		}
+		
+		$string = '<table class="'.$class.'">';
 		
 		if (isset($options['caption'])) {
 			
