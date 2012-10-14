@@ -9,12 +9,26 @@ class Inclusive_Form extends Zend_Form
 	
 	protected $_serviceClasses = array();
 	
+	public function __construct($options=null)
+	{
+	
+		parent::__construct($options);
+		
+	}
+	
 	public function addConfirmElement()
 	{
 	
 		$this->addElement(new Inclusive_Form_Element_Confirm());
 		
 		$this->_removeConfirm = true;
+	
+	}
+	
+	public function addCsrfElement()
+	{
+	
+		$this->addElement(new Inclusive_Form_Element_CSRF());
 	
 	}
 	
