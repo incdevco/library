@@ -78,13 +78,13 @@ class Inclusive_Controller_Plugin_CSRF extends Zend_Controller_Plugin_Abstract
 		if($request->isPost() === true)
 		{			
 			if(empty($this->_previousToken))
-				throw new Inclusive_Controller_Plugin_CSRF_ThreatException();
-				//throw new RuntimeException('A possible CSRF attack detected - no token received');
+				//throw new Inclusive_Controller_Plugin_CSRF_ThreatException();
+				throw new RuntimeException('A possible CSRF attack detected - no token received');
 
 			$value = $request->getPost($this->_keyName);
 			if(!$this->isValidToken($value))
-				throw new Inclusive_Controller_Plugin_CSRF_ThreatException();
-				//throw new RuntimeException('A possible CSRF attack detected - tokens do not match');
+				//throw new Inclusive_Controller_Plugin_CSRF_ThreatException();
+				throw new RuntimeException('A possible CSRF attack detected - tokens do not match');
 		}			
 	}
 
