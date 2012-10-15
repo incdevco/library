@@ -84,7 +84,7 @@ class Inclusive_Controller_Plugin_CSRF extends Zend_Controller_Plugin_Abstract
 			$value = $request->getPost($this->_keyName);
 			if(!$this->isValidToken($value))
 				//throw new Inclusive_Controller_Plugin_CSRF_ThreatException();
-				throw new RuntimeException('A possible CSRF attack detected - tokens do not match');
+				throw new RuntimeException('A possible CSRF attack detected - tokens do not match '.$this->_previousToken);
 		}			
 	}
 
