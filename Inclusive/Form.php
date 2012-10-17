@@ -3,11 +3,29 @@
 class Inclusive_Form extends Zend_Form 
 {
 	
+	protected $_removeCSRF = false;
+	
 	protected $_removeConfirm = false;
 	
 	protected $_services = array();
 	
 	protected $_serviceClasses = array();
+	
+	public function __construct($options=null)
+	{
+	
+		parent::__construct($options);
+		
+	}
+	
+	public function addCSRFElement()
+	{
+	
+		$this->addElement(new Inclusive_Form_Element_CSRF());
+		
+		$this->_removeCSRF = true;
+	
+	}
 	
 	public function addConfirmElement()
 	{
@@ -27,6 +45,13 @@ class Inclusive_Form extends Zend_Form
 		{
 		
 			unset($values['confirm']);
+		
+		}
+		
+		if ($this->_removeCSRF)
+		{
+		
+			unset($values['inclusive_hash']);
 		
 		}
 		
