@@ -1,7 +1,6 @@
 <?php
 
-class Inclusive_Db_Table 
-	extends Inclusive_Db_Table_Abstract {
+class Inclusive_Db_Table extends Inclusive_Db_Table_Abstract {
 	
 	/**
      * __construct() - For concrete implementation of Zend_Db_Table

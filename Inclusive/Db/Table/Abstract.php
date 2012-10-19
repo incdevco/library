@@ -48,7 +48,7 @@ abstract class Inclusive_Db_Table_Abstract extends Zend_Db_Table_Abstract
 		if ($this->_primaryCreateUnique && is_string($this->_primary))
 		{
 		
-			if (!isset($data[$this->_primary]))
+			if (!isset($data["{$this->_primary}"]))
 			{
 			
 				$length = intval($this->_primaryCreateUnique);
