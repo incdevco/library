@@ -45,15 +45,35 @@ abstract class Inclusive_Db_Table_Abstract extends Zend_Db_Table_Abstract
 	public function insert(array $data)
 	{
 	
-		if ($this->_primaryCreateUnique && is_string($this->_primary))
+		if ($this->_primaryCreateUnique)
 		{
 		
-			if (!isset($data["{$this->_primary}"]))
+			if (is_array($this->_primary))
+			{
+			
+				if (count($this->_primary) != 1)
+				{
+				
+					throw new Zend_Exception('Cannot Create Unique Multi-Key');
+				
+				}
+				
+				$key = $this->_primary[0];
+			
+			}
+			else 
+			{
+			
+				$key = $this->_primary;
+			
+			}
+		
+			if (!isset($data[$key]) or empty($data[$key]))
 			{
 			
 				$length = intval($this->_primaryCreateUnique);
 			
-				$data[$this->_primary] = $this->_createUniqueId($length);
+				$data[$key] = $this->_createUniqueId($length);
 			
 			}
 		
