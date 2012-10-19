@@ -15,7 +15,7 @@
  * @category   Zend
  * @package    Zend_Service
  * @subpackage Ebay
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http:framework.zend.com/license/new-bsd     New BSD License
  * @version    $Id: Item.php 22824 2010-08-09 18:59:54Z renanbr $
  */
@@ -29,7 +29,7 @@ require_once 'Zend/Service/Ebay/Finding/Abstract.php';
  * @category   Zend
  * @package    Zend_Service
  * @subpackage Ebay
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http:framework.zend.com/license/new-bsd     New BSD License
  * @uses       Zend_Service_Ebay_Finding_Abstract
  */
@@ -38,7 +38,7 @@ class Zend_Service_Ebay_Finding_Search_Item extends Zend_Service_Ebay_Finding_Ab
     /**
      * If true, the seller requires immediate payment for the item. If false (or
      * not specified), immediate payment is not requested. Buyers must have a
-     * Paypal account to purchase items that require immediate payment.
+     * PayPal account to purchase items that require immediate payment.
      *
      * A seller can choose to require immediate payment for Fixed Price and Buy
      * It Now listings, including eBay Stores Inventory listings. If a Buy It
@@ -151,7 +151,7 @@ class Zend_Service_Ebay_Finding_Search_Item extends Zend_Service_Ebay_Finding_Ab
 
     /**
      * Identifies the payment method (or methods) the seller will accept for the
-     * item (such as Paypal).
+     * item (such as PayPal).
      *
      *  Payment methods are not applicable to eBay Real Estate advertisement
      *  listings or other Classified Ad listing formats.
