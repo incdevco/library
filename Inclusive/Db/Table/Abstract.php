@@ -58,13 +58,20 @@ abstract class Inclusive_Db_Table_Abstract extends Zend_Db_Table_Abstract
 				
 				}
 				
-				$key = $this->_primary[0];
-			
+				$key = $this->_primary[1];
+				
 			}
 			else 
 			{
 			
 				$key = $this->_primary;
+			
+			}
+			
+			if (empty($key))
+			{
+			
+				throw new Zend_Exception('Primary Key Empty: '.$key);
 			
 			}
 		
