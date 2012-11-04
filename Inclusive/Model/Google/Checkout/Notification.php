@@ -20,6 +20,13 @@ class Inclusive_Model_Google_Checkout_Notification extends Inclusive_Model_Abstr
 	
 	}
 	
+	public function getAcknowledgementString()
+	{
+	
+		return '<notification-acknowledgment xmlns="http://checkout.google.com/schema/2" serial-number="'.$this->getSerialNumber().'" />';
+	
+	}
+	
 	public function getData()
 	{
 	
