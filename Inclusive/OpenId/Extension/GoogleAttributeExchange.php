@@ -5,7 +5,7 @@
  * @author Chris Bisnett cbisnett@gmail.com
  * @date 19July2009
  */
-class Inclusive_OpenId_Extension_AttributeExchange extends Zend_OpenId_Extension
+class Inclusive_OpenId_Extension_GoogleAttributeExchange extends Zend_OpenId_Extension
 {
 	/**
 	 * Namespace URI for attribute exchange version 1.0
