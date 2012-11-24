@@ -2,7 +2,7 @@
 
 class Inclusive_View_Helper_Table_Row extends Zend_View_Helper_Abstract {
 	
-	public function row($row,$options=null) {
+	public function row($row,array $options=null) {
 		
 		$string = '';
 		
@@ -18,13 +18,28 @@ class Inclusive_View_Helper_Table_Row extends Zend_View_Helper_Abstract {
 			
 			$string .= '</tr>';
 			
-		} elseif ($row instanceof Inclusive_View_Table_Row) {
+		} 
+		elseif ($row instanceof Inclusive_View_Table_Row) 
+		{
 			
 			$string .= '<tr class="'.(($row->getOption('class')) ? $row->getOption('class') : '').'">';
 			
 			foreach ($row->getColumns() as $column) {
 				
-				$string .= '<td class="'.$column->getOption('class').'">';
+				$string .= '<td class="'.$column->getOption('class').'"';
+				
+				if (isset($options['colspan']))
+				{
+				
+					$string .= ' colspan="';
+					
+					$string .= $options['colspan'];
+					
+					$string .= '" ';
+				
+				}
+				
+				$string .= '>';
 				
 				$string .= $column->getValue();
 				
@@ -43,7 +58,22 @@ class Inclusive_View_Helper_Table_Row extends Zend_View_Helper_Abstract {
 			
 			$string .= '</tr>';
 			
-		} else {
+		}
+		elseif ($row instanceof Inclusive_View_Table) 
+		{
+			
+			$string .= '<tr>';
+			
+			$string .= '<td colspan="'.$this->view->table()->getColumnCount().'">';
+				
+			$string .= $this->view->table($row);
+				
+			$string .= '</td>';
+			
+			$string .= '</tr>';
+			
+		} 
+		else {
 			
 			$string .= $row;
 			

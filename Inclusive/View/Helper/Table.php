@@ -2,8 +2,27 @@
 
 class Inclusive_View_Helper_Table extends Zend_View_Helper_Abstract {
 	
-	public function table($table,array $options=null) {
+	protected $_columnCount = 0;
+	
+	public function getColumnCount()
+	{
+	
+		return $this->_columnCount;
+	
+	}
+	
+	public function table($table=null,array $options=array()) {
 		
+		if ($table === null)
+		{
+			
+			return $this;
+		
+		}
+		
+		$this->_columnCount = 0;
+		
+		$options = array_merge($options,$table->getOptions());
 		
 		if ($table instanceof Inclusive_Table) {
 		
@@ -32,13 +51,6 @@ class Inclusive_View_Helper_Table extends Zend_View_Helper_Abstract {
 		}
 		
 		$class = 'inclusive_table';
-		
-		if ($table instanceof Inclusive_View_Table)
-		{
-		
-			$class = $table->getClass();
-		
-		}
 		
 		if (isset($options['class']))
 		{
@@ -114,6 +126,8 @@ class Inclusive_View_Helper_Table extends Zend_View_Helper_Abstract {
 				
 				$string .= '<th class="'.strtolower($key).'"><span>'.$key.'</span></th>';
 				
+				$this->_columnCount++;
+				
 			}
 			
 			$string .= "</tr>\n";
@@ -128,12 +142,16 @@ class Inclusive_View_Helper_Table extends Zend_View_Helper_Abstract {
 				
 				$string .= '<th class="'.strtolower($column->getOption('class')).'">'.$column->getKey().'</th>';
 				
+				$this->_columnCount++;
+				
 			}
 			
 			if ($row->getOption('navigation'))
 			{
 			
 				$string .= '<th class="navigation">&nbsp;</th>';
+			
+				$this->_columnCount++;
 			
 			}
 			
@@ -142,6 +160,8 @@ class Inclusive_View_Helper_Table extends Zend_View_Helper_Abstract {
 		} else {
 			
 			$string .=  $row;
+			
+			$this->_columnCount++;
 			
 		}
 		
@@ -153,7 +173,8 @@ class Inclusive_View_Helper_Table extends Zend_View_Helper_Abstract {
 		
 		$string = '';
 		
-		if (is_array($row)) {
+		if (is_array($row)) 
+		{
 		
 			$string .= '<tr>';
 			
@@ -165,14 +186,19 @@ class Inclusive_View_Helper_Table extends Zend_View_Helper_Abstract {
 			
 			$string .= "</tr>\n";
 		
-		} elseif ($row instanceof Inclusive_Table_Row
-			or $row instanceof Inclusive_View_Table_Row) {
+		} 
+		elseif ($row instanceof Inclusive_Table_Row
+			or $row instanceof Inclusive_View_Table_Row
+			or $row instanceof Inclusive_View_Table) 
+		{
 			
 			$this->view->addHelperPath('Inclusive/View/Helper/Table','Inclusive_View_Helper_Table');
 			
 			$string .= $this->view->row($row);
 			
-		} else {
+		} 
+		else 
+		{
 			
 			$string .= $row;
 			

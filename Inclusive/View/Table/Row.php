@@ -13,11 +13,7 @@ class Inclusive_View_Table_Row
 	
 	protected $_options = null;
 	
-	public function __construct(
-		array $data,
-		array $options=null,
-		Inclusive_View_Table $table=null
-	) 
+	public function __construct($data,array $options=null,Inclusive_View_Table $table=null) 
 	{
 		
 		$this->_data = $data;

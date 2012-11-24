@@ -28,8 +28,13 @@ class Inclusive_View_Table
 			$row = new Inclusive_View_Table_Row($row,$options,$this);
 		
 		}
-	
-		if ($row instanceof Inclusive_View_Table_Row)
+		elseif ($row instanceof Inclusive_View_Table)
+		{
+		
+			
+		
+		}
+		elseif ($row instanceof Inclusive_View_Table_Row)
 		{
 		
 			$row->setTable($this);
@@ -38,7 +43,7 @@ class Inclusive_View_Table
 		else 
 		{
 		
-			throw new Inclusive_View_Table_Exception('Must be an array or Inclusive_View_Table_Row');
+			throw new Inclusive_View_Table_Exception('Not A Valid Row');
 		
 		}
 	
@@ -84,6 +89,13 @@ class Inclusive_View_Table
 	
 	}
 	
+	public function getOptions()
+	{
+	
+		return $this->_options;
+	
+	}
+	
 	public function getRows() 
 	{
 	
@@ -100,6 +112,8 @@ class Inclusive_View_Table
 			$this->_options = $options;
 		
 		}
+		
+		return $this;
 	
 	}
 
