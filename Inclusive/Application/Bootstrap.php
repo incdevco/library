@@ -45,4 +45,18 @@ class Inclusive_Application_Bootstrap extends Zend_Application_Bootstrap_Bootstr
 	
 	}
 	
+	public function _initRequestTime()
+	{
+	
+		if (!defined('REQUEST_TIME'))
+		{
+		
+			define('REQUEST_TIME',
+				(isset($_SERVER['REQUEST_TIME']) && $_SERVER['REQUEST_TIME']) ? 
+					$_SERVER['REQUEST_TIME'] : microtime(true));
+		
+		}
+		
+	}
+	
 }

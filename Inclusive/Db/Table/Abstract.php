@@ -1,13 +1,17 @@
 <?php
 
-abstract class Inclusive_Db_Table_Abstract 
-	extends Zend_Db_Table_Abstract {
+abstract class Inclusive_Db_Table_Abstract extends Zend_Db_Table_Abstract 
+{
 	
 	protected $_module = null;
 	
 	protected $_multiDb = null;
 	
-	public function createUniqueId($length=10) {
+	protected $_primaryCreateUnique = false;
+	
+	protected $_salt = 'alkaOIJS:I()_%lkjasdfnh@#43232lkJShask;lk';
+	
+	public function createUniqueId($length=40) {
 	
 		return $this->_createUniqueId($length);
 	
@@ -38,6 +42,54 @@ abstract class Inclusive_Db_Table_Abstract
 	
 	}
 	
+	public function insert(array $data)
+	{
+	
+		if ($this->_primaryCreateUnique)
+		{
+		
+			if (is_array($this->_primary))
+			{
+			
+				if (count($this->_primary) != 1)
+				{
+				
+					throw new Zend_Exception('Cannot Create Unique Multi-Key');
+				
+				}
+				
+				$key = $this->_primary[1];
+				
+			}
+			else 
+			{
+			
+				$key = $this->_primary;
+			
+			}
+			
+			if (empty($key))
+			{
+			
+				throw new Zend_Exception('Primary Key Empty: '.$key);
+			
+			}
+		
+			if (!isset($data[$key]) or empty($data[$key]))
+			{
+			
+				$length = intval($this->_primaryCreateUnique);
+			
+				$data[$key] = $this->_createUniqueId($length);
+			
+			}
+		
+		}
+		
+		return parent::insert($data);
+	
+	}
+	
 	public function service($name,$module=null) {
 		
 		if (!$module) {
@@ -54,7 +106,8 @@ abstract class Inclusive_Db_Table_Abstract
 		
 		if ($this->_multiDb) {
 			
-			$multiDb = Zend_Controller_Front::getInstance()->getParam('bootstrap')->getResource('multidb');
+			$multiDb = Zend_Controller_Front::getInstance()
+				->getParam('bootstrap')->getResource('multidb');
 			
 			if ($multiDb) {
 				
@@ -74,13 +127,13 @@ abstract class Inclusive_Db_Table_Abstract
 		
 	}
 	
-	protected function _createUniqueId($length=10) {
+	protected function _createUniqueId($length=40) {
 	
 		while(true) {
 
 			$lenth = (int) $length;
 		
-			$id = substr(md5(uniqid(rand(),true)),0,$length);
+			$id = substr(md5(uniqid(rand(),true).$this->_createSalt()),0,$length);
 			
 			$row = $this->find($id);
 			
@@ -91,6 +144,13 @@ abstract class Inclusive_Db_Table_Abstract
 			}
 		
 		}
+	
+	}
+	
+	protected function _createSalt()
+	{
+	
+		return md5(uniqid(rand(),true).$this->_salt);
 	
 	}
 	

@@ -2,7 +2,7 @@
 
 class Inclusive_View_Helper_Table_Row extends Zend_View_Helper_Abstract {
 	
-	public function row($row,$options=null) {
+	public function row($row,array $options=null) {
 		
 		$string = '';
 		
@@ -18,33 +18,62 @@ class Inclusive_View_Helper_Table_Row extends Zend_View_Helper_Abstract {
 			
 			$string .= '</tr>';
 			
-		} elseif ($row instanceof Inclusive_Table_Row) {
+		} 
+		elseif ($row instanceof Inclusive_View_Table_Row) 
+		{
 			
 			$string .= '<tr class="'.(($row->getOption('class')) ? $row->getOption('class') : '').'">';
 			
-			foreach ($row->getFields() as $field) {
+			foreach ($row->getColumns() as $column) {
 				
-				$string .= '<td class="'.strtolower($field).'">';
+				$string .= '<td class="'.$column->getOption('class').'"';
 				
-				$value = $row->getValue($field);
+				if (isset($options['colspan']))
+				{
 				
-				if ($value instanceof Zend_Navigation) {
+					$string .= ' colspan="';
 					
-					$string .= $this->view->navigation()->menu($value)->render();
+					$string .= $options['colspan'];
 					
-				} else {
-					
-					$string .= $value;
-					
+					$string .= '" ';
+				
 				}
+				
+				$string .= '>';
+				
+				$string .= $column->getValue();
 				
 				$string .= '</td>';
 				
 			}
 			
+			if ($row->getOption('navigation'))
+			{
+			
+				$string .= '<td class="navigation">'
+					.$this->view->navigation()->menu($row->getOption('navigation'))->render()
+					.'</td>';
+			
+			}
+			
 			$string .= '</tr>';
 			
-		} else {
+		}
+		elseif ($row instanceof Inclusive_View_Table) 
+		{
+			
+			$string .= '<tr>';
+			
+			$string .= '<td colspan="'.$this->view->table()->getColumnCount().'">';
+				
+			$string .= $this->view->table($row);
+				
+			$string .= '</td>';
+			
+			$string .= '</tr>';
+			
+		} 
+		else {
 			
 			$string .= $row;
 			

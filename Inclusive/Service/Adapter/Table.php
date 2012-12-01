@@ -7,17 +7,10 @@ abstract class Inclusive_Service_Adapter_Table
 	
 	protected $_tableClass = 'Inclusive_Db_Table';
 	
-	public function __construct($table=null) {
-	
-		if ($table == null) {
+	public function __construct(Inclusive_Service_Abstract $service) 
+	{
 		
-			$class = $this->_tableClass;
-			
-			$table = new $class();
-		
-		}
-		
-		$this->setTable($table);
+		$this->setService($service);
 	
 	}
 	
@@ -30,8 +23,24 @@ abstract class Inclusive_Service_Adapter_Table
 	
 	public function getTable() {
 	
+		$class = $this->_tableClass;
+	
+		if (!($this->_table instanceof $class))
+		{
+		
+			$this->setTable(new $class());
+		
+		}
+		
 		return $this->_table;
 	
+	}
+	
+	public function getTableClass()
+	{
+	
+		return $this->_tableClass;
+		
 	}
 	
 	public function setTable(
@@ -39,13 +48,8 @@ abstract class Inclusive_Service_Adapter_Table
 		) {
 	
 		$this->_table = $table;
-	
-	}
-	
-	protected function _throw($message)
-	{
-	
-		throw new Inclusive_Service_Exception($message);
+		
+		return $this;
 	
 	}
 	

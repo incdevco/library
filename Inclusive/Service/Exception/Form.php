@@ -1,16 +1,11 @@
 <?php
 
-class Inclusive_Service_Exception_Form 
-	extends Inclusive_Service_Exception 
+class Inclusive_Service_Exception_Form extends Inclusive_Service_Exception 
 {
 	
 	protected $_form = null;
 	
-	public function __construct(
-		$msg='',
-		$code=0,
-		Exception $previous=null
-	) 
+	public function __construct($msg='',$code=0,Exception $previous=null) 
 	{
 	
 		if ($msg instanceof Zend_Form)
@@ -18,21 +13,25 @@ class Inclusive_Service_Exception_Form
 		
 			$this->setForm($msg);
 			
-			$msg = get_class($msg).' is Invalid';	
-		
+			$msg = get_class($msg).' is Invalid : ';
+			
+			$msg .= print_r($this->getForm()->getMessages(),true);
+			
 		}
 	
 		parent::__construct($msg,$code,$previous);
 	
 	}
 	
-	public function getForm() {
+	public function getForm() 
+	{
 	
 		return $this->_form;
 		
 	}
 	
-	public function setForm(Zend_Form $form) {
+	public function setForm(Zend_Form $form) 
+	{
 	
 		$this->_form = $form;
 		

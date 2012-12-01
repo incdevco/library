@@ -18,6 +18,8 @@ class Inclusive_Filter_StringToTime implements Zend_Filter_Interface {
 			
 		}
 		
+		return $value;
+		
 	}
 	
 }
