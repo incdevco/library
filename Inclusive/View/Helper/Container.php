@@ -1,10 +1,20 @@
 <?php
 
-class Inclusive_View_Helper_Container extends Zend_View_Helper_Abstract {
+class Inclusive_View_Helper_Container extends Zend_View_Helper_Abstract 
+{
 	
-	public function container($content,$options=null) {
+	public function container($content,$options=null) 
+	{
 		
 		$string = '<div class="container '.(isset($options['class']) ? $options['class'] : '').'">'."\n";
+		
+		if (isset($options['border'])
+			&& $options['border'])
+		{
+		
+			$string .= '<div class="border">'."\n";
+		
+		}
 		
         if (isset($options['wrapper'])
             && $options['wrapper']) {
@@ -15,7 +25,7 @@ class Inclusive_View_Helper_Container extends Zend_View_Helper_Abstract {
         
 		if (isset($options['title'])) {
 			
-			$string .= '<h3 class="title">'.$options['title'].'</h3>';
+			$string .= $this->view->header($options['title'],'3');
 			
 		}
 		
@@ -28,6 +38,16 @@ class Inclusive_View_Helper_Container extends Zend_View_Helper_Abstract {
             	
             $string .= '</div>'."\n";
             
+        }
+        
+        if (isset($options['border'])
+        	&& $options['border'])
+        {
+        
+        	$string .= '<div class="clear"></div>';
+        
+        	$string .= '</div>'."\n";
+        
         }
         
 		$string .= '</div>'."\n";

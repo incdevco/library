@@ -1,8 +1,10 @@
 <?php
 
-class Inclusive_View_Helper_Header extends Zend_View_Helper_Abstract {
+class Inclusive_View_Helper_Header extends Zend_View_Helper_Abstract 
+{
 
-	public function header($content,$number=1,$class='') {
+	public function header($content,$number=1,$class='inclusive') 
+	{
 	
 		$string = '<h'.$number.' class="'.$class.'">'.$content.'</h'.$number.'>';
 		

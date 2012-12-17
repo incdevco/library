@@ -4,7 +4,7 @@ class Inclusive_View_Helper_DefinitionList extends Zend_View_Helper_Abstract {
 	
 	public function definitionList(array $row,array $options=null) {
 		
-		$string = '<dl'.((isset($options['class'])) ? ' class="'.$options['class'].'"' : '').'>';
+		$string = '<dl'.((isset($options['class'])) ? ' class="'.$options['class'].'"' : ' class="inclusive"').'>';
 		
 		foreach ($row as $key => $value) {
 			

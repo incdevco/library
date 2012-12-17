@@ -8,18 +8,14 @@ class Inclusive_Acl extends Zend_Acl
 	
 		$allowed = false;
 		
-		if (is_array($role))
+		if (is_string($role))
 		{
 		
-			$roles = $role;
+			$role = array($role);
 		
 		}
-		else 
-		{
 		
-			$roles = array($role);
-			
-		}
+		$roles = $role;
 	
 		foreach ($roles as $role)
 		{

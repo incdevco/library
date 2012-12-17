@@ -95,10 +95,7 @@ abstract class Inclusive_Model_Abstract {
 	
 	}
 	
-	public function setService(
-		Inclusive_Service_Abstract $service,
-		$key=null
-	) 
+	public function setService(Inclusive_Service_Abstract $service,$key=null) 
 	{
 	
 		if ($key != null)

@@ -3,6 +3,10 @@
 class Inclusive_Form extends Zend_Form 
 {
 	
+	protected $_attribs = array(
+		'class'=>'inclusive'
+		);
+	
 	protected $_removeCSRF = false;
 	
 	protected $_removeConfirm = false;
@@ -24,6 +28,8 @@ class Inclusive_Form extends Zend_Form
 		$this->addElement(new Inclusive_Form_Element_CSRF());
 		
 		$this->_removeCSRF = true;
+		
+		return $this;
 	
 	}
 	
@@ -33,6 +39,8 @@ class Inclusive_Form extends Zend_Form
 		$this->addElement(new Inclusive_Form_Element_Confirm());
 		
 		$this->_removeConfirm = true;
+		
+		return $this;
 	
 	}
 	
@@ -51,7 +59,7 @@ class Inclusive_Form extends Zend_Form
 		if ($this->_removeCSRF)
 		{
 		
-			unset($values['inclusive_hash']);
+			unset($values['inclusive_csrf']);
 		
 		}
 		
@@ -87,10 +95,7 @@ class Inclusive_Form extends Zend_Form
 		
 	}
 	
-	public function setService(
-		Inclusive_Service_Abstract $service,
-		$key
-	) 
+	public function setService(Inclusive_Service_Abstract $service,$key) 
 	{
 	
 		$this->_services[$key] = $service;

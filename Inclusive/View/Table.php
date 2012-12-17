@@ -3,6 +3,8 @@
 class Inclusive_View_Table 
 {
 
+	protected $_emptyTableText = 'No Rows';
+
 	protected $_rows = array();
 
 	protected $_options = array();
@@ -76,6 +78,13 @@ class Inclusive_View_Table
 		
 	}
 	
+	public function getEmptyTableText()
+	{
+	
+		return $this->_emptyTableText;
+	
+	}
+	
 	public function getFirstRow() 
 	{
 	
@@ -101,6 +110,15 @@ class Inclusive_View_Table
 	
 		return $this->_rows;
 		
+	}
+	
+	public function setEmptyTableText($text)
+	{
+	
+		$this->_emptyTableText = $text;
+		
+		return $this;
+	
 	}
 	
 	public function setOptions($options)
