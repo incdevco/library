@@ -133,8 +133,6 @@ class Inclusive_View_Helper_Table extends Zend_View_Helper_Abstract {
 		
 		$this->_columnCount = 0;
 		
-		$options = array_merge($options,$table->getOptions());
-		
 		if ($table instanceof Inclusive_Table) 
 		{
 		
@@ -161,6 +159,17 @@ class Inclusive_View_Helper_Table extends Zend_View_Helper_Abstract {
 				return $table->getEmptyTableText();
 				
 			}
+			
+			$array = $table;
+			
+			$table = new Inclusive_View_Table();
+			
+			foreach ($array as $row)
+			{
+			
+				$table->addRow($row);
+			
+			}
 					
 		} 
 		else 
@@ -169,6 +178,8 @@ class Inclusive_View_Helper_Table extends Zend_View_Helper_Abstract {
 			return '';
 		
 		}
+		
+		$options = array_merge($options,$table->getOptions());
 		
 		$class = 'inclusive';
 		
