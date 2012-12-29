@@ -1,7 +1,11 @@
 <?php
 
-abstract class Inclusive_Service_Abstract 
+abstract class Inclusive_Service_Abstract implements Inclusive_Service_Acl_Resource_Interface
 {
+	
+	protected $_acl = null;
+	
+	protected $_aclContext = null;
 	
 	protected $_adapter = null;
 	
@@ -42,6 +46,27 @@ abstract class Inclusive_Service_Abstract
 		$class = $this->_modelClass;
 		
 		return new $class($this);
+	
+	}
+	
+	public function getAcl()
+	{
+	
+		if ($this->_acl === null)
+		{
+		
+			$this->_acl = Zend_Registry::get('acl');
+		
+		}
+		
+		return $this->_acl;
+	
+	}
+	
+	public function getAclContext()
+	{
+	
+		return $this->_aclContext;
 	
 	}
 	
@@ -106,6 +131,13 @@ abstract class Inclusive_Service_Abstract
 		
 	}
 	
+	public function getResourceId()
+	{
+	
+		return __CLASS__;
+	
+	}
+	
 	public function getService($key=null) 
 	{
 	
@@ -147,6 +179,24 @@ abstract class Inclusive_Service_Abstract
 	
 		return $this->_setClass;
 		
+	}
+	
+	public function setAcl(Zend_Acl $acl)
+	{
+	
+		$this->_acl = $acl;
+		
+		return $this;
+	
+	}
+	
+	public function setAclContext($context)
+	{
+	
+		$this->_aclContext = $context;
+		
+		return $this;
+	
 	}
 	
 	public function setAdapter($adapter) 

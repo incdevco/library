@@ -1,43 +1,13 @@
 <?php
 
-abstract class Inclusive_Service_Adapter_Abstract 
+abstract class Inclusive_Acl_Assert_Abstract implements Zend_Acl_Assert_Interface
 {
-
-	protected $_acl = null;
-	
-	protected $_aclClass = null;
 
 	protected $_services = array();
 	
 	protected $_serviceClasses = array();
-	
-	public function __construct(Inclusive_Service_Abstract $service) 
-	{
-		
-		$this->setService($service);
-	
-	}
-	
-	public function getAcl()
-	{
-	
-		if ($this->_acl === null)
-		{
-		
-			$class = $this->_aclClass;
-			
-			if ($class)
-			{
-			
-				$this->_acl = new $class();
-			
-			}
-		
-		}
-		
-		return $this->_acl;
-	
-	}
+
+	abstract function assert(Zend_Acl $acl,Zend_Acl_Role_Interface $role=null,Zend_Acl_Resource_Interface $resource=null,$privilege = null);
 	
 	public function getService($key=null) 
 	{
@@ -75,15 +45,6 @@ abstract class Inclusive_Service_Adapter_Abstract
 	
 	}
 	
-	public function setAcl(Zend_Acl $acl)
-	{
-	
-		$this->_acl = $acl;
-		
-		return $this;
-	
-	}
-	
 	public function setService(Inclusive_Service_Abstract $service,$key=null) 
 	{
 	
@@ -99,13 +60,6 @@ abstract class Inclusive_Service_Adapter_Abstract
 		$this->_service = $service;
 		
 		return $this;
-	
-	}
-	
-	protected function _throw($message)
-	{
-	
-		throw new Inclusive_Service_Exception($message);
 	
 	}
 	

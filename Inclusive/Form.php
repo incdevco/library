@@ -33,10 +33,10 @@ class Inclusive_Form extends Zend_Form
 	
 	}
 	
-	public function addConfirmElement()
+	public function addConfirmElement($options=null)
 	{
 	
-		$this->addElement(new Inclusive_Form_Element_Confirm());
+		$this->addElement(new Inclusive_Form_Element_Confirm('confirm',$options));
 		
 		$this->_removeConfirm = true;
 		
