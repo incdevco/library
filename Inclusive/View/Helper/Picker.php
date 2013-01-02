@@ -28,6 +28,13 @@ class Inclusive_View_Helper_Picker
 	protected function _renderJavascript()
 	{
 	
+		if (defined('ANYTIME_DATE_FORMAT'))
+		{
+		
+			$this->_format = ANYTIME_DATE_FORMAT;
+		
+		}
+	
 		if ($this->_renderJavascript)
 		{
 	
