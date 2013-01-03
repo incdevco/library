@@ -12,6 +12,8 @@ class Inclusive_Form_Element_Picker
 		
 		$this->addFilter(new Inclusive_Filter_StringToTime());
 		
+		$this->addValidator(new Zend_Validate_Digits());
+		
 	}
 
 }
