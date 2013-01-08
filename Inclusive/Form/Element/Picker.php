@@ -1,12 +1,12 @@
 <?php
 
-class Inclusive_Form_Element_Picker
-	extends Inclusive_Form_Element_Text
+class Inclusive_Form_Element_Picker extends Inclusive_Form_Element_Text
 {
 	
 	public $helper = 'picker';
 	
-	public function init() {
+	public function init() 
+	{
 	
 		parent::init();
 		

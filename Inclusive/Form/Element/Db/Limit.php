@@ -8,13 +8,6 @@ class Inclusive_Form_Element_Db_Limit extends Inclusive_Form_Element_Text
 	public function __construct($spec='limit',$options=null)
 	{
 	
-		if (!isset($options['required']))
-		{
-		
-			$options['required'] = true;
-		
-		}
-	
 		if (!isset($options['validators']))
 		{
 		
@@ -23,14 +16,21 @@ class Inclusive_Form_Element_Db_Limit extends Inclusive_Form_Element_Text
 				);
 		
 		}
-	
+		
 		if (!isset($options['value']))
 		{
 		
 			$options['value'] = $this->_defaultLimit;
 		
 		}
-	
+		
+		if (!isset($options['label']))
+		{
+		
+			$options['label'] = 'Limit';
+		
+		}
+		
 		parent::__construct($spec,$options);
 	
 	}

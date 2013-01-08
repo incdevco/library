@@ -1,19 +1,12 @@
 <?php
 
-class Inclusive_Form_Element_Db_Offset extends Inclusive_Form_Element_Text
+class Inclusive_Form_Element_Db_Offset extends Inclusive_Form_Element_Hidden
 {
 
 	protected $_defaultOffset = 0;
 
 	public function __construct($spec='offset',$options=null)
 	{
-	
-		if (!isset($options['required']))
-		{
-		
-			$options['required'] = true;
-		
-		}
 	
 		if (!isset($options['validators']))
 		{

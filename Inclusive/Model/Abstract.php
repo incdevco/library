@@ -16,7 +16,7 @@ abstract class Inclusive_Model_Abstract {
 	{
 		
 		$this->setService($service);
-	
+		
 		$this->_data = $data;
 	
 	}

@@ -1,24 +1,21 @@
 <?php
 
-class Inclusive_Filter_StringToTime implements Zend_Filter_Interface {
+class Inclusive_Filter_StringToTime implements Zend_Filter_Interface 
+{
 	
-	public function filter($value) {
-		
-		if (is_int($value)) {
-			
-			return $value;
-			
-		}
+	public function filter($value) 
+	{
 		
 		$result = strtotime($value);
 		
-		if ($result) {
-			
-			return $result;
-			
+		if ($result === false)
+		{
+		
+			return $value;
+		
 		}
 		
-		return $value;
+		return $result;
 		
 	}
 	
