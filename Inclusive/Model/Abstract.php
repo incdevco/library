@@ -144,5 +144,14 @@ abstract class Inclusive_Model_Abstract {
 		return $array[$key];
 	
 	}
+	
+	public function __set($key,$value) 
+	{
+	
+		$this->set($key,$value);
+		
+		return $this;
+	
+	}
 
 }
