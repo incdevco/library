@@ -4,7 +4,7 @@ class Inclusive_Db_Adapter_Pdo_Sqlite extends Zend_Db_Adapter_Pdo_Sqlite {
 	
 	protected function _connect() {
 		
-		/**
+		/*
          * if we already have a PDO object, no need to re-connect.
          */
         if ($this->_connection) {
