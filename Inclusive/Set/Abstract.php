@@ -35,13 +35,33 @@ abstract class Inclusive_Set_Abstract implements Iterator {
 	
 	}
 	
-	public function addModel(Inclusive_Model_Abstract $model)
+	public function addModel($model)
 	{
 	
-		$this->_set[] = $model;
+		if (is_array($model))
+		{
 		
-		return $this;
-	
+			$class = $this->getService()
+				->getModelClass();
+				
+			$model = new $class(
+				$this->getService(),
+				$model
+				);
+		
+		}
+		
+		if ($model instanceof Inclusive_Model_Abstract)
+		{
+			
+			$this->_set[] = $model;
+			
+			return $this;
+			
+		}
+		
+		throw new Inclusive_Service_Exception('Cannot add '.gettype($model).' as model');
+		
 	}
 	
 	public function getService($key=null) 
