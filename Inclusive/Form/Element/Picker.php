@@ -12,7 +12,7 @@ class Inclusive_Form_Element_Picker extends Inclusive_Form_Element_Text
 		
 		$this->addFilter(new Inclusive_Filter_StringToTime());
 		
-		$this->addValidator(new Zend_Validate_Digits());
+		$this->addValidator(new Zend_Validate_Float());
 		
 	}
 
