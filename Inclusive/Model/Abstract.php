@@ -1,6 +1,7 @@
 <?php
 
-abstract class Inclusive_Model_Abstract {
+abstract class Inclusive_Model_Abstract implements Zend_Acl_Resource_Interface
+{
 
 	protected $_data = array();
 	
@@ -18,6 +19,13 @@ abstract class Inclusive_Model_Abstract {
 		$this->setService($service);
 		
 		$this->_data = $data;
+	
+	}
+	
+	public function getResourceId()
+	{
+	
+		return get_class($this);
 	
 	}
 	
@@ -57,7 +65,26 @@ abstract class Inclusive_Model_Abstract {
 	
 	}
 	
-	public function save() {
+	public function isAllowed($privilege)
+	{
+	
+		$acl = Zend_Registry::get('acl');
+		
+		$roles = Zend_Registry::get('aclRoles');
+		
+		if ($acl->isAllowed($roles,$this,$privilege))
+		{
+		
+			return true;
+		
+		}
+		
+		return false;
+	
+	}
+	
+	public function save() 
+	{
 	
 		if ($this->_isNew()) {
 		
@@ -75,7 +102,8 @@ abstract class Inclusive_Model_Abstract {
 	
 	}
 	
-	public function set($key,$value) {
+	public function set($key,$value) 
+	{
 	
 		$this->_new[$key] = $value;
 		
@@ -83,9 +111,11 @@ abstract class Inclusive_Model_Abstract {
 	
 	}
 	
-	public function setFromArray(array $data) {
+	public function setFromArray(array $data) 
+	{
 	
-		foreach ($data as $key => $value) {
+		foreach ($data as $key => $value) 
+		{
 		
 			$this->set($key,$value);
 		
@@ -113,15 +143,18 @@ abstract class Inclusive_Model_Abstract {
 	
 	}
 	
-	public function toArray() {
+	public function toArray() 
+	{
 	
 		return array_merge($this->_data,$this->_new);
 	
 	}
 	
-	protected function _isNew() {
+	protected function _isNew() 
+	{
 	
-		if (empty($this->_data)) {
+		if (empty($this->_data)) 
+		{
 		
 			return true;
 			
@@ -131,11 +164,13 @@ abstract class Inclusive_Model_Abstract {
 	
 	}
 	
-	public function __get($key) {
+	public function __get($key) 
+	{
 	
 		$array = $this->toArray();
 		
-		if (!isset($array[$key])) {
+		if (!isset($array[$key])) 
+		{
 		
 			return null;
 		

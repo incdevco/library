@@ -7,6 +7,8 @@ abstract class Inclusive_Service_Abstract implements Inclusive_Service_Acl_Resou
 	
 	protected $_aclContext = null;
 	
+	protected $_aclRoles = null;
+	
 	protected $_adapter = null;
 	
 	protected $_adapterClass = null;
@@ -66,7 +68,28 @@ abstract class Inclusive_Service_Abstract implements Inclusive_Service_Acl_Resou
 	public function getAclContext()
 	{
 	
+		if ($this->_aclContext === null)
+		{
+		
+			$this->_aclContext = Zend_Registry::get('aclContext');
+		
+		}
+		
 		return $this->_aclContext;
+	
+	}
+	
+	public function getAclRoles()
+	{
+	
+		if ($this->_aclRoles === null)
+		{
+		
+			$this->_aclRoles = Zend_Registry::get('aclRoles');
+		
+		}
+		
+		return $this->_aclRoles;
 	
 	}
 	
@@ -134,7 +157,7 @@ abstract class Inclusive_Service_Abstract implements Inclusive_Service_Acl_Resou
 	public function getResourceId()
 	{
 	
-		return __CLASS__;
+		return get_class($this);
 	
 	}
 	
@@ -194,6 +217,15 @@ abstract class Inclusive_Service_Abstract implements Inclusive_Service_Acl_Resou
 	{
 	
 		$this->_aclContext = $context;
+		
+		return $this;
+	
+	}
+	
+	public function setAclRoles($roles)
+	{
+	
+		$this->_aclRoles = $roles;
 		
 		return $this;
 	
@@ -283,6 +315,19 @@ abstract class Inclusive_Service_Abstract implements Inclusive_Service_Acl_Resou
 		$this->_setClass = $class;
 		
 		return $this;
+		
+	}
+	
+	public function isAllowed($privilege,$context=null)
+	{
+	
+		$acl = $this->getAcl();
+		
+		$roles = $this->getAclRoles();
+		
+		$this->setAclContext($context);
+		
+		return $acl->isAllowed($roles,$this,$privilege);
 		
 	}
 	
