@@ -103,7 +103,7 @@ class Zend_Test_PHPUnit_Constraint_Redirect extends PHPUnit_Framework_Constraint
      * @param  null|string Assertion type
      * @return bool
      */
-    public function evaluate($other, $assertType = null)
+    public function evaluate($other, $assertType = null, $returnResult = FALSE)
     {
         if (!$other instanceof Zend_Controller_Response_Abstract) {
             require_once 'Zend/Test/PHPUnit/Constraint/Exception.php';
@@ -167,7 +167,7 @@ class Zend_Test_PHPUnit_Constraint_Redirect extends PHPUnit_Framework_Constraint
      * @return void
      * @throws PHPUnit_Framework_ExpectationFailedException
      */
-    public function fail($other, $description, $not = false)
+    public function fail($other, $description, PHPUnit_Framework_ComparisonFailure $comparisonFailure = NULL)
     {
         require_once 'Zend/Test/PHPUnit/Constraint/Exception.php';
         switch ($this->_assertType) {
