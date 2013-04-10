@@ -7,7 +7,7 @@ abstract class Inclusive_Acl_Assert_Abstract implements Zend_Acl_Assert_Interfac
 	
 	protected $_serviceClasses = array();
 
-	abstract function assert(Zend_Acl $acl,Zend_Acl_Role_Interface $role=null,Zend_Acl_Resource_Interface $resource=null,$privilege = null);
+	//abstract function assert(Zend_Acl $acl,Zend_Acl_Role_Interface $role=null,Zend_Acl_Resource_Interface $resource=null,$privilege = null);
 	
 	public function getService($key=null) 
 	{
