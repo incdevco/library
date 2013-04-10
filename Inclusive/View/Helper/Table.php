@@ -181,16 +181,27 @@ class Inclusive_View_Helper_Table extends Zend_View_Helper_Abstract {
 		
 		$options = array_merge($options,$table->getOptions());
 		
+		$string = '<table';
+		
 		$class = 'inclusive';
 		
 		if (isset($options['class']))
 		{
 		
 			$class = $options['class'];
+			
+		}
+		
+		$string .= ' class="'.$class.'"';
+		
+		if (isset($options['id']))
+		{
+		
+			$string .= ' id="'.strval($options['id']).'"';
 		
 		}
 		
-		$string = '<table class="'.$class.'">';
+		$string .=  '>';
 		
 		if (isset($options['caption'])) 
 		{

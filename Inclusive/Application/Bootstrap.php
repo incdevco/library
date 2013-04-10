@@ -3,6 +3,13 @@
 class Inclusive_Application_Bootstrap extends Zend_Application_Bootstrap_Bootstrap 
 {
 	
+	public function _initEventManager()
+	{
+	
+		
+	
+	}
+	
 	public function _initInclusiveFramework() 
 	{
 		
@@ -52,8 +59,14 @@ class Inclusive_Application_Bootstrap extends Zend_Application_Bootstrap_Bootstr
 	
 		if (!defined('REQUEST_TIME'))
 		{
-		
-			if (isset($_SERVER['REQUEST_TIME']) && $_SERVER['REQUEST_TIME'])
+			
+			if (isset($_SERVER['REQUEST_TIME_FLOAT']) && $_SERVER['REQUEST_TIME_FLOAT'])
+			{
+			
+				$time = $_SERVER['REQUEST_TIME_FLOAT'];
+				
+			}
+			elseif (isset($_SERVER['REQUEST_TIME']) && $_SERVER['REQUEST_TIME'])
 			{
 			
 				$time = $_SERVER['REQUEST_TIME'];

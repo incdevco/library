@@ -6,7 +6,27 @@ class Inclusive_View_Helper_Container extends Zend_View_Helper_Abstract
 	public function container($content,$options=null) 
 	{
 		
-		$string = '<div class="container '.(isset($options['class']) ? $options['class'] : '').'">'."\n";
+		$string = '<div';
+		
+		$class = 'container';
+		
+		if (isset($options['class'])) 
+		{ 
+		
+			$class .= ' '.$options['class'];
+			
+		}
+		
+		$string .= ' class="'.$class.'"';
+		
+		if (isset($options['id']))
+		{
+		
+			$string .= ' id="'.$options['id'].'"';
+		
+		}
+		
+		$string .= '>'."\n";
 		
 		if (isset($options['border'])
 			&& $options['border'])
