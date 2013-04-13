@@ -41,8 +41,7 @@ class Inclusive_View_Calendar_Month extends Inclusive_View_Calendar
 		for ($i = $this->start; $i < ($this->finish + $finish); $i+=$this->_secondsInAWeek) 
 		{
 			
-			$this->_weeks[] = 
-				new Inclusive_View_Calendar_Week($i,$this->options);
+			$this->_weeks[] = new Inclusive_View_Calendar_Week($i,$this->options);
 			
 		}
 	
