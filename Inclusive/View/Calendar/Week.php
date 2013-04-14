@@ -27,8 +27,7 @@ class Inclusive_View_Calendar_Week extends Inclusive_View_Calendar
 		for ($i = $this->start; $i < $this->finish; $i+=$this->_secondsInADay) 
 		{
 		
-			$this->_days[] = 
-				new Inclusive_View_Calendar_Day($i,$this->options);
+			$this->_days[] = new Inclusive_View_Calendar_Day($i,$this->options);
 			
 		}
 	

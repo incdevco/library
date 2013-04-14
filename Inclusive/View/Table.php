@@ -134,5 +134,14 @@ class Inclusive_View_Table
 		return $this;
 	
 	}
-
+	
+	public function setRows(array $rows)
+	{
+	
+		$this->_rows = $rows;
+		
+		return $this;
+	
+	}
+	
 }
