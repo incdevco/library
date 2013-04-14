@@ -194,11 +194,12 @@ null;this.oDiv.find(".AnyTime-off-off-btn").each(function(){this.AnyTime_offMin=
 (d=-1,j=0-j);var j=AnyTime.pad(j,4),l=h.earliest&&(new Date(h.earliest)).getFullYear(),k=h.latest&&(new Date(h.latest)).getFullYear();a=0;this.yDiv.find(".AnyTime-mil-btn").each(function(){b=(!h.earliest||d*(a+(d<0?0:999))>=l)&&(!h.latest||d*(a+(d>0?0:999))<=k);g(this).AnyTime_current(this.innerHTML==j.substring(0,1),b);a=a+1E3});a=1E3*Math.floor(j/1E3);this.yDiv.find(".AnyTime-cent-btn").each(function(){b=(!h.earliest||d*(a+(d<0?0:99))>=l)&&(!h.latest||d*(a+(d>0?0:99))<=k);g(this).AnyTime_current(this.innerHTML==
 j.substring(1,2),b);a=a+100});a=100*Math.floor(j/100);this.yDiv.find(".AnyTime-dec-btn").each(function(){b=(!h.earliest||d*(a+(d<0?0:9))>=l)&&(!h.latest||d*(a+(d>0?0:9))<=k);g(this).AnyTime_current(this.innerHTML==j.substring(2,3),b);a=a+10});a=10*Math.floor(j/10);this.yDiv.find(".AnyTime-yr-btn").each(function(){b=(!h.earliest||d*a>=l)&&(!h.latest||d*a<=k);g(this).AnyTime_current(this.innerHTML==j.substring(3),b);a=a+1});this.yDiv.find(".AnyTime-bce-btn").each(function(){g(this).AnyTime_current(d<
 0,!h.earliest||h.earliest<0)});this.yDiv.find(".AnyTime-ce-btn").each(function(){g(this).AnyTime_current(d>0,!h.latest||h.latest>0)});this.conv.setUtcFormatOffsetAlleged(this.offMin);this.conv.setUtcFormatOffsetSubIndex(this.offSI);this.inp.val(this.conv.format(this.time)).change();this.upd(c)}};y[l].initialize(l)};AnyTime.setEarliest=function(g,k){y[g].setEarliest(k)};AnyTime.setLatest=function(g,k){y[g].setLatest(k)}})(jQuery);
+
 HEREDOC;
 		
 			$this->view->JQuery()->addOnload($javascript);
 			
-			$this->view->JQuery()->addOnload('$("input.anytime").AnyTime_picker({format:"'.$this->_format.'"});');
+			$this->view->JQuery()->addOnload('$("input.anytime").AnyTime_picker({format:"'.$this->_format.'"}); $("input.anytime").each(function(){ var clearButton = $("<input type=\"button\" value=\"Clear\" />"); clearButton.click(function(){ $(this).prev("input.anytime").val("").change(); }); $(this).after(clearButton); });');
 			
 			$this->_renderJavascript = false;
 			
