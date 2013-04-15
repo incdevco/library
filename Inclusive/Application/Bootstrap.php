@@ -13,35 +13,27 @@ class Inclusive_Application_Bootstrap extends Zend_Application_Bootstrap_Bootstr
 		if ($view) 
 		{
 		
+			$view->addHelperPath('ZendX/JQuery/View/Helper','ZendX_JQuery_View_Helper');
 			$view->addHelperPath('Inclusive/View/Helper','Inclusive_View_Helper');
-		
+			
 		}
 		
 	}
 	
-	public function _initJQuery() 
+	public function _initDateFormats() 
 	{
-		
-		$this->bootstrap('View');
-		
-		$view = $this->getResource('View');
-		
-		if ($view) 
+	
+		if (!defined('DATETIME_FORMAT')) 
 		{
 		
-			$view->addHelperPath('ZendX/JQuery/View/Helper','ZendX_JQuery_View_Helper');
+			define('DATETIME_FORMAT','n/j/Y h:i:s a');
 		
 		}
-		
-	}
-	
-	public function _initDateFormat() 
-	{
 	
 		if (!defined('DATE_FORMAT')) 
 		{
 		
-			define('DATE_FORMAT','n/j/Y h:i:s a');
+			define('DATE_FORMAT','n/j/Y');
 		
 		}
 	

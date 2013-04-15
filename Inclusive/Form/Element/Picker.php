@@ -5,14 +5,23 @@ class Inclusive_Form_Element_Picker extends Inclusive_Form_Element_Text
 	
 	public $helper = 'picker';
 	
+	protected $_formatConstant = 'DATETIME_FORMAT';
+	
+	protected $_returnTimestamp = true;
+	
 	public function init() 
 	{
 	
 		parent::init();
 		
-		$this->addFilter(new Inclusive_Filter_StringToTime());
-		
-		$this->addValidator(new Zend_Validate_Float());
+		if ($this->_returnTimestamp)
+		{
+			
+			$this->addFilter(new Inclusive_Filter_StringToTime());
+			
+			$this->addValidator(new Zend_Validate_Float());
+			
+		}
 		
 	}
 	
@@ -25,11 +34,16 @@ class Inclusive_Form_Element_Picker extends Inclusive_Form_Element_Text
 		
 		$value = $this->getValue();
 		
-		if (!empty($value))
+		if (!empty($value)
+			&& (string) (int) $value === $value
+			&& $value <= PHP_INT_MAX
+			&& $value >= ~PHP_INT_MAX)
 		{
 		
-			$this->setValue(date(DATE_FORMAT,$value));
-		
+			$format = constant($this->_formatConstant);
+			
+			$this->setValue(date($format,$value));
+			
 		}
 		
 		$result = parent::render();
