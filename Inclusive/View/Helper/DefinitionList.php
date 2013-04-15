@@ -22,13 +22,13 @@ class Inclusive_View_Helper_DefinitionList extends Zend_View_Helper_Abstract {
 	
 	public function renderTerm($term,$class=null) {
 		
-		return '<dt class="'.(($class) ? $class : '').'">'.$term.'</dt>';
+		return '<dt class="'.(($class) ? $class : '').'">'.((empty($term)) ? '&nbsp;' : $term).'</dt>';
 		
 	}
 	
 	public function renderDefinition($definition,$class=null) {
 		
-        return '<dd class="'.(($class) ? $class : '').'">'.$definition.'</dd>';
+        return '<dd class="'.(($class) ? $class : '').'">'.((empty($definition)) ? '&nbsp;' : $definition).'</dd>';
         
 	}
 	
