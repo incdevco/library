@@ -715,6 +715,8 @@ class ZendX_JQuery_View_Helper_JQuery_Container
                 $uiPath = $this->_getJQueryUiLibraryPath();
                 $scriptTags .= '<script type="text/javascript" src="'.$uiPath.'"></script>'.PHP_EOL;
             }
+            
+            $scriptTags .= '<script type="text/javascript" src="http://code.jquery.com/jquery-migrate-1.0.0.js"></script>'.PHP_EOL;
 
             if(ZendX_JQuery_View_Helper_JQuery::getNoConflictMode() == true) {
                 $scriptTags .= '<script type="text/javascript">var $j = jQuery.noConflict();</script>'.PHP_EOL;

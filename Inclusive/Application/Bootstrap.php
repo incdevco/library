@@ -29,14 +29,21 @@ class Inclusive_Application_Bootstrap extends Zend_Application_Bootstrap_Bootstr
 			define('DATETIME_FORMAT','n/j/Y h:i:s a');
 		
 		}
-	
+		
 		if (!defined('DATE_FORMAT')) 
 		{
 		
 			define('DATE_FORMAT','n/j/Y');
 		
 		}
-	
+		
+		if (!defined('TIME_FORMAT')) 
+		{
+		
+			define('TIME_FORMAT','h:i:s');
+		
+		}
+		
 	}
 	
 	public function _initRequestTime()
