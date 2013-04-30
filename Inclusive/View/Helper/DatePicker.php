@@ -3,7 +3,7 @@
 class Inclusive_View_Helper_DatePicker extends Inclusive_View_Helper_Picker 
 {
 	
-	protected $_format = '%c/%e/%Y';
+	protected $_javascriptFormat = '%c/%e/%Y';
 	
 	public function datePicker($name,$value=null,$attribs=null) 
 	{
