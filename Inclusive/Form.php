@@ -4,7 +4,8 @@ class Inclusive_Form extends Zend_Form
 {
 	
 	protected $_attribs = array(
-		'class'=>'inclusive'
+		'class'=>'inclusive',
+		'accept-charset'=>'UTF-8'
 		);
 	
 	protected $_removeCSRF = false;

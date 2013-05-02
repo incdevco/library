@@ -72,7 +72,7 @@ class Zend_View_Helper_FormText extends Zend_View_Helper_FormElement
                 . $disabled
                 . $this->_htmlAttribs($attribs)
                 . $this->getClosingBracket();
-
+		
         return $xhtml;
     }
 }
