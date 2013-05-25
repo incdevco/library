@@ -7,13 +7,6 @@ abstract class Inclusive_Service_Adapter_Table extends Inclusive_Service_Adapter
 	
 	protected $_tableClass = 'Inclusive_Db_Table';
 	
-	public function __construct(Inclusive_Service_Abstract $service) 
-	{
-		
-		$this->setService($service);
-	
-	}
-	
 	public function arrayToWhere(array $array)
 	{
 	

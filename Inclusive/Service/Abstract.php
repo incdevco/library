@@ -237,19 +237,13 @@ abstract class Inclusive_Service_Abstract implements Inclusive_Service_Acl_Resou
 		if (is_string($adapter))
 		{
 		
-			$adapter = new $adapter($this);
+			$adapter = new $adapter(array('service'=>$this));
 		
 		}
 		else 
 		{
 		
-			if ($adapter instanceof Inclusive_Service_Adapter_Abstract)
-			{
-			
-				$adapter->setService($this);
-				
-			}
-			else 
+			if (!($adapter instanceof Inclusive_Service_Adapter_Abstract))
 			{
 			
 				return $this->_throw('Adapter must be instanceof Inclusive_Service_Adapter_Abstract');
@@ -259,6 +253,8 @@ abstract class Inclusive_Service_Abstract implements Inclusive_Service_Acl_Resou
 		}
 		
 		$this->_adapter = $adapter;
+		
+		$adapter->setService($this);
 		
 		return $this;
 	

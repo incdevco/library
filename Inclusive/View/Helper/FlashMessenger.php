@@ -14,21 +14,29 @@ class Inclusive_View_Helper_FlashMessenger extends Zend_View_Helper_Abstract {
 	 * Set $autoHide to true, to add javascript to fade out flashMessenger container.
 	 * Set $autoHide to an integer of milliseconds to auto hide after, will also enable auto hide.
 	 */
-	public function flashMessenger($currentMessages=true,$autoHide=true) {
+	public function flashMessenger($autoHide=true) 
+	{
 		
-		$flashMessenger = Zend_Controller_Action_HelperBroker::getStaticHelper('FlashMessenger');
+		if ($autoHide)
+		{
 		
-		if ($currentMessages) {
+			$this->_autoHide = true;
 			
-			$messages = $flashMessenger->getCurrentMessages();
+			if (is_int($autoHide))
+			{
 			
-		} else {
-		
-			$messages = $flashMessenger->getMessages();
+				$this->_autoHideMilliseconds = $autoHide;
+			
+			}
 		
 		}
 		
-		if (!count($messages)) {
+		$flashMessenger = Zend_Controller_Action_HelperBroker::getStaticHelper('FlashMessenger');
+		
+		$messages = $flashMessenger->getMessages();
+		
+		if (!count($messages)) 
+		{
 			
 			return '';
 			
@@ -46,31 +54,22 @@ class Inclusive_View_Helper_FlashMessenger extends Zend_View_Helper_Abstract {
 	
         $string .= "</ul>\n<div class=\"clear\"></div>\n</div>\n";
         
-        if ($autoHide) {
-        	
-        	$this->_autoHide = $autoHide;
-        	
-        	if (is_int($autoHide)) {
-        		
-        		$this->_autoHideMilliseconds = $autoHide;
-        		
-        	}
-        	
-        }
-        
         $this->_addJavascript();
         
         return $string;
         
 	}
 	
-	protected function _addJavascript() {
+	protected function _addJavascript() 
+	{
 		
-		if (!$this->_javascriptAdded) {
+		if (!$this->_javascriptAdded) 
+		{
 			
 			$javascript = '$("#flash_messenger h3").append($("<a href=\"#\">Close</a>").click(function(){ $("#flash_messenger").hide(); return false; }));';
 			
-			if ($this->_autoHide) {
+			if ($this->_autoHide) 
+			{
 				
 				$javascript .= 'setTimeout("$(\'#flash_messenger\').fadeOut()",'.$this->_autoHideMilliseconds.');';
 				

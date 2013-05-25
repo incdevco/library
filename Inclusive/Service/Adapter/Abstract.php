@@ -11,10 +11,25 @@ abstract class Inclusive_Service_Adapter_Abstract
 	
 	protected $_serviceClasses = array();
 	
-	public function __construct(Inclusive_Service_Abstract $service) 
+	public function __construct($options=null) 
 	{
 		
-		$this->setService($service);
+		// Backwards Compatibility
+		if ($options instanceof Inclusive_Service_Abstract)
+		{
+		
+			$service = $options;
+			
+			$options = array('service'=>$service);
+		
+		}
+		
+		if (isset($options['service']))
+		{
+		
+			$this->setService($options['service']);
+			
+		}
 	
 	}
 	
