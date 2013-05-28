@@ -157,6 +157,22 @@ abstract class Inclusive_Set_Abstract implements Iterator {
 	
 	}
 	
+	public function toArray()
+	{
+	
+		$array = array();
+		
+		foreach ($this as $model)
+		{
+		
+			$array[] = $model->toArray();
+		
+		}
+		
+		return $array;
+	
+	}
+	
 	public function valid()
 	{
 	
