@@ -1,6 +1,7 @@
 <?php
 
-class Inclusive_View_Helper_FlashMessenger extends Zend_View_Helper_Abstract {
+class Inclusive_View_Helper_FlashMessenger extends Zend_View_Helper_Abstract 
+{
 	
 	protected $_javascriptAdded = false;
 	
@@ -14,7 +15,7 @@ class Inclusive_View_Helper_FlashMessenger extends Zend_View_Helper_Abstract {
 	 * Set $autoHide to true, to add javascript to fade out flashMessenger container.
 	 * Set $autoHide to an integer of milliseconds to auto hide after, will also enable auto hide.
 	 */
-	public function flashMessenger($autoHide=true) 
+	public function flashMessenger($autoHide=true,$currentMessages=false) 
 	{
 		
 		if ($autoHide)
@@ -34,6 +35,13 @@ class Inclusive_View_Helper_FlashMessenger extends Zend_View_Helper_Abstract {
 		$flashMessenger = Zend_Controller_Action_HelperBroker::getStaticHelper('FlashMessenger');
 		
 		$messages = $flashMessenger->getMessages();
+		
+		if ($currentMessages)
+		{
+		
+			$messages = array_merge($messages,$flashMessenger->getCurrentMessages());
+		
+		}
 		
 		if (!count($messages)) 
 		{

@@ -74,7 +74,7 @@ abstract class Inclusive_Db_Table_Abstract extends Zend_Db_Table_Abstract
 				throw new Zend_Exception('Primary Key Empty: '.$key);
 			
 			}
-		
+			
 			if (!isset($data[$key]) or empty($data[$key]))
 			{
 			
