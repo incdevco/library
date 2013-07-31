@@ -19,10 +19,13 @@ class Inclusive_View_Calendar_Week extends Inclusive_View_Calendar
 	
 		$dayOfWeek = date('w',$this->current);
 		
-		$this->start = $this->current - 
-			($dayOfWeek * $this->_secondsInADay);
+		$this->start = $this->current - ($dayOfWeek * $this->_secondsInADay);
+		
+		$this->previous = $this->start - 100;
 			
 		$this->finish = $this->start + $this->_secondsInAWeek;
+		
+		$this->next = $this->finish + 100;
 		
 		for ($i = $this->start; $i < $this->finish; $i+=$this->_secondsInADay) 
 		{

@@ -7,7 +7,11 @@ class Inclusive_View_Calendar
 	
 	public $finish = null;
 	
+	public $next = null;
+	
 	protected $options = null;
+	
+	public $previous = null;
 	
 	protected $_secondsInADay = 86400;
 	
