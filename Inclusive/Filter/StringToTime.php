@@ -8,7 +8,7 @@ class Inclusive_Filter_StringToTime implements Zend_Filter_Interface
 		
 		$result = strtotime($value);
 		
-		if ($result === false)
+		if ($result == false)
 		{
 		
 			return $value;
