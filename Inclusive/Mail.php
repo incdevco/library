@@ -9,5 +9,12 @@ class Inclusive_Mail extends Zend_Mail
 	    parent::__construct($charset);
 	    
 	}
+	
+	public function toString()
+	{
+	
+		return Zend_Debug::dump($this,null,false);
+	
+	}
 
 }
