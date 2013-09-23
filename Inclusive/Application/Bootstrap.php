@@ -35,13 +35,20 @@ class Inclusive_Application_Bootstrap extends Zend_Application_Bootstrap_Bootstr
 		
 	}
 	
-	public function _initDateFormat() 
+	public function _initDateFormats() 
 	{
 	
 		if (!defined('DATE_FORMAT')) 
 		{
 		
-			define('DATE_FORMAT','n/j/Y h:i:s a');
+			define('DATE_FORMAT','n/j/Y');
+		
+		}
+	
+		if (!defined('DATETIME_FORMAT')) 
+		{
+		
+			define('DATETIME_FORMAT','n/j/Y h:i:s a');
 		
 		}
 	
