@@ -15,6 +15,13 @@ class Inclusive_Validate_Matches extends Zend_Validate_Abstract
 	
 		$this->_elementToMatch = $elementToMatch;
 		
+		if (isset($options['obscureValue']))
+		{
+		
+			$this->_obscureValue = $options['obscureValue'];
+		
+		}
+		
 	}
 	
 	public function isValid($value,$context=null)
