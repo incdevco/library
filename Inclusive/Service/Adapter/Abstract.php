@@ -57,8 +57,7 @@ abstract class Inclusive_Service_Adapter_Abstract
 	public function getService($key=null) 
 	{
 	
-		if ($key != null 
-			&& isset($this->_serviceClasses[$key]))
+		if ($key != null && isset($this->_serviceClasses[$key]))
 		{
 		
 			$class = $this->_serviceClasses[$key];
@@ -74,8 +73,7 @@ abstract class Inclusive_Service_Adapter_Abstract
 		if ($class != null)
 		{
 		
-			if (!isset($this->_services[$key])
-				or !($this->_services[$key] instanceof $class))
+			if (!isset($this->_services[$key]) or !($this->_services[$key] instanceof $class))
 			{
 			
 				$this->setService(new $class(),$key);

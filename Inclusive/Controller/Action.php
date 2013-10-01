@@ -12,16 +12,13 @@ abstract class Inclusive_Controller_Action extends Zend_Controller_Action {
 	{
 	
 		if (!isset($this->_services[$key])
-			or !($this->_services[$key] 
-				instanceof Inclusive_Service_Abstract))
+			or !($this->_services[$key] instanceof Inclusive_Service_Abstract))
 		{
 		
 			if (!isset($this->_serviceClasses[$key]))
 			{
 			
-				throw new Inclusive_Controller_Exception(
-					'Service Class Not Set: '.$key
-					);
+				throw new Inclusive_Controller_Exception('Service Class Not Set: '.$key);
 			
 			}
 			
