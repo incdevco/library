@@ -3,12 +3,21 @@
 class Inclusive_Acl extends Zend_Acl 
 {
 	
+	protected $_context = null;
+	
+	public function getContext()
+	{
+	
+		return $this->_context;
+	
+	}
+	
 	public function isAllowed($role=null,$resource=null,$privilege=null)
 	{
 	
 		$allowed = false;
 		
-		if (is_string($role))
+		if (is_string($role) || $role === null)
 		{
 		
 			$role = array($role);
@@ -30,6 +39,15 @@ class Inclusive_Acl extends Zend_Acl
 		}
 	
 		return $allowed;
+	
+	}
+	
+	public function setContext($context)
+	{
+	
+		$this->_context = $context;
+		
+		return $this;
 	
 	}
 	

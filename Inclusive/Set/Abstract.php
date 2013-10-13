@@ -40,14 +40,8 @@ abstract class Inclusive_Set_Abstract implements Iterator {
 	
 		if (is_array($model))
 		{
-		
-			$class = $this->getService()
-				->getModelClass();
 				
-			$model = new $class(
-				$this->getService(),
-				$model
-				);
+			$model = $this->arrayToModel($model);
 		
 		}
 		
@@ -62,6 +56,16 @@ abstract class Inclusive_Set_Abstract implements Iterator {
 		
 		throw new Inclusive_Service_Exception('Cannot add '.gettype($model).' as model');
 		
+	}
+	
+	public function arrayToModel(array $array)
+	{
+	
+		$class = $this->getService()
+			->getModelClass();
+			
+		return new $class($this->getService(),$array);
+	
 	}
 	
 	public function getService($key=null) 
@@ -116,6 +120,40 @@ abstract class Inclusive_Set_Abstract implements Iterator {
 		
 		return $this;
 	
+	}
+	
+	public function setWithAcl($acl,$models,$privilege)
+	{
+	
+		foreach ($models as $model)
+		{
+			
+			if (is_array($model))
+			{
+			
+				$model = $this->arrayToModel($model);
+			
+			}
+			
+			try 
+			{
+				
+				$acl->isAllowed($model,$privilege);
+				
+				$this->addModel($model);
+			
+			}
+			catch (Inclusive_Service_Exception_NotAllowed $e)
+			{
+			
+				
+			
+			}
+		
+		}
+		
+		return $this;
+		
 	}
 	
 	public function count()

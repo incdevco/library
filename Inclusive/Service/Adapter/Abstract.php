@@ -33,6 +33,16 @@ abstract class Inclusive_Service_Adapter_Abstract
 	
 	}
 	
+	public function fetchNew(array $data=array())
+	{
+	
+		$class = $this->getService()
+			->getModelClass();
+			
+		return new $class($this->getService(),$data);
+	
+	}
+	
 	public function getAcl()
 	{
 	
@@ -88,7 +98,7 @@ abstract class Inclusive_Service_Adapter_Abstract
 	
 	}
 	
-	public function setAcl(Zend_Acl $acl)
+	public function setAcl($acl)
 	{
 	
 		$this->_acl = $acl;
