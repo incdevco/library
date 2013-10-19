@@ -238,7 +238,7 @@ class Zend_Pdf_Resource_Font_Type0 extends Zend_Pdf_Resource_Font
      */
     public function encodeString($string, $charEncoding)
     {
-        return iconv($charEncoding, 'UTF-16BE', $string);
+        return iconv($charEncoding, 'UTF-16BE//IGNORE', $string);
     }
 
     /**
