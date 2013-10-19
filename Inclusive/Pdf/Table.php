@@ -182,4 +182,13 @@ class Inclusive_Pdf_Table
 	
 	}
 	
+	public function setRowHeight($height)
+	{
+	
+		$this->_rowHeight = $height;
+		
+		return $this;
+	
+	}
+	
 }

@@ -7,6 +7,24 @@ class Inclusive_Pdf extends Zend_Pdf
 	
 	protected $_font = null;
 	
+	public function newPage($param1=null,$param2=null)
+	{
+		
+		if (null === $param1)
+		{
+		
+			$param1 = Zend_Pdf_Page::SIZE_LETTER;
+		
+		}
+		
+		$page = parent::newPage($param1,$param2);
+		
+		$page->setFont($this->_getDefaultFont(),$this->_getDefaultFontSize());
+		
+		return $page;
+	
+	}
+	
 	protected function _getDefaultFont()
 	{
 	
@@ -36,6 +54,13 @@ class Inclusive_Pdf extends Zend_Pdf
 		$this->_defaultFontSize = $size;
 		
 		return $this;
+	
+	}
+	
+	static function widthForStringUsingFontSize($string,$font,$fontSize)
+	{
+	
+		return self::_widthForStringUsingFontSize($string,$font,$fontSize);
 	
 	}
 	
