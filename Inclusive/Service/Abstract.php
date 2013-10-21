@@ -42,12 +42,12 @@ abstract class Inclusive_Service_Abstract implements Inclusive_Service_Acl_Resou
 	
 	}
 	
-	public function fetchNew() 
+	public function fetchNew(array $data=array()) 
 	{
 	
 		$class = $this->_modelClass;
 		
-		return new $class($this);
+		return new $class($this,$data);
 	
 	}
 	
