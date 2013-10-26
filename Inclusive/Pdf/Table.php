@@ -113,8 +113,13 @@ class Inclusive_Pdf_Table
 			
 			foreach ($this->_columns as $key => $column)
 			{
-			
-				$page->drawText($row[$key],$currentX+$this->_padding,$currentY+$this->_padding,$this->_encoding);
+				
+				if (isset($row[$key]))
+				{
+					
+					$page->drawText($row[$key],$currentX+$this->_padding,$currentY+$this->_padding,$this->_encoding);
+					
+				}
 				
 				$currentX += $column['width'];
 			
