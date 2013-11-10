@@ -7,21 +7,32 @@ class Inclusive_Pdf extends Zend_Pdf
 	
 	protected $_font = null;
 	
-	public function newPage($param1=null,$param2=null)
+	public function newPage($param1=null, $param2 = null)
 	{
-		
-		if (null === $param1)
-		{
-		
-			$param1 = Zend_Pdf_Page::SIZE_LETTER;
-		
-		}
-		
-		$page = parent::newPage($param1,$param2);
-		
-		$page->setFont($this->_getDefaultFont(),$this->_getDefaultFontSize());
-		
-		return $page;
+	    
+	    if (null === $param1)
+	    {
+	    
+	    	$param1 = Zend_Pdf_Page::SIZE_LETTER;
+	    
+	    }
+	    
+	    if ($param2 === null) 
+	    {
+	    	
+	    	$page = new Inclusive_Pdf_Page($param1, $this->_objFactory);
+	    
+	    } 
+	    else 
+	    {
+	    	
+	    	$page = new Inclusive_Pdf_Page($param1, $param2, $this->_objFactory);
+	    
+	    }
+	    
+	    $page->setFont($this->_getDefaultFont(),$this->_getDefaultFontSize());
+	    
+	    return $page;
 	
 	}
 	
