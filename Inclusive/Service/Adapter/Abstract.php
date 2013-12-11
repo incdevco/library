@@ -2,12 +2,8 @@
 
 abstract class Inclusive_Service_Adapter_Abstract 
 {
-
-	protected $_acl = null;
 	
-	protected $_aclClass = null;
-
-	protected $_services = array();
+	protected $__services = array();
 	
 	protected $_serviceClasses = array();
 	
@@ -36,29 +32,14 @@ abstract class Inclusive_Service_Adapter_Abstract
 	public function getAcl()
 	{
 	
-		if ($this->_acl === null)
-		{
-		
-			$class = $this->_aclClass;
-			
-			if ($class)
-			{
-			
-				$this->_acl = new $class();
-			
-			}
-		
-		}
-		
-		return $this->_acl;
+		return $this->getService()->getAcl();
 	
 	}
 	
 	public function getService($key=null) 
 	{
 	
-		if ($key != null 
-			&& isset($this->_serviceClasses[$key]))
+		if ($key != null && isset($this->_serviceClasses[$key]))
 		{
 		
 			$class = $this->_serviceClasses[$key];
@@ -74,44 +55,37 @@ abstract class Inclusive_Service_Adapter_Abstract
 		if ($class != null)
 		{
 		
-			if (!isset($this->_services[$key])
-				or !($this->_services[$key] instanceof $class))
+			if (!isset($this->__services[$key])
+				or !($this->__services[$key] instanceof $class))
 			{
 			
 				$this->setService(new $class(),$key);
 			
 			}
 			
-			return $this->_services[$key];
+			return $this->__services[$key];
 		
 		}
 	
-		return $this->_service;
-	
-	}
-	
-	public function setAcl(Zend_Acl $acl)
-	{
-	
-		$this->_acl = $acl;
-		
-		return $this;
+		return $this->__service;
 	
 	}
 	
 	public function setService(Inclusive_Service_Abstract $service,$key=null) 
 	{
 	
-		if ($key != null)
+		if (null === $key)
+		{
+			
+			$this->__service = $service;
+			
+		}
+		else 
 		{
 		
-			$this->_services[$key] = $service;
-			
-			return $this;
+			$this->__services[$key] = $service;
 		
 		}
-	
-		$this->_service = $service;
 		
 		return $this;
 	
