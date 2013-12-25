@@ -13,10 +13,17 @@ abstract class Inclusive_Model_Abstract implements Zend_Acl_Resource_Interface
 	
 	protected $_serviceClasses = array();
 	
-	public function __construct(Inclusive_Service_Abstract $service,array $data=array()) 
+	public function __construct(Inclusive_Service_Abstract $service,$data=array()) 
 	{
 		
 		$this->setService($service);
+		
+		if ($data instanceof Zend_Db_Table_Row_Abstract)
+		{
+		
+			$data = $data->toArray();
+		
+		}
 		
 		$this->_data = $data;
 	

@@ -8,7 +8,7 @@ class Inclusive_Acl extends Zend_Acl
 	
 		$allowed = false;
 		
-		if (is_string($role))
+		if (!is_array($role))
 		{
 		
 			$role = array($role);

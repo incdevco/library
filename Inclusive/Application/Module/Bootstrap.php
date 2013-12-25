@@ -9,7 +9,8 @@ class Inclusive_Application_Module_Bootstrap
 			->addResourceType('Filter','filters','Filter')
 			->addResourceType('Set','sets','Set')
 			->addResourceType('Validate','validators','Validate')
-			->addResourceType('Assert','assertions','Assert');
+			->addResourceType('Assert','assertions','Assert')
+			->addResourceType('Acl','acls','Acl');
 	
 	}
 

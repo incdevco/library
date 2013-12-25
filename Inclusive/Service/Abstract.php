@@ -1,6 +1,6 @@
 <?php
 
-abstract class Inclusive_Service_Abstract implements Inclusive_Service_Acl_Resource_Interface
+abstract class Inclusive_Service_Abstract
 {
 	
 	protected $__acl = null;
@@ -58,32 +58,12 @@ abstract class Inclusive_Service_Abstract implements Inclusive_Service_Acl_Resou
 	
 	}
 	
-	public function createSet($datas,$privilege=null)
+	public function createSet()
 	{
 	
 		$class = $this->getSetClass();
 		
 		$set = new $class($this);
-		
-		foreach ($datas as $data)
-		{
-		
-			try 
-			{
-			
-				$model = $this->createModel($data,$privilege);
-				
-				$set->addModel($model);
-			
-			}
-			catch (Inclusive_Service_Exception $e)
-			{
-			
-				
-			
-			}
-		
-		}
 		
 		return $set;
 	
@@ -110,7 +90,7 @@ abstract class Inclusive_Service_Abstract implements Inclusive_Service_Acl_Resou
 		
 		}
 		
-		return $this->_acl;
+		return $this->__acl;
 	
 	}
 	
@@ -131,7 +111,7 @@ abstract class Inclusive_Service_Abstract implements Inclusive_Service_Acl_Resou
 		
 		}
 		
-		return $this->_adapter;
+		return $this->__adapter;
 	
 	}
 	
@@ -214,7 +194,7 @@ abstract class Inclusive_Service_Abstract implements Inclusive_Service_Acl_Resou
 		
 	}
 	
-	public function setAcl(Zend_Acl $acl)
+	public function setAcl($acl)
 	{
 	
 		$this->__acl = $acl;
@@ -319,6 +299,13 @@ abstract class Inclusive_Service_Abstract implements Inclusive_Service_Acl_Resou
 	{
 	
 		throw new Inclusive_Service_Exception_Form($form);
+	
+	}
+	
+	public function _throwNotAllowed($model,$privilege)
+	{
+	
+		throw new Inclusive_Service_Exception('Not Allowed To '.$privilege.' on '.$model->getResourceId());
 	
 	}
 	
