@@ -157,6 +157,13 @@ abstract class Inclusive_Model_Abstract implements Zend_Acl_Resource_Interface
 	
 	}
 	
+	public function toJSON()
+	{
+	
+		return json_encode($this->toArray());
+	
+	}
+	
 	protected function _isNew() 
 	{
 	

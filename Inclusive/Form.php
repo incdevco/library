@@ -95,6 +95,20 @@ class Inclusive_Form extends Zend_Form
 		
 	}
 	
+	public function isValueEmpty($value)
+	{
+	
+		if ('' === $value || null === $value) 
+		{
+		
+			return true;	
+		
+		}
+		
+		return false;
+	
+	}
+	
 	public function setService(Inclusive_Service_Abstract $service,$key) 
 	{
 	

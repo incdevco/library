@@ -5,7 +5,7 @@ abstract class Inclusive_Service_Abstract
 	
 	protected $__acl = null;
 	
-	protected $__aclClass = null;
+	protected $_aclClass = null;
 	
 	protected $__adapter = null;
 	
@@ -84,7 +84,7 @@ abstract class Inclusive_Service_Abstract
 		if ($this->__acl === null)
 		{
 			
-			$class = $this->__aclClass;
+			$class = $this->_aclClass;
 			
 			$this->__acl = new $class();
 		
