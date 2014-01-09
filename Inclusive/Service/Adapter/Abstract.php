@@ -6,6 +6,8 @@ abstract class Inclusive_Service_Adapter_Abstract
 	protected $_acl = null;
 	
 	protected $_aclClass = null;
+	
+	protected $_service = null;
 
 	protected $_services = array();
 	
