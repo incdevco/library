@@ -15,7 +15,7 @@ abstract class Inclusive_Service_Adapter_Table extends Inclusive_Service_Adapter
 		foreach ($array as $key => $value)
 		{
 		
-			$where["$key = ?"] = $value;
+			$where["`$key` = ?"] = $value;
 			
 		}
 		
