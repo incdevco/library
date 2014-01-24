@@ -204,7 +204,7 @@ abstract class Inclusive_Service_Abstract implements Inclusive_Service_Acl_Resou
 		
 	}
 	
-	public function setAcl(Zend_Acl $acl)
+	public function setAcl(Acl $acl)
 	{
 	
 		$this->_acl = $acl;
