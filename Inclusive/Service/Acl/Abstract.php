@@ -57,4 +57,15 @@ class Inclusive_Service_Acl_Abstract
 		
 	}
 	
+	abstract public function getRoles();
+	
+	public function isAllowed($model,$privilege)
+	{
+	
+		$roles = $this->getRoles();
+		
+		return $this->_acl->isAllowed($roles,$model,$privilege);
+	
+	}
+	
 }

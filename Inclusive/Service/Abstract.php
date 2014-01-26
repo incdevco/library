@@ -40,19 +40,12 @@ abstract class Inclusive_Service_Abstract
 	
 	}
 	
-	public function createModel($data,$privilege=null)
+	public function createModel($data)
 	{
 		
 		$class = $this->getModelClass();
 		
 		$model = new $class($this,$data);
-		
-		if (null !== $privilege)
-		{
-		
-			$this->getAcl()->isAllowed($model,$privilege);
-		
-		}
 		
 		return $model;
 	
@@ -66,15 +59,6 @@ abstract class Inclusive_Service_Abstract
 		$set = new $class($this);
 		
 		return $set;
-	
-	}
-	
-	public function fetchNew(array $data=array()) 
-	{
-	
-		$class = $this->_modelClass;
-		
-		return new $class($this,$data);
 	
 	}
 	
@@ -302,10 +286,28 @@ abstract class Inclusive_Service_Abstract
 	
 	}
 	
-	public function _throwNotAllowed($model,$privilege)
+	public function _throwNotAllowed($models,$privilege)
 	{
-	
-		throw new Inclusive_Service_Exception('Not Allowed To '.$privilege.' on '.$model->getResourceId());
+		
+		if (!is_array($models))
+		{
+		
+			$models = array($models);
+		
+		}
+		
+		$string = '( ';
+		
+		foreach ($models as $model)
+		{
+		
+			$string .= $model->getResourceId().' ';
+		
+		}
+		
+		$string .= ' )';
+		
+		throw new Inclusive_Service_Exception('Not Allowed To '.$privilege.' on '.$string);
 	
 	}
 	
