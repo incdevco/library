@@ -15,6 +15,8 @@ class Inclusive_Form extends Zend_Form
 	
 	protected $_serviceClasses = array();
 	
+	protected $_unsetIfEmpty = array();
+	
 	public function __construct($options=null)
 	{
 	
@@ -60,6 +62,18 @@ class Inclusive_Form extends Zend_Form
 		{
 		
 			unset($values['inclusive_csrf']);
+		
+		}
+		
+		foreach ($this->_unsetIfEmpty as $key)
+		{
+		
+			if (isset($values[$key]) && $this->isValueEmpty($values[$key]))
+			{
+			
+				unset($values[$key]);
+			
+			}
 		
 		}
 		

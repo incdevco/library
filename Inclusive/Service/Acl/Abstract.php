@@ -1,6 +1,6 @@
 <?php
 
-class Inclusive_Service_Acl_Abstract
+abstract class Inclusive_Service_Acl_Abstract
 {
 
 	protected $_acl = null;
