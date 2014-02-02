@@ -17,6 +17,8 @@ class Inclusive_Form extends Zend_Form
 	
 	protected $_unsetIfEmpty = array();
 	
+	protected $_ifEmptySetNull = array();
+	
 	public function __construct($options=null)
 	{
 	
@@ -72,6 +74,18 @@ class Inclusive_Form extends Zend_Form
 			{
 			
 				unset($values[$key]);
+			
+			}
+		
+		}
+		
+		foreach ($this->_ifEmptySetNull as $key)
+		{
+		
+			if (isset($values[$key]) && $this->isValueEmpty($values[$key]))
+			{
+			
+				$values[$key] = null;
 			
 			}
 		
