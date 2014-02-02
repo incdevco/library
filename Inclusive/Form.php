@@ -126,7 +126,9 @@ class Inclusive_Form extends Zend_Form
 	public function isValueEmpty($value)
 	{
 	
-		if ('' === $value || null === $value) 
+		if ('' === $value 
+			|| null === $value 
+			|| (is_array($value) && empty($value))) 
 		{
 		
 			return true;	

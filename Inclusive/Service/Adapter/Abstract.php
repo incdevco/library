@@ -1,6 +1,6 @@
 <?php
 
-abstract class Inclusive_Service_Adapter_Abstract 
+class Inclusive_Service_Adapter_Abstract 
 {
 	
 	protected $__services = array();

@@ -1,6 +1,6 @@
 <?php
 
-abstract class Inclusive_Service_Adapter_Table extends Inclusive_Service_Adapter_Abstract 
+class Inclusive_Service_Adapter_Table extends Inclusive_Service_Adapter_Abstract 
 {
 
 	protected $_table = null;
@@ -14,8 +14,17 @@ abstract class Inclusive_Service_Adapter_Table extends Inclusive_Service_Adapter
 		
 		foreach ($array as $key => $value)
 		{
-		
-			$where["$key = ?"] = $value;
+			
+			$comparator = '= ?';
+			
+			if (is_array($value))
+			{
+			
+				$comparator = 'IN(?)';
+			
+			}
+			
+			$where["`$key` $comparator"] = $value;
 			
 		}
 		
