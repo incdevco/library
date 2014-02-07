@@ -7,6 +7,31 @@ class Inclusive_Service_Adapter_Table extends Inclusive_Service_Adapter_Abstract
 	
 	protected $_tableClass = 'Inclusive_Db_Table';
 	
+	public function arrayToSelect(array $array)
+	{
+	
+		$select = $this->getTable()->select(true);
+		
+		foreach ($array as $key => $value)
+		{
+			
+			$comparator = '= ?';
+			
+			if (is_array($value))
+			{
+			
+				$comparator = 'IN(?)';
+			
+			}
+			
+			$select->where("`$key` $comparator",$value);
+			
+		}
+		
+		return $select;
+	
+	}
+	
 	public function arrayToWhere(array $array)
 	{
 	
