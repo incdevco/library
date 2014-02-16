@@ -17,6 +17,8 @@ abstract class Inclusive_Service_Abstract
 	
 	protected $_modelClass = null;
 	
+	protected $__providers = array();
+	
 	protected $_setClass = null;
 	
 	protected $_service = null;
@@ -25,7 +27,7 @@ abstract class Inclusive_Service_Abstract
 	
 	protected $_serviceClasses = array();
 	
-	public function __construct() 
+	public function __construct($options=null) 
 	{
 		
 		
@@ -65,12 +67,10 @@ abstract class Inclusive_Service_Abstract
 	public function getAcl()
 	{
 	
-		if ($this->__acl === null)
+		if (null === $this->__acl)
 		{
-			
-			$class = $this->_aclClass;
-			
-			$this->__acl = new $class();
+		
+			$this->__acl = Zend_Registry::get('Acl');
 		
 		}
 		
@@ -178,12 +178,12 @@ abstract class Inclusive_Service_Abstract
 		
 	}
 	
-	public function setAcl($acl)
+	public function isAllowed($resource,$privilege)
 	{
 	
-		$this->__acl = $acl;
+		$roles = Zend_Registry::get('AuthenticatedRoles');
 		
-		return $this;
+		return $this->getAcl()->isAllowed($roles,$resource,$privilege);
 	
 	}
 	
@@ -211,6 +211,15 @@ abstract class Inclusive_Service_Abstract
 		$this->__adapter = $adapter;
 		
 		$adapter->setService($this);
+		
+		return $this;
+	
+	}
+	
+	public function setAcl(Zend_Acl $acl)
+	{
+	
+		$this->__acl = $acl;
 		
 		return $this;
 	
@@ -286,28 +295,30 @@ abstract class Inclusive_Service_Abstract
 	
 	}
 	
-	public function _throwNotAllowed($models,$privilege)
+	public function _throwNotAllowed($resources,$privilege)
 	{
 		
-		if (!is_array($models))
+		if (!is_array($resources))
 		{
 		
-			$models = array($models);
+			$resources = array($resources);
 		
 		}
 		
-		$string = '( ';
+		$resourceString = '( ';
 		
-		foreach ($models as $model)
+		foreach ($resources as $resource)
 		{
 		
-			$string .= $model->getResourceId().' ';
+			$resourceString .= $resource->getResourceId().' ';
 		
 		}
 		
-		$string .= ' )';
+		$resourceString .= ' )';
 		
-		throw new Inclusive_Service_Exception('Not Allowed To '.$privilege.' on '.$string);
+		$message = 'Not Allowed To '.$privilege.' on '.$resourceString;
+		
+		throw new Inclusive_Service_Exception($message);
 	
 	}
 	

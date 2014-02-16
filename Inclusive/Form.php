@@ -69,11 +69,16 @@ class Inclusive_Form extends Zend_Form
 		
 		foreach ($this->_unsetIfEmpty as $key)
 		{
-		
-			if (isset($values[$key]) && $this->isValueEmpty($values[$key]))
-			{
 			
-				unset($values[$key]);
+			if (array_key_exists($key,$values))
+			{
+				
+				if ($this->isValueEmpty($values[$key]))
+				{
+				
+					unset($values[$key]);
+					
+				}
 			
 			}
 		
@@ -82,7 +87,7 @@ class Inclusive_Form extends Zend_Form
 		foreach ($this->_ifEmptySetNull as $key)
 		{
 		
-			if (isset($values[$key]) && $this->isValueEmpty($values[$key]))
+			if (array_key_exists($key,$values) && $this->isValueEmpty($values[$key]))
 			{
 			
 				$values[$key] = null;
