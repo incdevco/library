@@ -181,7 +181,14 @@ abstract class Inclusive_Service_Abstract
 	public function isAllowed($resource,$privilege)
 	{
 	
-		$roles = Zend_Registry::get('AuthenticatedRoles');
+		$roles = array();
+		
+		if (Zend_Registry::isRegistered('Roles'))
+		{
+		
+			$roles = Zend_Registry::get('Roles');
+		
+		}
 		
 		return $this->getAcl()->isAllowed($roles,$resource,$privilege);
 	
