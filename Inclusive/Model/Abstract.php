@@ -13,13 +13,25 @@ abstract class Inclusive_Model_Abstract implements Zend_Acl_Resource_Interface
 	
 	protected $_serviceClasses = array();
 	
-	public function __construct(Inclusive_Service_Abstract $service,array $data=array()) 
+	public function __construct(Inclusive_Service_Abstract $service,$data=null) 
 	{
 		
 		$this->setService($service);
 		
-		$this->_data = $data;
-	
+		if (is_object($data))
+		{
+		
+			$data = $data->toArray();
+		
+		}
+		
+		if (is_array($data))
+		{
+		
+			$this->_data = $data;
+		
+		}
+		
 	}
 	
 	public function getResourceId()
@@ -62,43 +74,6 @@ abstract class Inclusive_Model_Abstract implements Zend_Acl_Resource_Interface
 		}
 	
 		return $this->_service;
-	
-	}
-	
-	public function isAllowed($privilege)
-	{
-	
-		$acl = Zend_Registry::get('acl');
-		
-		$roles = Zend_Registry::get('aclRoles');
-		
-		if ($acl->isAllowed($roles,$this,$privilege))
-		{
-		
-			return true;
-		
-		}
-		
-		return false;
-	
-	}
-	
-	public function save() 
-	{
-	
-		if ($this->_isNew()) {
-		
-			$this->getService()
-				->add($this->toArray());
-		
-		} else {
-		
-			$this->getService()
-				->edit($this->toArray());
-		
-		}
-		
-		return $this;
 	
 	}
 	

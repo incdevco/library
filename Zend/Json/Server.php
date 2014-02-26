@@ -516,7 +516,7 @@ class Zend_Json_Server extends Zend_Server_Abstract
             return $this->fault('Method not found', -32601);
         }
 
-        $params        = $request->getParams();
+        $params        = $this->getRequest()->getParams();
         $invocable     = $this->_table->getMethod($method);
         $serviceMap    = $this->getServiceMap();
         $service       = $serviceMap->getService($method);

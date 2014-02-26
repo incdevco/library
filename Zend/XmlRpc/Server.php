@@ -564,7 +564,7 @@ class Zend_XmlRpc_Server extends Zend_Server_Abstract
         }
 
         $info     = $this->_table->getMethod($method);
-        $params   = $request->getParams();
+        $params   = $this->getRequest()->getParams();
         $argv     = $info->getInvokeArguments();
         if (0 < count($argv) and $this->sendArgumentsToAllMethods()) {
             $params = array_merge($params, $argv);

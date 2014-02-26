@@ -1,6 +1,7 @@
 <?php
 
-abstract class Inclusive_Set_Abstract implements Iterator {
+abstract class Inclusive_Set_Abstract implements Iterator 
+{
 	
 	protected $_services = array();
 	
@@ -8,31 +9,37 @@ abstract class Inclusive_Set_Abstract implements Iterator {
 	
 	protected $_set = null;
 	
-	public function __construct(Inclusive_Service_Abstract $service,array $set=array())
+	public function __construct(Inclusive_Service_Abstract $service,$data=null)
 	{
 	
 		$this->setService($service);
 		
-		foreach ($set as $model)
+		if (is_object($data))
 		{
 		
-			if (is_array($model))
-			{
-			
-				$class = $this->getService()
-					->getModelClass();
-					
-				$model = new $class(
-					$this->getService(),
-					$model
-					);
-			
-			}
-		
-			$this->addModel($model);
+			$data = $data->toArray();
 		
 		}
-	
+		
+		if (is_array($data))
+		{
+			
+			foreach ($data as $model)
+			{
+			
+				if (is_array($model))
+				{
+				
+					$model = $this->arrayToModel($model);
+					
+				}
+			
+				$this->addModel($model);
+			
+			}
+			
+		}
+		
 	}
 	
 	public function addModel($model)
@@ -45,7 +52,9 @@ abstract class Inclusive_Set_Abstract implements Iterator {
 		
 		}
 		
-		if ($model instanceof Inclusive_Model_Abstract)
+		$class = $this->getService()->getModelClass();
+		
+		if ($model instanceof $class)
 		{
 			
 			$this->_set[] = $model;
@@ -61,11 +70,8 @@ abstract class Inclusive_Set_Abstract implements Iterator {
 	public function arrayToModel(array $array)
 	{
 	
-		$class = $this->getService()
-			->getModelClass();
-			
-		return new $class($this->getService(),$array);
-	
+		return $this->getService()->createModel($array);
+		
 	}
 	
 	public function getService($key=null) 
@@ -120,40 +126,6 @@ abstract class Inclusive_Set_Abstract implements Iterator {
 		
 		return $this;
 	
-	}
-	
-	public function setWithAcl($acl,$models,$privilege)
-	{
-	
-		foreach ($models as $model)
-		{
-			
-			if (is_array($model))
-			{
-			
-				$model = $this->arrayToModel($model);
-			
-			}
-			
-			try 
-			{
-				
-				$acl->isAllowed($model,$privilege);
-				
-				$this->addModel($model);
-			
-			}
-			catch (Inclusive_Service_Exception_NotAllowed $e)
-			{
-			
-				
-			
-			}
-		
-		}
-		
-		return $this;
-		
 	}
 	
 	public function count()

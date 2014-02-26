@@ -409,7 +409,7 @@ class Zend_Controller_Router_Rewrite extends Zend_Controller_Router_Abstract
          }
 
         if($this->_useCurrentParamsAsGlobal) {
-            $params = $request->getParams();
+            $params = $this->getRequest()->getParams();
             foreach($params as $param => $value) {
                 $this->setGlobalParam($param, $value);
             }

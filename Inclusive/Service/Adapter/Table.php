@@ -7,6 +7,13 @@ abstract class Inclusive_Service_Adapter_Table extends Inclusive_Service_Adapter
 	
 	protected $_tableClass = 'Inclusive_Db_Table';
 	
+	public function add(array $clean)
+	{
+	
+		return $this->getTable()->insert($clean);
+	
+	}
+	
 	public function arrayToWhere(array $array)
 	{
 	
@@ -28,6 +35,52 @@ abstract class Inclusive_Service_Adapter_Table extends Inclusive_Service_Adapter
 	
 		return $this->getTable()
 			->createUniqueId($length);
+	
+	}
+	
+	public function delete(array $clean)
+	{
+	
+		$where = $this->arrayToWhere($clean);
+		
+		return $this->getTable()->delete($where);
+	
+	}
+	
+	public function edit(array $clean,array $where)
+	{
+	
+		$where = $this->arrayToWhere($where);
+		
+		return $this->getTable()->update($clean,$where);
+	
+	}
+	
+	public function fetchAll($where=null)
+	{
+		
+		if (is_array($where))
+		{
+		
+			$where = $this->arrayToWhere($where);
+			
+		}
+		
+		return $this->getTable()->fetchAll($where);
+	
+	}
+	
+	public function fetchRow($where=null)
+	{
+		
+		if (is_array($where))
+		{
+		
+			$where = $this->arrayToWhere($where);
+			
+		}
+		
+		return $this->getTable()->fetchRow($where);
 	
 	}
 	

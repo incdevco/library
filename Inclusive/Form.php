@@ -7,9 +7,9 @@ class Inclusive_Form extends Zend_Form
 		'class'=>'inclusive'
 		);
 	
-	protected $_removeCSRF = false;
+	protected $_ifEmptySetNull = array();
 	
-	protected $_removeConfirm = false;
+	protected $_ifEmptyUnset = array();
 	
 	protected $_services = array();
 	
@@ -22,44 +22,32 @@ class Inclusive_Form extends Zend_Form
 		
 	}
 	
-	public function addCSRFElement()
-	{
-	
-		$this->addElement(new Inclusive_Form_Element_CSRF());
-		
-		$this->_removeCSRF = true;
-		
-		return $this;
-	
-	}
-	
-	public function addConfirmElement($options=null)
-	{
-	
-		$this->addElement(new Inclusive_Form_Element_Confirm('confirm',$options));
-		
-		$this->_removeConfirm = true;
-		
-		return $this;
-	
-	}
-	
 	public function getValues($suppressArrayNotation=false)
 	{
 	
 		$values = parent::getValues($suppressArrayNotation);
 		
-		if ($this->_removeConfirm)
+		foreach ($this->_ifEmptySetNull as $key)
 		{
 		
-			unset($values['confirm']);
+			if ($this->isValueEmpty($values[$key]))
+			{
+			
+				$values[$key] = null;
+			
+			}
 		
 		}
 		
-		if ($this->_removeCSRF)
+		foreach ($this->_ifEmptyUnset as $key)
 		{
 		
-			unset($values['inclusive_csrf']);
+			if ($this->isValueEmpty($values[$key]))
+			{
+			
+				unset($values[$key]);
+			
+			}
 		
 		}
 		

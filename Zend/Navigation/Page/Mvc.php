@@ -164,7 +164,7 @@ class Zend_Navigation_Page_Mvc extends Zend_Navigation_Page
             $request   = $front->getRequest();
             $reqParams = array();
             if ($request) {
-                $reqParams = $request->getParams();
+                $reqParams = $this->getRequest()->getParams();
                 if (!array_key_exists('module', $reqParams)) {
                     $reqParams['module'] = $front->getDefaultModule();
                 }

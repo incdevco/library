@@ -45,27 +45,6 @@ abstract class Inclusive_Service_Adapter_Abstract
 	
 	}
 	
-	public function getAcl()
-	{
-	
-		if ($this->_acl === null)
-		{
-		
-			$class = $this->_aclClass;
-			
-			if ($class)
-			{
-			
-				$this->_acl = new $class();
-			
-			}
-		
-		}
-		
-		return $this->_acl;
-	
-	}
-	
 	public function getService($key=null) 
 	{
 	
@@ -100,15 +79,6 @@ abstract class Inclusive_Service_Adapter_Abstract
 	
 	}
 	
-	public function setAcl($acl)
-	{
-	
-		$this->_acl = $acl;
-		
-		return $this;
-	
-	}
-	
 	public function setService(Inclusive_Service_Abstract $service,$key=null) 
 	{
 	
@@ -124,13 +94,6 @@ abstract class Inclusive_Service_Adapter_Abstract
 		$this->_service = $service;
 		
 		return $this;
-	
-	}
-	
-	protected function _throw($message)
-	{
-	
-		throw new Inclusive_Service_Exception($message);
 	
 	}
 	

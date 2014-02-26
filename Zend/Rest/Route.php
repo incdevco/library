@@ -130,7 +130,7 @@ class Zend_Rest_Route extends Zend_Controller_Router_Route_Module
         $this->_setRequestKeys();
 
         $path   = $request->getPathInfo();
-        $params = $request->getParams();
+        $params = $this->getRequest()->getParams();
         $values = array();
         $path   = trim($path, self::URI_DELIMITER);
 

@@ -3,12 +3,12 @@
 class Inclusive_Service_Exception_NotAllowed extends Inclusive_Service_Exception 
 {
 	
-	public function __construct($resource,$privilege,$context) 
+	public function __construct($resource,$privilege) 
 	{
 		
 		$id = $resource->getResourceId();
 		
-		$msg = 'Not Allowed to '.$privilege.' on '.$id.' with '.print_r($context,true);
+		$msg = 'Not Allowed to '.$privilege.' on '.$id;
 	
 		parent::__construct($msg,0,null);
 	
