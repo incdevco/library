@@ -70,6 +70,20 @@ abstract class Inclusive_Service_Adapter_Table extends Inclusive_Service_Adapter
 	
 	}
 	
+	public function fetchOne($where=null)
+	{
+		
+		if (is_array($where))
+		{
+		
+			$where = $this->arrayToWhere($where);
+			
+		}
+		
+		return $this->getTable()->getAdapter()->fetchOne($where);
+	
+	}
+	
 	public function fetchRow($where=null)
 	{
 		
@@ -105,6 +119,13 @@ abstract class Inclusive_Service_Adapter_Table extends Inclusive_Service_Adapter
 	
 		return $this->_tableClass;
 		
+	}
+	
+	public function select($withFrom=false)
+	{
+	
+		return $this->getTable()->select($withFrom);
+	
 	}
 	
 	public function setTable(Inclusive_Db_Table_Abstract $table) 
