@@ -271,6 +271,35 @@ abstract class Inclusive_Service_Abstract
 	
 	}
 	
+	protected function _attach(array $data)
+	{
+	
+		$form = $this->getForm('Attach');
+		
+		if ($form->isValid($data))
+		{
+		
+			$clean = $form->getValues();
+			
+			$model = $this->createModel($clean);
+			
+			$privilege = 'attach';
+			
+			if ($this->isAllowed($model,$privilege))
+			{
+			
+				return $this->getAdapter()->add($clean);
+			
+			}
+			
+			return $this->_throwNotAllowed($model,$privilege);
+		
+		}
+		
+		return $this->_throwForm($form);
+	
+	}
+	
 	protected function _delete(array $data)
 	{
 	
@@ -284,6 +313,35 @@ abstract class Inclusive_Service_Abstract
 			$model = $this->fetchOne($clean);
 			
 			$privilege = 'delete';
+			
+			if ($this->isAllowed($model,$privilege))
+			{
+			
+				return $this->getAdapter()->delete($clean);
+			
+			}
+			
+			return $this->_throwNotAllowed($model,$privilege);
+		
+		}
+		
+		return $this->_throwForm($form);
+	
+	}
+	
+	protected function _detach(array $data)
+	{
+	
+		$form = $this->getForm('Detach');
+		
+		if ($form->isValid($data))
+		{
+		
+			$clean = $form->getValues();
+			
+			$model = $this->fetchOne($clean);
+			
+			$privilege = 'detach';
 			
 			if ($this->isAllowed($model,$privilege))
 			{
