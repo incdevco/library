@@ -23,6 +23,29 @@ abstract class Inclusive_Service_Abstract
 	
 	protected $_serviceClasses = array();
 	
+	public function buildSet($results,$privilege)
+	{
+	
+		$set = $this->createSet();
+		
+		foreach ($results as $result)
+		{
+		
+			$model = $this->createModel($result);
+			
+			if ($this->isAllowed($model,$privilege))
+			{
+				
+				$set->addModel($model);
+			
+			}
+		
+		}
+		
+		return $set;
+	
+	}
+	
 	public function createModel($data=null)
 	{
 		
