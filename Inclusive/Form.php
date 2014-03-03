@@ -27,18 +27,6 @@ class Inclusive_Form extends Zend_Form
 	
 		$values = parent::getValues($suppressArrayNotation);
 		
-		foreach ($this->_ifEmptySetNull as $key)
-		{
-		
-			if ($this->isValueEmpty($values[$key]))
-			{
-			
-				$values[$key] = null;
-			
-			}
-		
-		}
-		
 		foreach ($this->_ifEmptyUnset as $key)
 		{
 		
@@ -46,6 +34,18 @@ class Inclusive_Form extends Zend_Form
 			{
 			
 				unset($values[$key]);
+			
+			}
+		
+		}
+		
+		foreach ($this->_ifEmptySetNull as $key)
+		{
+		
+			if ($this->isValueEmpty($values[$key]))
+			{
+			
+				$values[$key] = null;
 			
 			}
 		
@@ -81,6 +81,26 @@ class Inclusive_Form extends Zend_Form
 		
 		return $this->_services[$key];
 		
+	}
+	
+	public function isValueEmpty($value)
+	{
+		
+		if (is_string($value) && $value == '')
+		{
+		
+			return true;
+		
+		}
+		elseif (is_array($value) && count($value) == 0) 
+		{
+		
+			return true;
+			
+		}
+		
+		return false;
+	
 	}
 	
 	public function setService(Inclusive_Service_Abstract $service,$key) 

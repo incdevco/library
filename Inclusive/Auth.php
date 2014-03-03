@@ -1,10 +1,13 @@
 <?php
 
-class Inclusive_Auth extends Zend_Auth {
+class Inclusive_Auth extends Zend_Auth 
+{
 	
-	public static function getInstance() {
+	public static function getInstance() 
+	{
 	
-        if (null === self::$_instance) {
+        if (null === self::$_instance) 
+        {
         
             self::$_instance = new self();
             
@@ -14,19 +17,4 @@ class Inclusive_Auth extends Zend_Auth {
         
     }
     
-	public function getUser() {
-	
-		if (!$this->hasIdentity()) {
-		
-			return null;
-		
-		}
-	
-		return Inclusive_Locator::service('User','User')
-			->fetchRow(array(
-				'email = ?'=>$this->getIdentity()
-				));
-	
-	}
-	
 }

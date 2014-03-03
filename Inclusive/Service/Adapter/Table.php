@@ -61,12 +61,28 @@ abstract class Inclusive_Service_Adapter_Table extends Inclusive_Service_Adapter
 		
 		if (is_array($where))
 		{
-		
-			$where = $this->arrayToWhere($where);
+			
+			if (empty($where))
+			{
+			
+				$where = $this->arrayToWhere($where);
+				
+			}
 			
 		}
 		
-		return $this->getTable()->fetchAll($where);
+		if (null === $where)
+		{
+		
+			return $this->getTable()->fetchAll();
+		
+		}
+		else 
+		{
+		
+			return $this->getTable()->fetchAll($where);
+			
+		}
 	
 	}
 	
