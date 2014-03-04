@@ -431,7 +431,7 @@ abstract class Inclusive_Service_Abstract
 	
 	}
 	
-	protected function _where($clean)
+	protected function _where(&$clean)
 	{
 	
 		$primary = $this->_primary;

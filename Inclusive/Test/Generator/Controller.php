@@ -44,6 +44,7 @@ class Inclusive_Test_Generator_Controller
 		
 		$string .= "\n\t\t\t".'->with(array())';
 		
+		$equals = 1;
 		$return = 1;
 		$result = 'result';
 		
@@ -58,6 +59,7 @@ class Inclusive_Test_Generator_Controller
 		
 			$return = 'new '.$module.'_Set_'.$model.'($service,array())';
 			$result = strtolower($model).'s';
+			$equals = 'array()';
 		
 		}
 		elseif ($function == 'fetchOne')
@@ -65,6 +67,7 @@ class Inclusive_Test_Generator_Controller
 		
 			$return = 'new '.$module.'_Model_'.$model.'($service,array())';
 			$result = strtolower($model);
+			$equals = 'array()';
 		
 		}
 		
@@ -78,7 +81,7 @@ class Inclusive_Test_Generator_Controller
 		
 		$string .= "\n\n\t\t".'$this->assertTrue($controller->view->success);';
 		
-		$string .= "\n\n\t\t".'$this->assertEquals(1,$controller->view->'.$result.');';
+		$string .= "\n\n\t\t".'$this->assertEquals('.$equals.',$controller->view->'.$result.');';
 		
 		$string.= "\n\n\t}\n\n";
 		

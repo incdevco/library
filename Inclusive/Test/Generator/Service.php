@@ -28,7 +28,16 @@ class Inclusive_Test_Generator_Service
 		
 		$string = "\tpublic function test".ucfirst($function)."()\n\t{\n\n\t\t";
 		
-		$string .= '$service = $this->getMock("'.$module.'_Service_'.$model.'",array("isValid","isAllowed"));';
+		$mFunctions = "'isValid','isAllowed'";
+		
+		if ($function == 'edit' || $function == 'delete')
+		{
+		
+			$mFunctions .= ",'fetchOne'";
+		
+		}
+		
+		$string .= '$service = $this->getMock("'.$module.'_Service_'.$model.'",array('.$mFunctions.'));';
 		
 		$string .= "\n\n\t\t".'$service';
 		
@@ -36,39 +45,128 @@ class Inclusive_Test_Generator_Service
 		
 		$string .= "\n\t\t\t".'->method("isValid")';
 		
-		$string .= "\n\t\t\t".'->with("'.ucfirst($function).'",array())';
+		$with = 'array()';
 		
-		$string .= "\n\t\t\t".'->will($this->returnValue(array()));';
+		if ($function == 'edit')
+		{
 		
-		$string .= "\n\n\t\t".'$model = $service->createModel(array());';
+			$with = "array('id'=>'1')";
 		
-		$string .= "\n\n\t\t".'$service';
+		}
 		
-		$string .= "\n\t\t\t".'->expects($this->once())';
+		$string .= "\n\t\t\t".'->with("'.ucfirst($function).'",'.$with.')';
 		
-		$string .= "\n\t\t\t".'->method("isAllowed")';
+		$string .= "\n\t\t\t".'->will($this->returnValue('.$with.'));';
 		
-		$string .= "\n\t\t\t".'->with($model,"'.$function.'")';
+		if ($function == 'fetchAll')
+		{
 		
-		$string .= "\n\t\t\t".'->will($this->returnValue(true));';
+			
 		
-		$string .= "\n\n\t\t".'$adapter = $this->getMock("'.$module.'_Service_'.$model.'_Adapter",array("'.$function.'"));';
+		}
+		else 
+		{
+			
+			$privilege = $function;
+			
+			if ($function == 'fetchOne')
+			{
+			
+				$privilege = 'view';
+			
+			}
+			
+			$string .= "\n\n\t\t".'$model = $service->createModel('.$with.');';
+			
+			if ($function == 'edit' || $function == 'delete')
+			{
+				
+				$string .= "\n\n\t".'$service';
+				
+				$string .= "\n\t\t".'->expects($this->once())';
+				
+				$string .= "\n\t\t".'->method("fetchOne")';
+				
+				$string .= "\n\t\t".'->with('.$with.')';
+				
+				$string .= "\n\t\t".'->will($this->returnValue($model));';
+				
+			}
+			
+			$string .= "\n\n\t\t".'$service';
+			
+			$string .= "\n\t\t\t".'->expects($this->once())';
+			
+			$string .= "\n\t\t\t".'->method("isAllowed")';
+			
+			$string .= "\n\t\t\t".'->with($model,"'.$privilege.'")';
+			
+			$string .= "\n\t\t\t".'->will($this->returnValue(true));';
+			
+		}
+		
+		$aFunction = $function;
+		
+		if ($function == 'fetchOne')
+		{
+		
+			$aFunction = 'fetchRow';
+		
+		}
+		
+		$string .= "\n\n\t\t".'$adapter = $this->getMock("'.$module.'_Service_'.$model.'_Adapter",array("'.$aFunction.'"));';
 		
 		$string .= "\n\n\t\t".'$adapter';
 		
 		$string .= "\n\t\t\t".'->expects($this->once())';
 		
-		$string .= "\n\t\t\t".'->method("'.$function.'")';
+		$string .= "\n\t\t\t".'->method("'.$aFunction.'")';
 		
-		$string .= "\n\t\t\t".'->with(array())';
+		$with = 'array()';
 		
-		$string .= "\n\t\t\t".'->will($this->returnValue(true));';
+		if ($function == 'edit')
+		{
+		
+			$with = "array(),array('id'=>'1')";
+		
+		}
+		
+		$string .= "\n\t\t\t".'->with('.$with.')';
+		
+		$return = 'true';
+		$assert = '$this->assertTrue($actual);';
+		
+		if ($function == 'fetchAll')
+		{
+		
+			$return = 'new Zend_Db_Table_Rowset(array())';
+			$assert = '$this->assertInstanceOf("'.$module.'_Set_'.$model.'",$actual);';
+		
+		}
+		elseif ($function == 'fetchOne')
+		{
+		
+			$return = 'new Zend_Db_Table_Row(array())';
+			$assert = '$this->assertInstanceOf("'.$module.'_Model_'.$model.'",$actual);';
+		
+		}
+		
+		$string .= "\n\t\t\t".'->will($this->returnValue('.$return.'));';
 		
 		$string .= "\n\n\t\t".'$service->setAdapter($adapter);';
 		
-		$string .= "\n\n\t\t".'$actual = $service->'.$function.'(array());';
+		$data = 'array()';
 		
-		$string .= "\n\n\t\t".'$this->assertTrue($actual);';
+		if ($function == 'edit')
+		{
+		
+			$data = "array('id'=>'1')";
+		
+		}
+		
+		$string .= "\n\n\t\t".'$actual = $service->'.$function.'('.$data.');';
+		
+		$string .= "\n\n\t\t".$assert;
 		
 		$string.= "\n\n\t}\n\n";
 		

@@ -1,5 +1,6 @@
 <?php
 
+require_once '../library/Inclusive/Test/Generator/Bootstrap.php';
 require_once '../library/Inclusive/Test/Generator/Controller.php';
 require_once '../library/Inclusive/Test/Generator/Form.php';
 require_once '../library/Inclusive/Test/Generator/Service.php';
