@@ -71,10 +71,11 @@ abstract class Inclusive_Service_Abstract
 	public function createUniqueId($length=10) 
 	{
 	
-		return $this->getAdapter()
-			->createUniqueId($length);
+		return $this->getAdapter()->createUniqueId($length);
 	
 	}
+	
+	abstract protected function _getAcl();
 	
 	public function getAdapter() 
 	{
@@ -180,6 +181,8 @@ abstract class Inclusive_Service_Abstract
 		
 	}
 	
+	abstract protected function _getRoles();
+	
 	public function setAdapter($adapter) 
 	{
 		
@@ -195,7 +198,7 @@ abstract class Inclusive_Service_Abstract
 			if (!($adapter instanceof Inclusive_Service_Adapter_Abstract))
 			{
 			
-				return $this->_throw('Adapter must be instanceof Inclusive_Service_Adapter_Abstract');
+				return $this->_throw('Adapter must be instanceof Inclusive_Service_Adapter_Abstract not: '.get_class($adapter));
 			
 			}
 	
@@ -263,246 +266,147 @@ abstract class Inclusive_Service_Abstract
 		
 	}
 	
-	abstract public function isAllowed($model,$privilege);
-	
-	protected function _add(array $data)
+	public function isAllowed($model,$privilege)
 	{
 	
-		$form = $this->getForm('Add');
+		$roles = $this->_getRoles();
 		
-		if ($form->isValid($data))
+		$acl = $this->_getAcl();
+		
+		$result = $acl->isAllowed($roles,$model,$privilege);
+		
+		return $this->_throwNotAllowed($model,$privilege);
+		
+	}
+	
+	public function isValid($form,$data)
+	{
+	
+		if (is_string($form))
 		{
 		
-			$clean = $form->getValues();
-			
-			$model = $this->createModel($clean);
-			
-			$privilege = 'add';
-			
-			if ($this->isAllowed($model,$privilege))
+			if (isset($this->_formClasses[$form]))
 			{
 			
-				return $this->getAdapter()->add($clean);
+				$form = new $this->_formClasses[$form]();
 			
 			}
 			
-			return $this->_throwNotAllowed($model,$privilege);
+			throw new Inclusive_Exception('_formClasses key '.$form.' is not set'); 
 		
 		}
 		
-		return $this->_throwForm($form);
+		if ($form instanceof Inclusive_Form)
+		{
+		
+			if ($form->isValid($data))
+			{
+			
+				return $form->getValues();
+			
+			}
+			
+			return $this->_throwForm($form);
+		
+		}
+		
+		throw new Inclusive_Exception(strval($form).' is not an instance of Inclusive_Form');
 	
+	}
+	
+	protected function _add(array $data)
+	{
+		
+		return $this->_magic('add',$data);
+		
 	}
 	
 	protected function _attach(array $data)
 	{
 	
-		$form = $this->getForm('Attach');
-		
-		if ($form->isValid($data))
-		{
-		
-			$clean = $form->getValues();
-			
-			$model = $this->createModel($clean);
-			
-			$privilege = 'attach';
-			
-			if ($this->isAllowed($model,$privilege))
-			{
-			
-				return $this->getAdapter()->add($clean);
-			
-			}
-			
-			return $this->_throwNotAllowed($model,$privilege);
-		
-		}
-		
-		return $this->_throwForm($form);
+		return $this->_magic('attach',$data);
 	
 	}
 	
 	protected function _delete(array $data)
 	{
 	
-		$form = $this->getForm('Delete');
-		
-		if ($form->isValid($data))
-		{
-		
-			$clean = $form->getValues();
-			
-			$model = $this->fetchOne($clean);
-			
-			$privilege = 'delete';
-			
-			if ($this->isAllowed($model,$privilege))
-			{
-			
-				return $this->getAdapter()->delete($clean);
-			
-			}
-			
-			return $this->_throwNotAllowed($model,$privilege);
-		
-		}
-		
-		return $this->_throwForm($form);
+		return $this->_magic('delete',$data);
 	
 	}
 	
 	protected function _detach(array $data)
 	{
 	
-		$form = $this->getForm('Detach');
-		
-		if ($form->isValid($data))
-		{
-		
-			$clean = $form->getValues();
-			
-			$model = $this->fetchOne($clean);
-			
-			$privilege = 'detach';
-			
-			if ($this->isAllowed($model,$privilege))
-			{
-			
-				return $this->getAdapter()->delete($clean);
-			
-			}
-			
-			return $this->_throwNotAllowed($model,$privilege);
-		
-		}
-		
-		return $this->_throwForm($form);
+		return $this->_magic('detach',$data);
 	
 	}
 	
 	protected function _edit(array $data)
 	{
 	
-		$form = $this->getForm('Edit');
-		
-		if ($form->isValid($data))
-		{
-		
-			$clean = $form->getValues();
-			
-			$model = $this->fetchOne($clean);
-			
-			$privilege = 'edit';
-			
-			if ($this->isAllowed($model,$privilege))
-			{
-				
-				$primary = $this->_primary;
-				
-				if (!is_array($primary))
-				{
-				
-					$primary = array($primary);
-				
-				}
-				
-				$where = array();
-				
-				foreach ($primary as $key)
-				{
-				
-					$where[$key] = $clean[$key];
-					
-					unset($clean[$key]);
-				
-				}
-				
-				return $this->getAdapter()->edit($clean,$where);
-			
-			}
-			
-			return $this->_throwNotAllowed($model,$privilege);
-		
-		}
-		
-		return $this->_throwForm($form);
+		return $this->_magic('edit',$data,true);
 	
 	}
 	
 	public function _fetchAll(array $data)
 	{
-	
-		$form = $this->getForm('FetchAll');
 		
-		if ($form->isValid($data))
-		{
+		$clean = $this->isValid('FetchAll',$data);
 		
-			$clean = $form->getValues();
-			
-			$results = $this->getAdapter()->fetchAll($clean);
-			
-			$set = $this->createSet();
-			
-			$privilege = 'view';
-			
-			foreach ($results as $result)
-			{
-			
-				$model = $this->createModel($result);
-				
-				if ($this->isAllowed($model,$privilege))
-				{
-				
-					$set->addModel($model);
-				
-				}
-			
-			}
-			
-			return $set;
+		$results = $this->getAdapter()->fetchAll($clean);
 		
-		}
+		return $this->buildSet($results,'view');
 		
-		return $this->_throwForm($form);
-	
 	}
 	
 	protected function _fetchOne(array $data)
 	{
-	
-		$form = $this->getForm('FetchOne');
 		
-		if ($form->isValid($data))
+		$clean = $this->isValid('FetchOne',$data);
+		
+		$result = $this->getAdapter()->fetchRow($clean);
+		
+		if ($result)
 		{
+			
+			$model = $this->createModel($result);
+				
+			$this->isAllowed($model,'view');
+			
+			return $model;
+			
+		}
+			
+		return $this->_throw('Nothing Found');
 		
-			$clean = $form->getValues();
+	}
+	
+	protected function _magic($function,$data,$update=false)
+	{
+	
+		$clean = $this->isValid(ucfirst($function),$data);
+		
+		$model = $this->createModel($clean);
+		
+		$this->isAllowed($model,$function);
+		
+		if ($update)
+		{
 			
-			$result = $this->getAdapter()->fetchRow($clean);
+			$where = $this->_where($clean);
 			
-			if ($result)
-			{
-			
-				$model = $this->createModel($result);
-				
-				$privilege = 'view';
-				
-				if ($this->isAllowed($model,$privilege))
-				{
-				
-					return $model;
-				
-				}
-				
-				return $this->_throwNotAllowed($model,$privilege);
-			
-			}
-			
-			return $this->_throw('No Model Found');
+			$result = $this->getAdapter()->$function($clean,$where);
 		
 		}
+		else 
+		{
 		
-		return $this->_throwForm($form);
+			$result = $this->getAdapter()->$function($clean);
+			
+		}
+		
+		return $result;
 	
 	}
 	
@@ -524,6 +428,33 @@ abstract class Inclusive_Service_Abstract
 	{
 	
 		throw new Inclusive_Service_Exception_NotAllowed($model,$privilege);
+	
+	}
+	
+	protected function _where($clean)
+	{
+	
+		$primary = $this->_primary;
+		
+		if (!is_array($primary))
+		{
+		
+			$primary = array($primary);
+		
+		}
+		
+		$where = array();
+		
+		foreach ($primary as $key)
+		{
+		
+			$where[$key] = $clean[$key];
+			
+			unset($clean[$key]);
+		
+		}
+		
+		return $where;
 	
 	}
 	
