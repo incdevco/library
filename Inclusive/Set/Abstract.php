@@ -9,7 +9,7 @@ abstract class Inclusive_Set_Abstract implements Iterator
 	
 	protected $_serviceClasses = array();
 	
-	protected $_set = null;
+	protected $_set = array();
 	
 	public function __construct(Inclusive_Service_Abstract $service=null,$data=null)
 	{
@@ -34,13 +34,6 @@ abstract class Inclusive_Set_Abstract implements Iterator
 			foreach ($data as $model)
 			{
 			
-				if (is_array($model))
-				{
-				
-					$model = $this->arrayToModel($model);
-					
-				}
-			
 				$this->addModel($model);
 			
 			}
@@ -59,18 +52,9 @@ abstract class Inclusive_Set_Abstract implements Iterator
 		
 		}
 		
-		$class = $this->getService()->getModelClass();
-		
-		if ($model instanceof $class)
-		{
+		$this->_set[] = $model;
 			
-			$this->_set[] = $model;
-			
-			return $this;
-			
-		}
-		
-		throw new Inclusive_Service_Exception('Cannot add '.gettype($model).' as model');
+		return $this;
 		
 	}
 	

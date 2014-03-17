@@ -29,7 +29,7 @@ class Inclusive_Form extends Zend_Form
 		
 		foreach ($this->_ifEmptyUnset as $key)
 		{
-		
+			
 			if ($this->isValueEmpty($values[$key]))
 			{
 			
@@ -85,6 +85,13 @@ class Inclusive_Form extends Zend_Form
 	
 	public function isValueEmpty($value)
 	{
+		
+		if (null === $value)
+		{
+		
+			return true;
+		
+		}
 		
 		if (is_string($value) && $value == '')
 		{

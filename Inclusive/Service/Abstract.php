@@ -37,7 +37,7 @@ abstract class Inclusive_Service_Abstract
 			{
 				
 				$this->isAllowed($model,$privilege);
-					
+				
 				$set->addModel($model);
 				
 			}
@@ -197,6 +197,13 @@ abstract class Inclusive_Service_Abstract
 		$acl = $this->_getAcl();
 		
 		$result = $acl->isAllowed($roles,$model,$privilege);
+		
+		if ($result)
+		{
+			
+			return $result;
+		
+		}
 		
 		return $this->_throwNotAllowed($model,$privilege);
 		

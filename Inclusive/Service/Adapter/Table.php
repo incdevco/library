@@ -62,7 +62,7 @@ abstract class Inclusive_Service_Adapter_Table extends Inclusive_Service_Adapter
 		if (is_array($where))
 		{
 			
-			if (empty($where))
+			if (!empty($where))
 			{
 			
 				$where = $this->arrayToWhere($where);

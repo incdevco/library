@@ -31,8 +31,8 @@ class Inclusive_Acl extends Zend_Acl
 		
 			if (parent::isAllowed($role,$resource,$privilege))
 			{
-			
-				$allowed = true;
+				
+				return true;
 			
 			}
 		
