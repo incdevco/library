@@ -3,36 +3,11 @@
 class Inclusive_Application_Bootstrap extends Zend_Application_Bootstrap_Bootstrap 
 {
 	
-	public function _initInclusiveFramework() 
+	public function _initInclusiveFramework()
 	{
-		
-		$this->bootstrap('View');
-		
-		$view = $this->getResource('View');
-		
-		if ($view) 
-		{
-		
-			$view->addHelperPath('Inclusive/View/Helper','Inclusive_View_Helper');
-		
-		}
-		
-	}
 	
-	public function _initJQuery() 
-	{
 		
-		$this->bootstrap('View');
-		
-		$view = $this->getResource('View');
-		
-		if ($view) 
-		{
-		
-			$view->addHelperPath('ZendX/JQuery/View/Helper','ZendX_JQuery_View_Helper');
-		
-		}
-		
+	
 	}
 	
 	public function _initDateFormats() 

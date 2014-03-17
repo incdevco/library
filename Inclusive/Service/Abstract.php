@@ -33,13 +33,21 @@ abstract class Inclusive_Service_Abstract
 		
 			$model = $this->createModel($result);
 			
-			if ($this->isAllowed($model,$privilege))
+			try 
 			{
 				
+				$this->isAllowed($model,$privilege);
+					
 				$set->addModel($model);
+				
+			}
+			catch (Inclusive_Service_Exception_NotAllowed $e)
+			{
+			
+				
 			
 			}
-		
+			
 		}
 		
 		return $set;
@@ -181,7 +189,46 @@ abstract class Inclusive_Service_Abstract
 		
 	}
 	
-	abstract protected function _getRoles();
+	public function isAllowed($model,$privilege)
+	{
+	
+		$roles = $this->_getRoles();
+		
+		$acl = $this->_getAcl();
+		
+		$result = $acl->isAllowed($roles,$model,$privilege);
+		
+		return $this->_throwNotAllowed($model,$privilege);
+		
+	}
+	
+	public function isValid($form,$data)
+	{
+	
+		if (is_string($form))
+		{
+		
+			$form = $this->getForm($form);
+		
+		}
+		
+		if ($form instanceof Inclusive_Form)
+		{
+		
+			if ($form->isValid($data))
+			{
+			
+				return $form->getValues();
+			
+			}
+			
+			return $this->_throwForm($form);
+		
+		}
+		
+		throw new Inclusive_Exception(strval($form).' is not an instance of Inclusive_Form');
+	
+	}
 	
 	public function setAdapter($adapter) 
 	{
@@ -266,54 +313,6 @@ abstract class Inclusive_Service_Abstract
 		
 	}
 	
-	public function isAllowed($model,$privilege)
-	{
-	
-		$roles = $this->_getRoles();
-		
-		$acl = $this->_getAcl();
-		
-		$result = $acl->isAllowed($roles,$model,$privilege);
-		
-		return $this->_throwNotAllowed($model,$privilege);
-		
-	}
-	
-	public function isValid($form,$data)
-	{
-	
-		if (is_string($form))
-		{
-		
-			if (isset($this->_formClasses[$form]))
-			{
-			
-				$form = new $this->_formClasses[$form]();
-			
-			}
-			
-			throw new Inclusive_Exception('_formClasses key '.$form.' is not set'); 
-		
-		}
-		
-		if ($form instanceof Inclusive_Form)
-		{
-		
-			if ($form->isValid($data))
-			{
-			
-				return $form->getValues();
-			
-			}
-			
-			return $this->_throwForm($form);
-		
-		}
-		
-		throw new Inclusive_Exception(strval($form).' is not an instance of Inclusive_Form');
-	
-	}
-	
 	protected function _add(array $data)
 	{
 		
@@ -382,6 +381,8 @@ abstract class Inclusive_Service_Abstract
 		
 	}
 	
+	abstract protected function _getRoles();
+	
 	protected function _magic($function,$data,$update=false)
 	{
 	
@@ -434,7 +435,7 @@ abstract class Inclusive_Service_Abstract
 	protected function _where(&$clean)
 	{
 	
-		$primary = $this->_primary;
+		$primary = $this->getAdapter()->getPrimary();
 		
 		if (!is_array($primary))
 		{
@@ -447,10 +448,15 @@ abstract class Inclusive_Service_Abstract
 		
 		foreach ($primary as $key)
 		{
-		
-			$where[$key] = $clean[$key];
 			
-			unset($clean[$key]);
+			if (isset($clean[$key]))
+			{
+				
+				$where[$key] = $clean[$key];
+				
+				unset($clean[$key]);
+				
+			}
 		
 		}
 		

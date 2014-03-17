@@ -7,6 +7,7 @@ class Inclusive_Application_Module_Bootstrap extends Zend_Application_Module_Boo
 	{
 	
 		$this->getResourceLoader()
+			->addResourceType('Element','elements','Element')
 			->addResourceType('Filter','filters','Filter')
 			->addResourceType('Set','sets','Set')
 			->addResourceType('Validate','validators','Validate')

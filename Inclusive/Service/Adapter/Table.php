@@ -114,6 +114,13 @@ abstract class Inclusive_Service_Adapter_Table extends Inclusive_Service_Adapter
 	
 	}
 	
+	public function getPrimary()
+	{
+	
+		return $this->getTable()->getPrimaryKey();
+	
+	}
+	
 	public function getTable() 
 	{
 	

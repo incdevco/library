@@ -3,16 +3,23 @@
 abstract class Inclusive_Set_Abstract implements Iterator 
 {
 	
+	protected $_service = null;
+	
 	protected $_services = array();
 	
 	protected $_serviceClasses = array();
 	
 	protected $_set = null;
 	
-	public function __construct(Inclusive_Service_Abstract $service,$data=null)
+	public function __construct(Inclusive_Service_Abstract $service=null,$data=null)
 	{
-	
-		$this->setService($service);
+		
+		if ($service)
+		{
+		
+			$this->setService($service);
+		
+		}
 		
 		if (is_object($data))
 		{
