@@ -158,7 +158,7 @@ abstract class Inclusive_Set_Abstract implements Iterator
 	
 	}
 	
-	public function toArray()
+	public function toArray($full=false)
 	{
 	
 		$array = array();
@@ -166,7 +166,7 @@ abstract class Inclusive_Set_Abstract implements Iterator
 		foreach ($this as $model)
 		{
 		
-			$array[] = $model->toArray();
+			$array[] = $model->toArray($full);
 		
 		}
 		

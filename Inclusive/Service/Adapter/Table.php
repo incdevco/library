@@ -21,8 +21,19 @@ abstract class Inclusive_Service_Adapter_Table extends Inclusive_Service_Adapter
 		
 		foreach ($array as $key => $value)
 		{
-		
-			$where["`$key` = ?"] = $value;
+			
+			if (null === $value)
+			{
+			
+				$where[] = "`$key` IS NULL";
+			
+			}
+			else 
+			{
+			
+				$where["`$key` = ?"] = $value;
+				
+			}
 			
 		}
 		
@@ -79,7 +90,7 @@ abstract class Inclusive_Service_Adapter_Table extends Inclusive_Service_Adapter
 		}
 		else 
 		{
-		
+			
 			return $this->getTable()->fetchAll($where);
 			
 		}

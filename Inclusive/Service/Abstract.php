@@ -205,6 +205,15 @@ abstract class Inclusive_Service_Abstract
 		
 		}
 		
+		if (Zend_Registry::isRegistered('log'))
+		{
+		
+			$log = Zend_Registry::get('log');
+			
+			$log->info(print_r($roles,true).':'.get_class($model).':'.$privilege);
+		
+		}
+		
 		return $this->_throwNotAllowed($model,$privilege);
 		
 	}
