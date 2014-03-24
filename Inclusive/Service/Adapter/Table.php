@@ -28,6 +28,12 @@ abstract class Inclusive_Service_Adapter_Table extends Inclusive_Service_Adapter
 				$where[] = "`$key` IS NULL";
 			
 			}
+			elseif (is_array($value))
+			{
+			
+				$where["`$key` IN (?)"] = $value;
+			
+			}
 			else 
 			{
 			
