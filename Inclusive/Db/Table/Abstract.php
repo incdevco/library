@@ -51,14 +51,7 @@ abstract class Inclusive_Db_Table_Abstract extends Zend_Db_Table_Abstract
 			if (is_array($this->_primary))
 			{
 			
-				if (count($this->_primary) != 1)
-				{
-				
-					throw new Zend_Exception('Cannot Create Unique Multi-Key');
-				
-				}
-				
-				$key = $this->_primary[1];
+				$key = reset($this->_primary);
 				
 			}
 			else 
@@ -71,7 +64,7 @@ abstract class Inclusive_Db_Table_Abstract extends Zend_Db_Table_Abstract
 			if (empty($key))
 			{
 			
-				throw new Zend_Exception('Primary Key Empty: '.$key);
+				throw new Zend_Exception('Primary Key Empty: '.$key.''.print_r($this->_primary,true));
 			
 			}
 		
@@ -133,7 +126,7 @@ abstract class Inclusive_Db_Table_Abstract extends Zend_Db_Table_Abstract
 
 			$lenth = (int) $length;
 		
-			$id = substr(md5(uniqid(rand(),true).$this->_createSalt()),0,$length);
+			$id = substr(md5(uniqid(rand(),true).$this->createSalt()),0,$length);
 			
 			$row = $this->find($id);
 			
@@ -147,7 +140,7 @@ abstract class Inclusive_Db_Table_Abstract extends Zend_Db_Table_Abstract
 	
 	}
 	
-	protected function _createSalt()
+	public function createSalt()
 	{
 	
 		return md5(uniqid(rand(),true).$this->_salt);
