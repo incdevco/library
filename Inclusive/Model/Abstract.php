@@ -147,7 +147,7 @@ abstract class Inclusive_Model_Abstract implements Zend_Acl_Resource_Interface
 	public function __get($key) 
 	{
 	
-		$array = $this->toArray();
+		$array = array_merge($this->_data,$this->_new);
 		
 		if (!isset($array[$key])) 
 		{
