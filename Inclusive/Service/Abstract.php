@@ -189,7 +189,7 @@ abstract class Inclusive_Service_Abstract
 		
 	}
 	
-	public function isAllowed($model,$privilege)
+	public function isAllowed($model,$privilege,$throw=true)
 	{
 	
 		$roles = $this->_getRoles();
@@ -214,7 +214,18 @@ abstract class Inclusive_Service_Abstract
 		
 		}
 		
-		return $this->_throwNotAllowed($model,$privilege);
+		if ($throw)
+		{
+		
+			return $this->_throwNotAllowed($model,$privilege);
+			
+		}
+		else 
+		{
+		
+			return $result;
+			
+		}
 		
 	}
 	

@@ -6,6 +6,8 @@ abstract class Inclusive_Model_Abstract implements Zend_Acl_Resource_Interface
 	protected $_data = array();
 	
 	protected $_new = array();
+	
+	protected $_privileges = array();
 
 	protected $_service = null;
 	
@@ -128,6 +130,22 @@ abstract class Inclusive_Model_Abstract implements Zend_Acl_Resource_Interface
 	
 		return array_merge($this->_data,$this->_new);
 	
+	}
+	
+	protected function _getPermissions()
+	{
+	
+		$result = array();
+		
+		foreach ($this->_privileges as $privilege)
+		{
+		
+			$result[$privilege] = $this->getService()->isAllowed($this,$privilege,false);
+		
+		}
+		
+		return $result;
+		
 	}
 	
 	protected function _isNew() 
