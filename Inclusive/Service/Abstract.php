@@ -169,8 +169,10 @@ abstract class Inclusive_Service_Abstract
 			if (!isset($this->_services[$key])
 				or !($this->_services[$key] instanceof $class))
 			{
-			
-				$this->setService(new $class(),$key);
+				
+				$service = Inclusive_Locator::service($class);
+				
+				$this->setService($service,$key);
 			
 			}
 			

@@ -71,8 +71,10 @@ abstract class Inclusive_Model_Abstract implements Zend_Acl_Resource_Interface
 			if (!isset($this->_services[$key])
 				or !($this->_services[$key] instanceof $class))
 			{
-			
-				$this->setService(new $class(),$key);
+				
+				$service = Inclusive_Locator::service($class);
+				
+				$this->setService($service,$key);
 			
 			}
 			

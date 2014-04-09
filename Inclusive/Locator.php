@@ -12,19 +12,19 @@ class Inclusive_Locator {
 			
 			$class .= $module;
 			
+			$class .= '_Service_';
+			
+			$class .= $name;
+			
 		} else {
 			
-			$class .= 'Application';
+			$class = $name;
 			
 		}
 		
-		$class .= '_Service_';
-		
-		$class .= $name;
-		
 		if (!isset(self::$_services[$class])
 		    or !(self::$_services[$class] instanceof $class)) {
-		    	
+			  	
 	    	self::$_services[$class] = new $class();
 	    	
 	    }
