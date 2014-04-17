@@ -28,13 +28,16 @@ abstract class Inclusive_Controller_Rest extends Inclusive_Controller_Action
 				case 'delete':
 				case 'get':
 				case 'head':
-				case 'options':
 				case 'patch':
 				case 'put':
 					
 					$model = $this->getService()
 						->fetchOne($this->getRequest()->getParams());
 					
+					break;
+				
+				case 'options':
+				
 					break;
 				
 				case 'index':
@@ -59,6 +62,9 @@ abstract class Inclusive_Controller_Rest extends Inclusive_Controller_Action
 			}
 			
 			$this->_helper->viewRenderer->setNoRender();
+			$this->getResponse()->setHeader('Access-Control-Allow-Origin','http://www.reallist.dev',true);
+			$this->getResponse()->setHeader('Access-Control-Allow-Methods',implode(',',$this->_allowedMethods),true);
+			$this->getResponse()->setHeader('Access-Control-Allow-Headers','accept, content-type',true);
 			
 			switch ($action) 
 			{
