@@ -1,12 +1,13 @@
 <?php
 
-class Inclusive_Application_Module_Bootstrap 
-	extends Zend_Application_Module_Bootstrap {
+class Inclusive_Application_Module_Bootstrap extends Zend_Application_Module_Bootstrap 
+{
 
-	public function _initSets() {
+	public function _initSets() 
+	{
 	
 		$this->getResourceLoader()
-			->addResourceType('Acl','acls','Acl')
+			->addResourceType('Element','elements','Element')
 			->addResourceType('Filter','filters','Filter')
 			->addResourceType('Set','sets','Set')
 			->addResourceType('Validate','validators','Validate')

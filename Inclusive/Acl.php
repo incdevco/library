@@ -6,9 +6,7 @@ class Inclusive_Acl extends Zend_Acl
 	public function isAllowed($role=null,$resource=null,$privilege=null)
 	{
 	
-		$allowed = false;
-		
-		if (is_string($role))
+		if (!is_array($role))
 		{
 		
 			$role = array($role);
@@ -19,18 +17,20 @@ class Inclusive_Acl extends Zend_Acl
 	
 		foreach ($roles as $role)
 		{
-		
-			if (parent::isAllowed($role,$resource,$privilege))
+			
+			$result = parent::isAllowed($role,$resource,$privilege);
+			
+			if ($result)
 			{
 			
-				$allowed = true;
+				return true;
 			
 			}
 		
 		}
-	
-		return $allowed;
-	
+		
+		return parent::isAllowed(null,$resource,$privilege);
+		
 	}
 	
 }

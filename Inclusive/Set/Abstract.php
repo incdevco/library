@@ -1,36 +1,32 @@
 <?php
 
-abstract class Inclusive_Set_Abstract implements Iterator {
+abstract class Inclusive_Set_Abstract implements Iterator 
+{
 	
-	protected $_services = array();
-	
-	protected $_serviceClasses = array();
+	protected $_service = null;
 	
 	protected $_set = null;
 	
-	public function __construct(Inclusive_Service_Abstract $service,array $set=array())
+	public function __construct(array $config=array())
 	{
-	
-		$this->setService($service);
 		
-		foreach ($set as $model)
+		if (isset($config['service']))
 		{
 		
-			if (is_array($model))
+			$this->setService($config['service']);
+			
+		}
+		
+		if (isset($config['data']))
+		{
+			
+			foreach ($set as $model)
 			{
 			
-				$class = $this->getService()
-					->getModelClass();
-					
-				$model = new $class(
-					$this->getService(),
-					$model
-					);
+				$this->addModel($model);
 			
 			}
-		
-			$this->addModel($model);
-		
+			
 		}
 	
 	}
@@ -41,77 +37,26 @@ abstract class Inclusive_Set_Abstract implements Iterator {
 		if (is_array($model))
 		{
 		
-			$class = $this->getService()
-				->getModelClass();
-				
-			$model = new $class(
-				$this->getService(),
-				$model
-				);
-		
-		}
-		
-		if ($model instanceof Inclusive_Model_Abstract)
-		{
-			
-			$this->_set[] = $model;
-			
-			return $this;
+			$model = $this->getService()->createModel($model);
 			
 		}
+			
+		$this->_set[] = $model;
 		
-		throw new Inclusive_Service_Exception('Cannot add '.gettype($model).' as model');
+		return $this;
 		
 	}
 	
 	public function getService($key=null) 
 	{
 	
-		if ($key != null 
-			&& isset($this->_serviceClasses[$key]))
-		{
-		
-			$class = $this->_serviceClasses[$key];
-		
-		}
-		else 
-		{
-		
-			$class = $key;
-		
-		}
-	
-		if ($class != null)
-		{
-		
-			if (!isset($this->_services[$key])
-				or !($this->_services[$key] instanceof $class))
-			{
-			
-				$this->setService(new $class(),$key);
-			
-			}
-			
-			return $this->_services[$key];
-		
-		}
-	
 		return $this->_service;
 	
 	}
 	
-	public function setService(Inclusive_Service_Abstract $service,$key=null) 
+	public function setService(Inclusive_Service_Abstract $service) 
 	{
-	
-		if ($key != null)
-		{
 		
-			$this->_services[$key] = $service;
-			
-			return $this;
-		
-		}
-	
 		$this->_service = $service;
 		
 		return $this;
@@ -170,6 +115,22 @@ abstract class Inclusive_Set_Abstract implements Iterator {
 		}
 		
 		return $array;
+	
+	}
+	
+	public function toJson()
+	{
+	
+		$array = array();
+		
+		foreach ($this as $model)
+		{
+		
+			$array[] = $model->toJson(true);
+		
+		}
+		
+		return Zend_Json::encode($array);
 	
 	}
 	

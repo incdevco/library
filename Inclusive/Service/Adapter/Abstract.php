@@ -2,125 +2,32 @@
 
 abstract class Inclusive_Service_Adapter_Abstract 
 {
-
-	protected $_acl = null;
 	
-	protected $_aclClass = null;
-
-	protected $_services = array();
-	
-	protected $_serviceClasses = array();
-	
-	public function __construct($options=null) 
+	public function __construct(array $config=array()) 
 	{
 		
-		// Backwards Compatibility
-		if ($options instanceof Inclusive_Service_Abstract)
-		{
 		
-			$service = $options;
-			
-			$options = array('service'=>$service);
 		
-		}
-		
-		if (isset($options['service']))
-		{
-		
-			$this->setService($options['service']);
-			
-		}
-	
 	}
 	
-	public function getAcl()
-	{
+	abstract public function create(array $data);
 	
-		if ($this->_acl === null)
-		{
-		
-			$class = $this->_aclClass;
-			
-			if ($class)
-			{
-			
-				$this->_acl = new $class();
-			
-			}
-		
-		}
-		
-		return $this->_acl;
+	abstract public function createUniqueId($length);
 	
-	}
+	abstract public function delete($id);
 	
-	public function getService($key=null) 
-	{
+	abstract public function fetchAll($data);
 	
-		if ($key != null 
-			&& isset($this->_serviceClasses[$key]))
-		{
-		
-			$class = $this->_serviceClasses[$key];
-		
-		}
-		else 
-		{
-		
-			$class = $key;
-		
-		}
+	abstract public function fetchOne($id);
 	
-		if ($class != null)
-		{
-		
-			if (!isset($this->_services[$key])
-				or !($this->_services[$key] instanceof $class))
-			{
-			
-				$this->setService(new $class(),$key);
-			
-			}
-			
-			return $this->_services[$key];
-		
-		}
+	abstract public function select($withFrom=false);
 	
-		return $this->_service;
-	
-	}
-	
-	public function setAcl(Zend_Acl $acl)
-	{
-	
-		$this->_acl = $acl;
-		
-		return $this;
-	
-	}
-	
-	public function setService(Inclusive_Service_Abstract $service,$key=null) 
-	{
-	
-		if ($key != null)
-		{
-		
-			$this->_services[$key] = $service;
-			
-			return $this;
-		
-		}
-	
-		$this->_service = $service;
-		
-		return $this;
-	
-	}
+	abstract public function update($id,array $data);
 	
 	protected function _throw($message)
 	{
 	
-		throw new Inclusive_Service_Exception($message);
+		throw new Inclusive_Service_Adapter_Exception($message);
 	
 	}
 	

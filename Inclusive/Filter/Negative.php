@@ -1,14 +1,19 @@
 <?php
 
-class Inclusive_Filter_Negative implements Zend_Filter_Interface {
+class Inclusive_Filter_Negative implements Zend_Filter_Interface 
+{
 	
-	public function filter($value) {
+	public function filter($value) 
+	{
 		
-		if ($value > 0) {
+		if ($value > 0) 
+		{
 			
 			$clean = $value * -1;
 			
-		} else {
+		} 
+		else 
+		{
 			
 			$clean = $value;
 			

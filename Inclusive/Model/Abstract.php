@@ -2,23 +2,160 @@
 
 abstract class Inclusive_Model_Abstract implements Zend_Acl_Resource_Interface
 {
-
+	
 	protected $_data = array();
 	
-	protected $_new = array();
-
+	protected $_dirty = array();
+	
+	protected $_form = null;
+	
+	protected $_formClass = null;
+	
+	protected $_original = array();
+	
+	protected $_required = array();
+	
 	protected $_service = null;
 	
-	protected $_services = array();
+	protected $_stored = false;
 	
-	protected $_serviceClasses = array();
-	
-	public function __construct(Inclusive_Service_Abstract $service,array $data=array()) 
+	public function __construct(array $config=array()) 
 	{
 		
-		$this->setService($service);
+		if (isset($config['data']))
+		{
+			
+			if (is_object($config['data']))
+			{
+			
+				$config['data'] = $config['data']->toArray();
+			
+			}
+			
+			$this->_original = $config['data'];
+			
+			$this->_data = $this->_original;
+			
+			$this->_dirty = $this->_data;
+			
+		}
 		
-		$this->_data = $data;
+		if (isset($config['service']))
+		{
+		
+			$this->setService($config['service']);
+		
+		}
+	
+		if (isset($config['stored']))
+		{
+		
+			$this->_stored = ($config['stored']) ? true : false;
+		
+		}
+	
+	}
+	
+	public function deleted()
+	{
+		
+		return $this;
+	
+	}
+	
+	public function get($key)
+	{
+	
+		if ($this->isAllowed('get:'.$key))
+		{
+			
+			$fn = $this->_keyToFunction('_get',$key);
+			
+			if (method_exists($this,$fn))
+			{
+			
+				return $this->$fn();
+			
+			}
+			else 
+			{
+			
+				return $this->_data[$key];
+			
+			}
+			
+		}
+		
+		return null;
+	
+	}
+	
+	public function getAcl()
+	{
+	
+		return Zend_Registry::get('Acl');
+	
+	}
+	
+	public function getDirty()
+	{
+	
+		return $this->_dirty;
+	
+	}
+	
+	public function getForm()
+	{
+		
+		if (null === $this->_form)
+		{
+		
+			$class = $this->_formClass;
+			
+			$this->_form = new $class();
+		
+		}
+		
+		return $this->_form;
+	
+	}
+	
+	public function getOriginal($key=null)
+	{
+		
+		if ($key)
+		{
+		
+			return $this->_original[$key];
+		
+		}
+		
+		return $this->_original;
+	
+	}
+	
+	public function getPrimary()
+	{
+	
+		$primary = array();
+		
+		$keys = $this->getService()->getAdapter()->getTable()->getPrimaryKey();
+		
+		foreach ($keys as $key)
+		{
+		
+			$primary[$key] = $this->$key;
+		
+		}
+		
+		return $primary;
+	
+	}
+	
+	public function getRoles()
+	{
+	
+		return Zend_Registry::get('Roles');
 	
 	}
 	
@@ -31,81 +168,103 @@ abstract class Inclusive_Model_Abstract implements Zend_Acl_Resource_Interface
 	
 	public function getService($key=null) 
 	{
+		
+		return $this->_service;
+		
+	}
 	
-		if ($key != null 
-			&& isset($this->_serviceClasses[$key]))
-		{
-		
-			$class = $this->_serviceClasses[$key];
-		
-		}
-		else 
-		{
-		
-			$class = $key;
-		
-		}
+	public function isAllowed()
+	{
 	
-		if ($class != null)
+		$acl = $this->getAcl();
+		
+		$roles = $this->getRoles();
+		
+		foreach ($this->_required as $privilege)
 		{
 		
-			if (!isset($this->_services[$key])
-				or !($this->_services[$key] instanceof $class))
+			$result = $acl->isAllowed($roles,$this,'set:'.$privilege);
+			
+			if (!$result)
 			{
 			
-				$this->setService(new $class(),$key);
+				return $this->_throwNotAllowed($privilege);
 			
 			}
 			
-			return $this->_services[$key];
-		
 		}
-	
-		return $this->_service;
-	
+		
+		return true;
+		
 	}
 	
-	public function isAllowed($privilege)
+	public function isStored()
 	{
 	
-		$acl = Zend_Registry::get('acl');
+		return $this->_stored;
 		
-		$roles = Zend_Registry::get('aclRoles');
+	}
+	
+	public function isValid()
+	{
+	
+		$form = $this->getForm();
 		
-		if ($acl->isAllowed($roles,$this,$privilege))
+		$result = $form->isValid($this->getDirty());
+		
+		if ($result)
 		{
 		
-			return true;
+			return $form->getValues();
 		
 		}
 		
-		return false;
+		return $this->_throwNotValid($form);
 	
 	}
 	
 	public function save() 
 	{
-	
-		if ($this->_isNew()) {
 		
-			$this->getService()
-				->add($this->toArray());
+		$clean = $this->isValid();
 		
-		} else {
+		$this->isAllowed();
 		
-			$this->getService()
-				->edit($this->toArray());
+		foreach ($clean as $key => $value) 
+		{
+		
+			$this->_data[$key] = $value;
 		
 		}
+		
+		$this->getService()->save($this);
 		
 		return $this;
 	
 	}
 	
-	public function set($key,$value) 
+	public function saved()
+	{
+		
+		return $this;
+	
+	}
+	
+	public function set($key,$value)
 	{
 	
-		$this->_new[$key] = $value;
+		$this->_dirty[$key] = $value;
+		
+		$this->_required[] = $key;
+		
+		return $this;
+		
+	}
+	
+	public function setForm(Inclusive_Form $form)
+	{
+	
+		$this->_form = $form;
 		
 		return $this;
 	
@@ -125,19 +284,21 @@ abstract class Inclusive_Model_Abstract implements Zend_Acl_Resource_Interface
 	
 	}
 	
-	public function setService(Inclusive_Service_Abstract $service,$key=null) 
+	public function setService(Inclusive_Service_Abstract $service) 
 	{
-	
-		if ($key != null)
-		{
 		
-			$this->_services[$key] = $service;
-			
-			return $this;
-		
-		}
-	
 		$this->_service = $service;
+		
+		return $this;
+	
+	}
+	
+	public function stored($id)
+	{
+		
+		$this->_stored = true;
+		
+		$this->_data['id'] = $id;
 		
 		return $this;
 	
@@ -146,47 +307,68 @@ abstract class Inclusive_Model_Abstract implements Zend_Acl_Resource_Interface
 	public function toArray() 
 	{
 	
-		return array_merge($this->_data,$this->_new);
+		return $this->_data;
 	
 	}
 	
-	protected function _isNew() 
+	public function toJson($returnArray=false)
 	{
 	
-		if (empty($this->_data)) 
+		$array = $this->toArray();
+		
+		if ($returnArray)
 		{
 		
-			return true;
-			
+			return $array;
+		
 		}
 		
-		return false;
+		return Zend_Json::encode($array);
 	
 	}
 	
 	public function __get($key) 
 	{
 	
-		$array = $this->toArray();
-		
-		if (!isset($array[$key])) 
-		{
-		
-			return null;
-		
-		}
-		
-		return $array[$key];
+		return $this->get($key);
+	
+	}
+	
+	public function __isset($key)
+	{
+	
+		return isset($this->_data[$key]);
 	
 	}
 	
 	public function __set($key,$value) 
 	{
 	
-		$this->set($key,$value);
+		return $this->set($key,$value);
 		
-		return $this;
+	}
+	
+	protected function _keyToFunction($type,$key)
+	{
+	
+		$filter = new Zend_Filter_Word_UnderscoreToCamelCase();
+		
+		return '_'.$type.$filter->filter($key);
 	
 	}
-
+	
+	protected function _throwNotAllowed($privilege)
+	{
+	
+		throw new Inclusive_Model_Exception_NotAllowed($this,$privilege);
+	
+	}
+	
+	protected function _throwNotValid($form)
+	{
+	
+		throw new Inclusive_Model_Exception_NotValid($this,$form);
+	
+	}
+	
 }

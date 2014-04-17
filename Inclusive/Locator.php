@@ -4,26 +4,11 @@ class Inclusive_Locator {
 	
 	static protected $_services = array();
 	
-	static public function service($name,$module=null) {
+	static public function service($class) 
+	{
 		
-		$class = '';
-		
-		if ($module) {
-			
-			$class .= $module;
-			
-		} else {
-			
-			$class .= 'Application';
-			
-		}
-		
-		$class .= '_Service_';
-		
-		$class .= $name;
-		
-		if (!isset(self::$_services[$class])
-		    or !(self::$_services[$class] instanceof $class)) {
+		if (!isset(self::$_services[$class])) 
+		{
 		    	
 	    	self::$_services[$class] = new $class();
 	    	

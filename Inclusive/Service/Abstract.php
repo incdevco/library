@@ -1,13 +1,7 @@
 <?php
 
-abstract class Inclusive_Service_Abstract implements Inclusive_Service_Acl_Resource_Interface
+abstract class Inclusive_Service_Abstract
 {
-	
-	protected $_acl = null;
-	
-	protected $_aclContext = null;
-	
-	protected $_aclRoles = null;
 	
 	protected $_adapter = null;
 	
@@ -15,17 +9,11 @@ abstract class Inclusive_Service_Abstract implements Inclusive_Service_Acl_Resou
 	
 	protected $_forms = array();
 	
-	protected $_formClasses = array();
+	protected $_formMap = array();
 	
 	protected $_modelClass = null;
 	
 	protected $_setClass = null;
-	
-	protected $_service = null;
-	
-	protected $_services = array();
-	
-	protected $_serviceClasses = array();
 	
 	public function __construct() 
 	{
@@ -34,11 +22,107 @@ abstract class Inclusive_Service_Abstract implements Inclusive_Service_Acl_Resou
 		
 	}
 	
+	public function buildSet($results,$privilege)
+	{
+		
+		$set = $this->createSet();
+		
+		foreach ($results as $result)
+		{
+		
+			$model = $this->createModel($result);
+			
+			if ($this->isAllowed($model,$privilege))
+			{
+			
+				$set->addModel($model);
+			
+			}
+		
+		}
+		
+		return $set;
+	
+	}
+	
+	public function create(Inclusive_Model_Abstract $model)
+	{
+		
+		$this->isAllowed($model,'add');
+		
+		$result = $this->getAdapter()->create($model->toArray());
+		
+		if ($result)
+		{
+			
+			$model->stored($result);
+		
+		}
+		
+		return $result;
+		
+	}
+	
+	public function createModel($data=null)
+	{
+	
+		$class = $this->getModelClass();
+		
+		$model = new $class(array(
+			'service'=>$this,
+			'data'=>$data,
+			'stored'=>true
+			));
+			
+		return $model;
+	
+	}
+	
+	public function createSet($data=null)
+	{
+	
+		$class = $this->getSetClass();
+		
+		$set = new $class(array(
+			'service'=>$this,
+			'data'=>$data
+			));
+			
+		return $set;
+	
+	}
+	
 	public function createUniqueId($length=10) 
 	{
 	
-		return $this->getAdapter()
-			->createUniqueId($length);
+		return $this->getAdapter()->createUniqueId($length);
+	
+	}
+	
+	public function delete(Inclusive_Model_Abstract $model)
+	{
+	
+		$result = $this->getAdapter()->delete($model->getPrimary());
+		
+		if ($result)
+		{
+		
+			$model->deleted();
+		
+		}
+		
+		return $result;
+	
+	}
+	
+	public function fetchAll(array $data)
+	{
+	
+		$clean = $this->isValid('FetchAll',$data);
+		
+		$results = $this->getAdapter()->fetchAll($clean);
+		
+		return $this->buildSet($results,'view');
 	
 	}
 	
@@ -47,104 +131,78 @@ abstract class Inclusive_Service_Abstract implements Inclusive_Service_Acl_Resou
 	
 		$class = $this->_modelClass;
 		
-		return new $class($this);
+		return new $class(array(
+			'service'=>$this
+			));
+	
+	}
+	
+	public function fetchOne(array $data)
+	{
+	
+		$clean = $this->isValid('FetchOne',$data);
+		
+		$result = $this->getAdapter()->fetchOne($clean);
+		
+		if ($result)
+		{
+		
+			$model = $this->createModel($result);
+			
+			$this->isAllowed($model,'view');
+			
+			return $model;
+		
+		}
+		
+		return $this->_throwNotFound($clean);
 	
 	}
 	
 	public function getAcl()
 	{
 	
-		if ($this->_acl === null)
-		{
-		
-			$this->_acl = Zend_Registry::get('acl');
-		
-		}
-		
-		return $this->_acl;
+		return Zend_Registry::get('Acl');
 	
 	}
 	
-	public function getAclContext()
+	public function getForm($key)
 	{
 	
-		if ($this->_aclContext === null)
+		if (!isset($this->_forms[$key]))
 		{
 		
-			$this->_aclContext = Zend_Registry::get('aclContext');
-		
-		}
-		
-		return $this->_aclContext;
-	
-	}
-	
-	public function getAclRoles()
-	{
-	
-		if ($this->_aclRoles === null)
-		{
-		
-			$this->_aclRoles = Zend_Registry::get('aclRoles');
-		
-		}
-		
-		return $this->_aclRoles;
-	
-	}
-	
-	public function getAdapter() 
-	{
-	
-		if ($this->_adapter === null)
-		{
-		
-			if ($this->_adapterClass === null)
-			{
+			$class = $this->_formMap[$key];
 			
-				$this->_throw('No Adapter Class Set');
-			
-			}
-			
-			$this->setAdapter($this->_adapterClass);
+			$this->_forms[$key] = new $class();
 		
-		}
-		
-		return $this->_adapter;
-	
-	}
-	
-	public function getForm($key,$new=false)
-	{
-	
-		if ($new
-			or !isset($this->_forms[$key]))
-		{
-		
-			$class = $this->getFormClass($key);
-		
-			$this->setForm($key,new $class());
-			
 		}
 		
 		return $this->_forms[$key];
 	
 	}
 	
-	public function getFormClass($key)
+	public function getRoles()
 	{
 	
-		if (isset($this->_formClasses[$key]))
+		return Zend_Registry::get('Roles');
+	
+	}
+	
+	public function getAdapter() 
+	{
+	
+		if (null === $this->_adapter)
 		{
-		
-			return $this->_formClasses[$key];
+			
+			$class = $this->_adapterClass;
+			
+			$this->setAdapter(new $class());
 		
 		}
 		
-		throw new Inclusive_Service_Exception(
-			'No Class Found For: '.$key
-			);
-			
+		return $this->_adapter;
+	
 	}
 	
 	public function getModelClass()
@@ -154,49 +212,6 @@ abstract class Inclusive_Service_Abstract implements Inclusive_Service_Acl_Resou
 		
 	}
 	
-	public function getResourceId()
-	{
-	
-		return get_class($this);
-	
-	}
-	
-	public function getService($key=null) 
-	{
-	
-		if ($key != null 
-			&& isset($this->_serviceClasses[$key]))
-		{
-		
-			$class = $this->_serviceClasses[$key];
-		
-		}
-		else 
-		{
-		
-			$class = $key;
-		
-		}
-	
-		if ($class != null)
-		{
-		
-			if (!isset($this->_services[$key])
-				or !($this->_services[$key] instanceof $class))
-			{
-			
-				$this->setService(new $class(),$key);
-			
-			}
-			
-			return $this->_services[$key];
-		
-		}
-	
-		return $this->_throw('No Service Found');
-	
-	}
-	
 	public function getSetClass()
 	{
 	
@@ -204,75 +219,75 @@ abstract class Inclusive_Service_Abstract implements Inclusive_Service_Acl_Resou
 		
 	}
 	
-	public function setAcl(Acl $acl)
+	public function isAllowed($resource,$privilege)
 	{
 	
-		$this->_acl = $acl;
+		$acl = $this->getAcl();
 		
-		return $this;
-	
-	}
-	
-	public function setAclContext($context)
-	{
-	
-		$this->_aclContext = $context;
+		$roles = $this->getRoles();
 		
-		return $this;
-	
-	}
-	
-	public function setAclRoles($roles)
-	{
-	
-		$this->_aclRoles = $roles;
+		$result = $acl->isAllowed($roles,$resource,$privilege);
 		
-		return $this;
-	
-	}
-	
-	public function setAdapter($adapter) 
-	{
-		
-		if (is_string($adapter))
+		if ($result)
 		{
 		
-			$adapter = new $adapter(array('service'=>$this));
+			return $result;
+		
+		}
+		
+		return $this->_throwNotAllowed($resource,$privilege);
+		
+	}
+	
+	public function isValid($key,$data)
+	{
+	
+		$form = $this->getForm($key);
+		
+		$result = $form->isValid($data);
+		
+		if ($result)
+		{
+		
+			return $form->getValues();
+		
+		}
+		
+		return $this->_throwForm($form);
+	
+	}
+	
+	public function save(Inclusive_Model_Abstract $model)
+	{
+	
+		if ($model->isStored())
+		{
+		
+			return $this->update($model);
 		
 		}
 		else 
 		{
 		
-			if (!($adapter instanceof Inclusive_Service_Adapter_Abstract))
-			{
-			
-				return $this->_throw('Adapter must be instanceof Inclusive_Service_Adapter_Abstract');
-			
-			}
-	
+			return $this->create($model);
+		
 		}
+	
+	}
+	
+	public function setAdapter(Inclusive_Service_Adapter_Abstract $adapter) 
+	{
 		
 		$this->_adapter = $adapter;
 		
-		$adapter->setService($this);
-		
 		return $this;
 	
 	}
 	
-	public function setForm($key,Zend_Form $form)
+	public function setForm($key,Inclusive_Form $form)
 	{
 	
 		$this->_forms[$key] = $form;
-		
-		return $this;
-	
-	}
-	
-	public function setFormClass($key,$class)
-	{
-	
-		$this->_formClasses[$key] = $class;
 		
 		return $this;
 	
@@ -287,24 +302,6 @@ abstract class Inclusive_Service_Abstract implements Inclusive_Service_Acl_Resou
 		
 	}
 	
-	public function setService(Inclusive_Service_Abstract $service,$key=null) 
-	{
-	
-		if ($key != null)
-		{
-		
-			$this->_services[$key] = $service;
-			
-			return $this;
-		
-		}
-	
-		$this->_service = $service;
-		
-		return $this;
-	
-	}
-	
 	public function setSetClass($class)
 	{
 	
@@ -314,30 +311,47 @@ abstract class Inclusive_Service_Abstract implements Inclusive_Service_Acl_Resou
 		
 	}
 	
-	public function isAllowed($privilege,$context=null)
+	public function update(Inclusive_Model_Abstract $model)
 	{
 	
-		$acl = $this->getAcl();
+		$result = $this->getAdapter()->update($model->getPrimary(),$model->toArray());
 		
-		$roles = $this->getAclRoles();
+		if ($result)
+		{
 		
-		$this->setAclContext($context);
+			$model->saved();
+			
+		}
 		
-		return $acl->isAllowed($roles,$this,$privilege);
-		
+		return $result;
+	
 	}
 	
-	public function _throw($message)
+	protected function _throw($message)
 	{
 	
 		throw new Inclusive_Service_Exception($message);
 	
 	}
 	
-	public function _throwForm(Zend_Form $form)
+	protected function _throwForm(Zend_Form $form)
 	{
 	
 		throw new Inclusive_Service_Exception_Form($form);
+	
+	}
+	
+	protected function _throwNotAllowed($resource,$privilege)
+	{
+	
+		throw new Inclusive_Service_Exception_NotAllowed($resource,$privilege);
+	
+	}
+	
+	protected function _throwNotFound($data)
+	{
+	
+		throw new Inclusive_Service_Exception_NotFound();
 	
 	}
 	
