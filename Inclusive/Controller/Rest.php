@@ -74,21 +74,12 @@ abstract class Inclusive_Controller_Rest extends Inclusive_Controller_Action
 					$result = $this->getService()->delete($model);
 					
 					break;
-				
-				case 'index':
-					
-					$set = $this->getService()
-						->fetchAll($this->getRequest()->getParams());
-					
-					break;
 					
 				case 'patch':
 				case 'put':
 				case 'post':
 					
-					$model
-						->setFromArray($this->getRequest()->getParams())
-						->save();
+					$model->transform($this->getRequest()->getParams());
 					
 					break;
 				

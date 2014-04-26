@@ -60,7 +60,7 @@ abstract class Inclusive_Db_Table_Abstract extends Zend_Db_Table_Abstract
 				$data[$key] = $this->createUniqueId($length);
 			
 			}
-		
+			
 		}
 		
 		return parent::insert($data);

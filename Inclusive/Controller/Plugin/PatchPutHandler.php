@@ -33,6 +33,13 @@ class Inclusive_Controller_Plugin_PatchPutHandler extends Zend_Controller_Plugin
             	
             }
             
+            if (null === $putParams)
+            {
+            
+            	$putParams = array();
+            
+            }
+            
             $request->setParams($putParams);
         }
     }

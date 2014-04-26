@@ -10,7 +10,7 @@ abstract class Inclusive_Service_Adapter_Abstract
 		
 	}
 	
-	abstract public function create(array $data);
+	abstract public function insert(array $data);
 	
 	abstract public function createUniqueId($length);
 	

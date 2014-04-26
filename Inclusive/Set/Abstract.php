@@ -118,7 +118,7 @@ abstract class Inclusive_Set_Abstract implements Iterator
 	
 	}
 	
-	public function toJson()
+	public function toJson(array $options=array())
 	{
 	
 		$array = array();
@@ -126,7 +126,16 @@ abstract class Inclusive_Set_Abstract implements Iterator
 		foreach ($this as $model)
 		{
 		
-			$array[] = $model->toJson(true);
+			$array[] = $model->toJson(array(
+				'returnArray'
+				));
+		
+		}
+		
+		if (in_array('returnArray',$options))
+		{
+		
+			return $array;
 		
 		}
 		

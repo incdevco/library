@@ -23,7 +23,7 @@ abstract class Inclusive_Service_Adapter_Table extends Inclusive_Service_Adapter
 	
 	}
 	
-	public function create(array $data)
+	public function insert(array $data)
 	{
 	
 		return $this->getTable()->insert($data);
@@ -94,10 +94,15 @@ abstract class Inclusive_Service_Adapter_Table extends Inclusive_Service_Adapter
 	
 	}
 	
-	public function fetchOne($data)
+	public function fetchOne($where)
 	{
 		
-		$where = $this->arrayToWhere($data);
+		if (is_array($where))
+		{
+		
+			$where = $this->arrayToWhere($where);
+		
+		}
 		
 		return $this->getTable()->fetchRow($where);
 	

@@ -45,24 +45,6 @@ abstract class Inclusive_Service_Abstract
 	
 	}
 	
-	public function create(Inclusive_Model_Abstract $model)
-	{
-		
-		$this->isAllowed($model,'add');
-		
-		$result = $this->getAdapter()->create($model->toArray());
-		
-		if ($result)
-		{
-			
-			$model->stored($result);
-		
-		}
-		
-		return $result;
-		
-	}
-	
 	public function createModel($data=null)
 	{
 	
@@ -71,7 +53,7 @@ abstract class Inclusive_Service_Abstract
 		$model = new $class(array(
 			'service'=>$this,
 			'data'=>$data,
-			'stored'=>true
+			'new'=>false
 			));
 			
 		return $model;
@@ -132,7 +114,8 @@ abstract class Inclusive_Service_Abstract
 		$class = $this->_modelClass;
 		
 		return new $class(array(
-			'service'=>$this
+			'service'=>$this,
+			'new'=>true
 			));
 	
 	}
@@ -219,6 +202,24 @@ abstract class Inclusive_Service_Abstract
 		
 	}
 	
+	public function insert(Inclusive_Model_Abstract $model)
+	{
+		
+		$this->isAllowed($model,'add');
+		
+		$result = $this->getAdapter()->insert($model->toArray());
+		
+		if ($result)
+		{
+			
+			$model->saved($result);
+		
+		}
+		
+		return $result;
+		
+	}
+	
 	public function isAllowed($resource,$privilege)
 	{
 	
@@ -254,24 +255,6 @@ abstract class Inclusive_Service_Abstract
 		}
 		
 		return $this->_throwForm($form);
-	
-	}
-	
-	public function save(Inclusive_Model_Abstract $model)
-	{
-	
-		if ($model->isStored())
-		{
-		
-			return $this->update($model);
-		
-		}
-		else 
-		{
-		
-			return $this->create($model);
-		
-		}
 	
 	}
 	
