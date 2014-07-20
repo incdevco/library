@@ -209,7 +209,7 @@ abstract class Inclusive_Service_Abstract
 		
 		if (Zend_Registry::isRegistered('log'))
 		{
-		
+			
 			$log = Zend_Registry::get('log');
 			
 			$log->info(Zend_Json::encode($roles).':'.$model->getResourceId().':'.$privilege);
