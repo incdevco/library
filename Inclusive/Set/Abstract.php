@@ -3,6 +3,8 @@
 abstract class Inclusive_Set_Abstract implements Iterator 
 {
 	
+	public $actualLength = 0;
+	
 	protected $_service = null;
 	
 	protected $_services = array();
